@@ -6,7 +6,7 @@ import { Component } from 'react-simplified';
 import { HashRouter, Route } from 'react-router-dom';
 import { NavBar, Card, Alert } from './widgets';
 import { TaskList, TaskDetails, TaskEdit, TaskNew } from './task-components';
-
+//Halla!
 class Menu extends Component {
   render() {
     return (
