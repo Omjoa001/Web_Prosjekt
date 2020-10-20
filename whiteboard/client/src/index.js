@@ -7,6 +7,7 @@ import { Alert } from './widgets';
 //Hei
 //dette 
 //er en merge error
+//Hei på deg
 const root = document.getElementById('root');
 if (root)
   ReactDOM.render(
