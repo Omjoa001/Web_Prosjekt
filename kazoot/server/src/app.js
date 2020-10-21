@@ -4,10 +4,7 @@ import express from 'express';
 import taskRouter from './task-router';
 
 /**
- * dfsdf
  * 
- * dfs
- * adfladjflaskdfm
  * Express application.
  */
 const app: express$Application<> = express();

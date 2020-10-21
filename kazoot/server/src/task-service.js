@@ -2,19 +2,24 @@
 
 import pool from './mysql-pool';
 
-export type Task = {
+export type Sprs = {
   id: number,
-  title: string,
-  done: boolean,
+  quizId: number,
+  kategoriId: number,
+  spørsmål: string,
+  svar0: string,
+  svar1: string,
+  svar2: string,
+  svar3: string,
 };
 
-class TaskService {
+class QuizService {
   /**
-   * Get task with given id.
+   * Get Sprs with given id.
    */
   get(id: number) {
-    return new Promise<?Task>((resolve, reject) => {
-      pool.query('SELECT * FROM Tasks WHERE id = ?', [id], (error, results: Task[]) => {
+    return new Promise<?Sprs>((resolve, reject) => {
+      pool.query('SELECT * FROM Spørsmål WHERE id = ?', [id], (error, results: Sprs[]) => {
         if (error) return reject(error);
 
         resolve(results[0]);
@@ -23,11 +28,11 @@ class TaskService {
   }
 
   /**
-   * Get all tasks.
+   * Get all Sprs.
    */
   getAll() {
-    return new Promise<Task[]>((resolve, reject) => {
-      pool.query('SELECT * FROM Tasks', (error, results) => {
+    return new Promise<Sprs[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Spørsmål', (error, results) => {
         if (error) return reject(error);
 
         resolve(results);
@@ -36,13 +41,13 @@ class TaskService {
   }
 
   /**
-   * Create new task having the given title.
+   * Create new Sprs having the given title.
    *
-   * Resolves the newly created task id.
+   * Resolves the newly created Sprs id.
    */
   create(title: string) {
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Tasks SET title=?', [title], (error, results) => {
+      pool.query('INSERT INTO Spørsmål SET spørsmål = ?', [spørsmål], (error, results) => {
         if (error) return reject(error);
         if (!results.insertId) return reject(new Error('No row inserted'));
 
@@ -52,11 +57,11 @@ class TaskService {
   }
 
   /**
-   * Delete task with given id.
+   * Delete Sprs with given id.
    */
   delete(id: number) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('DELETE FROM Tasks WHERE id = ?', [id], (error, results) => {
+      pool.query('DELETE FROM Spørsmål WHERE id = ?', [id], (error, results) => {
         if (error) return reject(error);
         if (!results.affectedRows) reject(new Error('No row deleted'));
 
@@ -66,5 +71,5 @@ class TaskService {
   }
 }
 
-const taskService = new TaskService();
-export default taskService;
+const quizService = new QuizService();
+export default quizService;

@@ -3,38 +3,51 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3000/api/v2';
 
-export type Task = {
+export type Sprs = {
   id: number,
-  title: string,
-  done: boolean,
+  quizId: number,
+  kategoriId: number,
+  spørsmål: string,
+  svar0: string,
+  svar1: string,
+  svar2: string,
+  svar3: string
 };
 
-class TaskService {
+class QuizService {
+  
   /**
-   * Get task with given id.
+   * Get question with given id.
    */
   get(id: number) {
-    return axios.get<Task>('/tasks/' + id).then((response) => response.data);
+    return axios.get<Sprs>('/tasks/' + id).then((response) => response.data);
   }
 
   /**
-   * Get all tasks.
+   * Get all questions.
    */
   getAll() {
-    return axios.get<Task[]>('/tasks').then((response) => response.data);
+    return axios.get<Sprs[]>('/tasks').then((response) => response.data);
   }
 
-  /**
-   * Create new task having the given title.
-   *
-   * Resolves the newly created task id.
+
+  /** 
+   * Delete question with given id.
    */
-  create(title: string) {
-    return axios
-      .post<{}, { id: number }>('/tasks', { title: title })
-      .then((response) => response.data.id);
+  /*delete(id: number) {
+    return axios 
+    .delete<{}, { id: number}>('/')
   }
+  */
+  /** 
+   * Update  quiz.
+   */
+  //put(title: string)
+
 }
 
-const taskService = new TaskService();
-export default taskService;
+
+
+
+const quizservice = new QuizService ();
+export default quizservice;

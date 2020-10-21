@@ -3,39 +3,51 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { HashRouter, Route } from 'react-router-dom';
-import { NavBar, Card, Alert } from './widgets';
-import { TaskList, TaskDetails, TaskEdit, TaskNew } from './task-components';
+import { Card, Row, Button, Form, Column, Alert } from './widgets';
+//import { NavLink } from 'react-router-dom';
+import quizService from './task-service';
+
 //Halla!
-class Menu extends Component {
+
+
+class App extends Component {
+  sprs: Sprs[] = [];
+
   render() {
     return (
-      <NavBar brand="Todo App">
-        <NavBar.Link to="/tasks">Tasks</NavBar.Link>
-      </NavBar>
+      <>
+    <Card title="Welcome">This is Quiz App
+    </Card>
+    <Card title='Kategorier'> </Card>
+    <Card title='spørsmål'> 
+      {this.sprs.map((sprs) =>  (
+        <Row key={sprs.id}>
+          <Column> 
+            {sprs.spørsmål}
+          </Column>
+        </Row>
+      ))}
+    </Card>
+
+  </>
     );
+  }
+
+  mounted() {
+    quizService
+    .getAll()
+    .then((sprs) => (this.sprs = sprs))
   }
 }
 
-class Home extends Component {
-  render() {
-    return <Card title="Welcome">This is Todo App</Card>;
-  }
-}
+
 
 const root = document.getElementById('root');
 if (root)
   ReactDOM.render(
-    <HashRouter>
-      <div>
+      <>
         <Alert />
-        <Menu />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/tasks" component={TaskList} />
-        <Route exact path="/tasks/:id(\d+)" component={TaskDetails} /> {/* id must be number */}
-        <Route exact path="/tasks/:id(\d+)/edit" component={TaskEdit} /> {/* id must be number */}
-        <Route exact path="/tasks/new" component={TaskNew} />
-      </div>
-    </HashRouter>,
+        <App />
+      </>,
     root
   );
