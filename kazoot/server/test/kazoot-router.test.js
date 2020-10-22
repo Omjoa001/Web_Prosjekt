@@ -3,7 +3,7 @@
 import axios from 'axios';
 import pool from '../src/mysql-pool';
 import app from '../src/app';
-import taskService, { type Task } from '../src/task-service';
+import quizService, { type Task } from '../src/kazoot-service';
 
 const testTasks: Task[] = [
   { id: 1, title: 'Les leksjon', done: false },
@@ -26,32 +26,32 @@ beforeEach((done) => {
     if (error) return done.fail(error);
 
     // Create testTasks sequentially in order to set correct id, and call done() when finished
-    taskService
+    quizService
       .create(testTasks[0].title)
-      .then(() => taskService.create(testTasks[1].title)) // Create testTask[1] after testTask[0] has been created
-      .then(() => taskService.create(testTasks[2].title)) // Create testTask[2] after testTask[1] has been created
+      .then(() => quizService.create(testTasks[1].title)) // Create testTask[1] after testTask[0] has been created
+      .then(() => quizService.create(testTasks[2].title)) // Create testTask[2] after testTask[1] has been created
       .then(() => done()); // Call done() after testTask[2] has been created
 
     // Note that the above expression can be written as:
-    // const promise1 = taskService.create(testTasks[0].title);
-    // const promise2 = promise1.then(() => taskService.create(testTasks[1].title));
-    // const promise3 = promise2.then(() => taskService.create(testTasks[2].title));
+    // const promise1 = quizService.create(testTasks[0].title);
+    // const promise2 = promise1.then(() => quizService.create(testTasks[1].title));
+    // const promise3 = promise2.then(() => quizService.create(testTasks[2].title));
     // promise3.then(() => done());
 
     // Can also be written as:
-    // let lastPromise = taskService.create(testTasks[0].title);
-    // lastPromise = lastPromise.then(() => taskService.create(testTasks[1].title));
-    // lastPromise = lastPromise.then(() => taskService.create(testTasks[2].title));
+    // let lastPromise = quizService.create(testTasks[0].title);
+    // lastPromise = lastPromise.then(() => quizService.create(testTasks[1].title));
+    // lastPromise = lastPromise.then(() => quizService.create(testTasks[2].title));
     // lastPromise.then(() => done());
 
     // Or without specifying each test task:
     // let lastPromise = new Promise((resolve) => resolve());
-    // for (const task of testTasks) lastPromise = lastPromise.then(() => taskService.create(task.title));
+    // for (const task of testTasks) lastPromise = lastPromise.then(() => quizService.create(task.title));
     // lastPromise.then(() => done());
 
     // Or more compactly:
     // testTasks
-    //   .reduce((prev, cur) => prev.then(() => taskService.create(cur.title)), Promise.resolve())
+    //   .reduce((prev, cur) => prev.then(() => quizService.create(cur.title)), Promise.resolve())
     //   .then(() => done());
   });
 });
