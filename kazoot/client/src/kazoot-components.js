@@ -2,9 +2,12 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-// import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
+
+const history = createHashHistory();
 
 export class Home extends Component {
   sprs: Sprs[] = [];
@@ -15,13 +18,37 @@ export class Home extends Component {
     return (
       <>
         <Card title="Welcome">This is Quiz App</Card>
-        <Card title="Browse Quizzes"> </Card>
         <Card title="spørsmål">
           {this.sprs.map((spr) => (
             <Row key={spr.id}>
               <Column>{spr.question}</Column>
             </Row>
           ))}
+        </Card>
+        <Card title="Route test">
+            <Button.Light
+            onClick={()=> history.push('/')}
+            >
+                Back
+            </Button.Light>
+            <Button.Danger
+            onClick={() => history.push('/BrowseQuizes')}
+            >
+                Browse Quizes
+            </Button.Danger>
+            <Button.Light
+            onClick={() => {
+                history.push("/newQuiz")
+            }
+            }
+            >
+                Ny quiz
+            </Button.Light>
+            <Button.Success
+            onClick={()=> history.push("/editQuiz")}
+            >
+                Endre quiz
+            </Button.Success>
         </Card>
       </>
     );
@@ -133,12 +160,12 @@ export class NewQuiz extends Component {
                 <Button.Success onClick={this.button}>Nytt spørsmål</Button.Success>
             </Row>
             <Row>
-                    <Column>
-                        <Button.Light>Back</Button.Light>
-                    </Column>
-                    <Column>
-                        <Button.Success>Save</Button.Success>
-                    </Column>
+                <Button.Light onClick={()=> history.push('/')}>
+                    Back
+                </Button.Light>
+                <Column>
+                    <Button.Success>Save</Button.Success>
+                </Column>
             </Row>
         </Card>
 
@@ -182,6 +209,9 @@ export class BrowseQuizzes extends Component {
               </Column>
             </Row>
           ))}
+            <Button.Light onClick={()=> history.push('/')}>
+                Back
+            </Button.Light>
         </Card>
       </>
     );
@@ -325,13 +355,14 @@ export class EditQuiz extends Component {
                 <Button.Success onClick={this.button}>Nytt spørsmål</Button.Success>
             </Row>
             <Row>
-                    <Column>
-                        <Button.Light>Back</Button.Light>
-                    </Column>
-                    <Column>
-                        <Button.Success>Save</Button.Success>
-                    </Column>
-            </Row>        </Card>
+                <Button.Light onClick={()=> history.push('/')}>
+                    Back
+                </Button.Light>
+                <Column>
+                    <Button.Success>Save</Button.Success>
+                </Column>
+            </Row>        
+        </Card>
 
       </>
     );
