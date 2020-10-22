@@ -2,11 +2,8 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Card, Row, Button, Form, Column, Alert } from './widgets';
-//import { NavLink } from 'react-router-dom';
+import { Card, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import quizService from './kazoot-service';
-
-
 
 export class App extends Component {
   sprs: Sprs[] = [];
@@ -41,5 +38,18 @@ export class App extends Component {
     quizService
     .getAll()
     .then((sprs) => (this.sprs = sprs))
+  }
+}
+
+
+export class Menu extends Component {
+  render() {
+    return (
+      <NavBar>
+        <NavBar.Link to="/">
+          Test
+        </NavBar.Link>
+      </NavBar>
+    )
   }
 }
