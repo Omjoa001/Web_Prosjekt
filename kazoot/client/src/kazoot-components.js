@@ -4,8 +4,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Card, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 //import { NavLink } from 'react-router-dom';
-import questionService from './kazoot-service';
-import { quizService } from './kazoot-service';
+import { quizService, questionService } from './kazoot-service';
 
 export class App extends Component {
   sprs: Sprs[] = [];
