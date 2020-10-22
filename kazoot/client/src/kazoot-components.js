@@ -16,9 +16,7 @@ export class Home extends Component {
     return (
       <>
         <Card title="Welcome">This is Quiz App</Card>
-        <Card title="Browse Quizzes">
-          <BrowseQuizzes />
-        </Card>
+        <Card title="Browse Quizzes"> </Card>
         <Card title="spørsmål">
           {this.sprs.map((spr) => (
             <Row key={spr.id}>
@@ -32,16 +30,6 @@ export class Home extends Component {
 
   mounted() {
     questionService.getAll().then((sprs) => (this.sprs = sprs));
-  }
-}
-
-export class BrowseQuiz extends Component {
-  render() {
-    return (
-      <>
-        <Card title="kjørda Browser"></Card>
-      </>
-    );
   }
 }
 
