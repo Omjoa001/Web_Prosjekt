@@ -3,7 +3,7 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Home, BrowseQuizzes, NewQuiz, EditQuiz } from './kazoot-components'
+import { Home, BrowseQuizzes, NewQuiz, EditQuiz, ListQuizes } from './kazoot-components'
 import { Alert, NavBar } from './widgets'
 import { HashRouter, Route } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ class Menu extends Component {
         <NavBar.Link to="/BrowseQuizes">Browse Quiz</NavBar.Link>
         <NavBar.Link to="/newQuiz">Ny quiz</NavBar.Link>
         <NavBar.Link to="/editQuiz">Endre quiz</NavBar.Link>
+        <NavBar.Link to="/listQuizes">Kviss</NavBar.Link>
       </NavBar>
     );
   }
@@ -32,6 +33,7 @@ ReactDOM.render(
       <Route exact path="/BrowseQuizes" component={BrowseQuizzes}></Route>
       <Route exact path="/newQuiz" component={NewQuiz}></Route>
       <Route exact path="/editQuiz" component={EditQuiz}></Route>
+      <Route exect path="/listQuizes" component={ListQuizes}></Route>
       </ div>
     </HashRouter>,
   root

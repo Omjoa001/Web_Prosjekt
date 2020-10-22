@@ -374,3 +374,42 @@ export class EditQuiz extends Component {
       console.log("LOL")
   }
 }
+
+/*
+{this.tasks.map((task) => (
+            <Row key={task.id}>
+              <Column>
+                <NavLink to={'/tasks/' + task.id}>{task.title}</NavLink>
+              </Column>
+            </Row>
+          ))}
+*/
+
+export class ListQuizes extends Component {
+    questions: Sprs[] =[];
+
+    render() {
+        return (
+            <>
+        <Card title="Categories">{this.categories}</Card>
+        <Card title="Search"></Card>
+        <Card title="Quizzes">
+          {this.questions.map((quiz) => (
+            <Row key={quiz.id}>
+              <Column>
+                {quiz.name}
+                {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
+              </Column>
+            </Row>
+          ))}
+            <Button.Light onClick={()=> history.push('/')}>
+                Back
+            </Button.Light>
+        </Card>
+      </>
+        )
+    }
+    mounted() {
+        questionService.getAll().then((categories) => (this.questions = categories));
+      }
+}
