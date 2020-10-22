@@ -12,10 +12,6 @@ export class App extends Component {
   question: string = '';
   id: number = 0;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 68d8a31d340023c780c5df5fc56b79117a8fe28f
   render() {
     return (
       <>
