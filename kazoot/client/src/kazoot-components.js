@@ -99,12 +99,14 @@ export class Quiz extends Component {
     return (
       <>
         <Card title={this.props.title}>
-          <Column left>
-            <button>Play</button>
-          </Column>
-          <Column right>
-            <button>Edit</button>
-          </Column>
+          <Row>
+            <Column left>
+              <Button.Success>Play</Button.Success>
+            </Column>
+            <Column right>
+              <Button.Danger>Edit</Button.Danger>
+            </Column>
+          </Row>
         </Card>
       </>
     );
