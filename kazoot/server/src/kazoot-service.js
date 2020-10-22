@@ -62,7 +62,7 @@ class QuizService {
 
   delete(id: number) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('DELETE FROM Question WHERE id = ?', [id], (error, results) => {
+      pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
         if (error) return reject(error);
         if (!results.affectedRows) reject(new Error('No row deleted'));
 
@@ -71,6 +71,8 @@ class QuizService {
     });
   }
 }
+
+
 
 const quizService = new QuizService();
 export default quizService;

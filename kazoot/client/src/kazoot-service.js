@@ -3,7 +3,7 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3000/api/v2';
 
-export type Kvisser = {
+export type Sprs = {
   id: number,
   quizId: number,
   categoryId: number,
@@ -14,7 +14,7 @@ export type Kvisser = {
   answ3: string,
 };
 
-export type Quiz = {
+export type Kvisser = {
   title: string,
   id: number,
   category: number,
@@ -91,7 +91,7 @@ class QuizService {
    * WIP
    * Get questions in a specific quiz.
    */
-  /*get() {
+  get() {
     return axios.get<Quiz>('/quizzes/:id').then((response) => response.data);
   }
 

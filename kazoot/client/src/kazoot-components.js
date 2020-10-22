@@ -394,6 +394,7 @@ export class ListQuizzes extends Component {
         <Card title="Categories">{this.categories}</Card>
         <Card title="Search"></Card>
         <Card title="Quizzes">
+            
           {this.quizzes.map((quiz) => (
             <Row key={quiz.id}>
               <Column>
@@ -411,6 +412,6 @@ export class ListQuizzes extends Component {
         )
     }
     mounted() {
-        questionService.getAll().then((categories) => (this.questions = categories));
+        quizService.getAll().then((i) => (this.quizzes = i));
       }
 }

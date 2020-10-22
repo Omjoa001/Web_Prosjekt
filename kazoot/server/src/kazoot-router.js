@@ -22,9 +22,8 @@ router.get('/quizzes/:id', (request, response) => {
     .catch((error: Error) => response.status(500).send(error));
 });
 
-// Example request body: { title: "Ny oppgave" }
-// Example response body: { id: 4 }
-router.post('/task', (request, response) => {
+
+/*router.post('/quizzes', (request, response) => {
   const data = request.body;
   if (data && typeof data.title == 'string' && data.title.length != 0)
     quizService
@@ -32,7 +31,7 @@ router.post('/task', (request, response) => {
       .then((id) => response.send({ id: id }))
       .catch((error: Error) => response.status(500).send(error));
   else response.status(400).send('Missing task title');
-});
+});*/
 
 router.delete('/quizzes/:id', (request, response) => {
   quizService
