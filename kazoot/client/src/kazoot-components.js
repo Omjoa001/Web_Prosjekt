@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 // import { NavLink } from 'react-router-dom';
-import { Card, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 
 export class Home extends Component {
@@ -98,7 +98,7 @@ export class Quiz extends Component {
   render() {
     return (
       <>
-        <Card title={this.props.title}>
+        <TileCard title={this.props.title}>
           <Row>
             <Column left>
               <Button.Success>Play</Button.Success>
@@ -107,7 +107,7 @@ export class Quiz extends Component {
               <Button.Danger>Edit</Button.Danger>
             </Column>
           </Row>
-        </Card>
+        </TileCard>
       </>
     );
   }

@@ -88,6 +88,23 @@ export class Card extends Component<{ title?: React.Node, children?: React.Node 
 }
 
 /**
+ * Renders a card with a smaller width than normal
+ * TODO: Add variable width
+ */
+export class TileCard extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card" style={{ width: '12rem' }}>
+        <div className="card-body">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+/**
  * Renders a row using Bootstrap classes.
  */
 export class Row extends Component<{ children?: React.Node }> {
