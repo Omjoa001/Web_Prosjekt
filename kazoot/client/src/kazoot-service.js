@@ -14,11 +14,17 @@ export type Sprs = {
   answ3: string,
 };
 
+export type Quiz = {
+  id: number,
+  category: number,
+};
+
 /**
  * Service to retrieve and manage questions (not entire quizzes).
  */
 class QuestionService {
   /**
+   * WIP
    * Get question with given Sprs id.
    */
   get(id: number) {
@@ -26,6 +32,7 @@ class QuestionService {
   }
 
   /**
+   * WIP
    * Get all questions.
    */
   getAll() {
@@ -33,6 +40,7 @@ class QuestionService {
   }
 
   /**
+   * WIP
    * Delete question with given Sprs id.
    */
   /*delete(id: number) {
@@ -41,17 +49,38 @@ class QuestionService {
   }
   */
   /**
+   * WIP
    * Update  quiz.
    */
   //put(title: string)
 }
 
 /**
+ * WIP
  * Class to manage quizzes.
  */
 class QuizService {
+  /**
+   * Test that the class is imported correctly
+   */
   hey() {
     console.log('hey');
+  }
+
+  /**
+   * WIP
+   * Get all quiz IDs.
+   */
+  getAll() {
+    return axios.get<Quiz[]>('/quizzes').then((response) => response.data);
+  }
+
+  /**
+   * WIP
+   * Get questions in a specific quiz.
+   */
+  get() {
+    return axios.get<Quiz>('/quizzes/:id').then((response) => response.data);
   }
 }
 
