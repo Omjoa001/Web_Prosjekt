@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 // import { NavLink } from 'react-router-dom';
 import { Card, Row, Button, Form, Column, Alert, NavBar } from './widgets';
-
 import { quizService, questionService, categoryService } from './kazoot-service';
 
 export class Home extends Component {

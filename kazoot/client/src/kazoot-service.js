@@ -104,7 +104,6 @@ class CategoryService {
   post() {}
 }
 
-const questionService = new QuestionService();
-export default questionService;
+export const questionService = new QuestionService();
 export const quizService = new QuizService();
 export const categoryService = new CategoryService();
