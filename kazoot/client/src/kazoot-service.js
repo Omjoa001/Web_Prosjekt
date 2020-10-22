@@ -14,10 +14,12 @@ export type Sprs = {
   answ3: string,
 };
 
-class QuizService {
-  
+/**
+ * Service to retrieve and manage questions.
+ */
+class QuestionService {
   /**
-   * Get question with given id.
+   * Get question with given Sprs id.
    */
   get(id: number) {
     return axios.get<Sprs>('/tasks/' + id).then((response) => response.data);
@@ -30,24 +32,22 @@ class QuizService {
     return axios.get<Sprs[]>('/tasks').then((response) => response.data);
   }
 
-
-  /** 
-   * Delete question with given id.
+  /**
+   * Delete question with given Sprs id.
    */
   /*delete(id: number) {
-    return axios 
+    return axios
     .delete<{}, { id: number}>('/')
   }
   */
-  /** 
+  /**
    * Update  quiz.
    */
   //put(title: string)
-
 }
 
+class QuizService {}
 
-
-
-const quizservice = new QuizService ();
-export default quizservice;
+const questionservice = new QuestionService();
+const quizServce = new QuizService();
+export default questionservice;
