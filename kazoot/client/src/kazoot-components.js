@@ -33,7 +33,7 @@ export class Home extends Component {
   </>
     );
   }
-
+//test
   mounted() {
     quizService
     .getAll()
