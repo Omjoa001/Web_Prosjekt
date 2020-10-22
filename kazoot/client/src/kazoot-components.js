@@ -5,7 +5,7 @@ import { Component } from 'react-simplified';
 import { Card, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import quizService from './kazoot-service';
 
-export class App extends Component {
+export class Home extends Component {
   sprs: Sprs[] = [];
   question: string = '';
   id: number = 0;
@@ -41,15 +41,28 @@ export class App extends Component {
   }
 }
 
+export class BrowseQuiz extends Component{
+    render(){
+        return (
+        <>
+        <Card title="kjørda Browser">
+            
+        </Card>
+        </>
+        );
+    }
 
-export class Menu extends Component {
-  render() {
-    return (
-      <NavBar>
-        <NavBar.Link to="/">
-          Test
-        </NavBar.Link>
-      </NavBar>
-    )
-  }
+}
+
+export class NewQuiz extends Component{
+    render(){
+        return (
+        <>
+        <Card title="kjørda med ny quiz">
+            
+        </Card>
+        </>
+        );
+    }
+
 }
