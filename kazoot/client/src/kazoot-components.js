@@ -4,40 +4,51 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Card, Row, Button, Form, Column, Alert } from './widgets';
 //import { NavLink } from 'react-router-dom';
-import quizService from './kazoot-service';
-
-
+import questionService from './kazoot-service';
+import { quizService } from './kazoot-service';
 
 export class App extends Component {
   sprs: Sprs[] = [];
   question: string = '';
   id: number = 0;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 68d8a31d340023c780c5df5fc56b79117a8fe28f
   render() {
     return (
       <>
-    <Card title="Welcome">This is Quiz App
-    </Card>
-    <Card title='Kategorier'> </Card>
-    <Card title='spørsmål'> 
-   
-      {this.sprs.map((spr) =>  (
-        <Row key={spr.id}>
-          <Column> 
-            {spr.question}
-          </Column>
-        </Row>
-      ))}
-    </Card>
-
-  </>
+        <Card title="Welcome">This is Quiz App</Card>
+        <Card title="Browse Quizzes">
+          <BrowseQuizzes />
+        </Card>
+        <Card title="spørsmål">
+          {this.sprs.map((spr) => (
+            <Row key={spr.id}>
+              <Column>{spr.question}</Column>
+            </Row>
+          ))}
+        </Card>
+      </>
     );
   }
 
   mounted() {
-    quizService
-    .getAll()
-    .then((sprs) => (this.sprs = sprs))
+    questionService.getAll().then((sprs) => (this.sprs = sprs));
+    quizService.hey(); // testing that the import works
   }
+}
+
+export class BrowseQuizzes extends Component {
+  render() {
+    return (
+      <>
+        <Card>Categories</Card>
+        <Card>Search</Card>
+      </>
+    );
+  }
+
+  mounted() {}
 }
