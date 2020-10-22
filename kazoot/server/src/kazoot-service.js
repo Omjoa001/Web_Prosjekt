@@ -19,7 +19,7 @@ class QuizService {
    */
   get(id: number) {
     return new Promise<?Sprs>((resolve, reject) => {
-      pool.query('SELECT * FROM Question WHERE id = ?', [id], (error, results: Sprs[]) => {
+      pool.query('SELECT * FROM Quizes WHERE id = ?', [id], (error, results: Sprs[]) => {
         if (error) return reject(error);
 
         resolve(results[0]);
@@ -32,7 +32,7 @@ class QuizService {
    */
   getAll() {
     return new Promise<Sprs[]>((resolve, reject) => {
-      pool.query('SELECT * FROM Question', (error, results) => {
+      pool.query('SELECT * FROM Quizes', (error, results) => {
         if (error) return reject(error);
 
         resolve(results);
@@ -45,7 +45,7 @@ class QuizService {
    *
    * Resolves the newly created Sprs id.
    */
-  create(title: string) {
+  create(question: string) {
     return new Promise<number>((resolve, reject) => {
       pool.query('INSERT INTO Questions SET question = ?', [question], (error, results) => {
         if (error) return reject(error);

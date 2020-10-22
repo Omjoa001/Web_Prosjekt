@@ -37,7 +37,7 @@ class QuestionService {
    * Get all questions.
    */
   getAll() {
-    return axios.get<Sprs[]>('/tasks').then((response) => response.data);
+    return axios.get<Sprs[]>('/quizes').then((response) => response.data);
   }
 
   /**

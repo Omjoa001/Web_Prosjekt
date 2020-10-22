@@ -7,7 +7,7 @@ import quizService, { type Sprs } from './kazoot-service';
  */
 const router: express$Router<> = express.Router();
 
-router.get('/tasks', (request, response) => {
+router.get('/quizes', (request, response) => {
   quizService
     .getAll()
     .then((rows) => response.send(rows))
