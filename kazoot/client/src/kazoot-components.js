@@ -14,8 +14,6 @@ export class App extends Component {
   id: number = 0;
 
 
-
-
   render() {
     return (
       <>
