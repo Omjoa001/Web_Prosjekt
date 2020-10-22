@@ -55,6 +55,11 @@ export class BrowseQuizzes extends Component {
       id: 2,
       category: 2,
     },
+    {
+      title: 'quiz 3',
+      id: 3,
+      category: 3,
+    },
   ];
   categories: number[] = [];
 
@@ -67,7 +72,7 @@ export class BrowseQuizzes extends Component {
           {this.quizzes.map((quiz) => (
             <Row key={quiz.id}>
               <Column>
-                <Quiz id={quiz.id}></Quiz>
+                <Quiz id={quiz.id} title={quiz.title}></Quiz>
                 {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
               </Column>
             </Row>
@@ -87,19 +92,26 @@ export class BrowseQuizzes extends Component {
  * Should be called with an id.
  */
 export class Quiz extends Component {
-  title: string = '';
+  title: string = 'hei';
   id: number = 0;
 
   render() {
     return (
       <>
-        <Card title={this.props.title}>{this.props.id}</Card>
+        <Card title={this.props.title}>
+          <Column left>
+            <button>Play</button>
+          </Column>
+          <Column right>
+            <button>Edit</button>
+          </Column>
+        </Card>
       </>
     );
   }
 
   mounted() {
-    // quizService.get(this.props.id);
+    // quizService.getQuizInfo(this.props.id).then((quiz) => (this.props.title = quiz.title));
   }
 }
 

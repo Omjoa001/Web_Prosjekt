@@ -83,6 +83,17 @@ class QuizService {
   get() {
     return axios.get<Quiz>('/quizzes/:id').then((response) => response.data);
   }
+
+  /**
+   * Dummy function to return Quiz object
+   */
+  getQuizInfo(id: number) {
+    return Promise.resolve({
+      title: 'Dummy Quiz',
+      id: 1,
+      categories: [1, 2],
+    });
+  }
 }
 
 /**
