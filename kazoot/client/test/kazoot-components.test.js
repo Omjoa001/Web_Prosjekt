@@ -8,7 +8,7 @@ import { Form, Button, Column } from '../src/widgets';
 import { NavLink } from 'react-router-dom';
 
 jest.mock('../src/task-service', () => {
-  class TaskService {
+  class quizService {
     getAll() {
       return Promise.resolve([
         { id: 1, title: 'Les leksjon', done: false },
@@ -21,7 +21,7 @@ jest.mock('../src/task-service', () => {
       return Promise.resolve(4); // Same as: return new Promise((resolve) => resolve(4));
     }
   }
-  return new TaskService();
+  return new quizService();
 });
 
 describe('Task component tests', () => {

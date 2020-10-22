@@ -8,7 +8,7 @@ import quizService, { type Sprs } from './kazoot-service';
 const router: express$Router<> = express.Router();
 
 router.get('/tasks', (request, response) => {
-  taskService
+  quizService
     .getAll()
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
@@ -16,7 +16,7 @@ router.get('/tasks', (request, response) => {
 
 router.get('/tasks/:id', (request, response) => {
   const id = Number(request.params.id);
-  taskService
+  quizService
     .get(id)
     .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
     .catch((error: Error) => response.status(500).send(error));
@@ -27,7 +27,7 @@ router.get('/tasks/:id', (request, response) => {
 router.post('/tasks', (request, response) => {
   const data = request.body;
   if (data && typeof data.title == 'string' && data.title.length != 0)
-    taskService
+    quizService
       .create(data.title)
       .then((id) => response.send({ id: id }))
       .catch((error: Error) => response.status(500).send(error));
@@ -35,7 +35,7 @@ router.post('/tasks', (request, response) => {
 });
 
 router.delete('/tasks/:id', (request, response) => {
-  taskService
+  quizService
     .delete(Number(request.params.id))
     .then((result) => response.send())
     .catch((error: Error) => response.status(500).send(error));

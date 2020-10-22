@@ -1,7 +1,7 @@
 // @flow
 
 import express from 'express';
-import taskRouter from './task-router';
+import taskRouter from './kazoot-router';
 
 /**
  * 
