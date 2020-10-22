@@ -5,7 +5,7 @@ import { Component } from 'react-simplified';
 import { Card, Row, Button, Form, Column, Alert } from './widgets';
 //import { NavLink } from 'react-router-dom';
 import questionService from './kazoot-service';
-import { quizService } from './kazoot-service';
+import { quizService, categoryService } from './kazoot-service';
 
 export class App extends Component {
   sprs: Sprs[] = [];
@@ -37,14 +37,18 @@ export class App extends Component {
 }
 
 export class BrowseQuizzes extends Component {
+  categories: number[] = [];
+
   render() {
     return (
       <>
-        <Card>Categories</Card>
-        <Card>Search</Card>
+        <Card title="Categories">{this.categories}</Card>
+        <Card title="Search"></Card>
       </>
     );
   }
 
-  mounted() {}
+  mounted() {
+    categoryService.getAll().then((categories) => (this.categories = categories));
+  }
 }
