@@ -5,12 +5,12 @@ import pool from './mysql-pool';
 export type Sprs = {
   id: number,
   quizId: number,
-  kategoriId: number,
-  spørsmål: string,
-  svar0: string,
-  svar1: string,
-  svar2: string,
-  svar3: string,
+  themeId: number,
+  question: string,
+  answ0: string,
+  answ1: string,
+  answ2: string,
+  answ3: string,
 };
 
 class QuizService {
@@ -19,7 +19,7 @@ class QuizService {
    */
   get(id: number) {
     return new Promise<?Sprs>((resolve, reject) => {
-      pool.query('SELECT * FROM Spørsmål WHERE id = ?', [id], (error, results: Sprs[]) => {
+      pool.query('SELECT * FROM Question WHERE id = ?', [id], (error, results: Sprs[]) => {
         if (error) return reject(error);
 
         resolve(results[0]);
@@ -32,7 +32,7 @@ class QuizService {
    */
   getAll() {
     return new Promise<Sprs[]>((resolve, reject) => {
-      pool.query('SELECT * FROM Spørsmål', (error, results) => {
+      pool.query('SELECT * FROM Question', (error, results) => {
         if (error) return reject(error);
 
         resolve(results);
@@ -47,7 +47,7 @@ class QuizService {
    */
   create(title: string) {
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Spørsmål SET spørsmål = ?', [spørsmål], (error, results) => {
+      pool.query('INSERT INTO Questions SET question = ?', [question], (error, results) => {
         if (error) return reject(error);
         if (!results.insertId) return reject(new Error('No row inserted'));
 
@@ -61,7 +61,7 @@ class QuizService {
    */
   delete(id: number) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('DELETE FROM Spørsmål WHERE id = ?', [id], (error, results) => {
+      pool.query('DELETE FROM Question WHERE id = ?', [id], (error, results) => {
         if (error) return reject(error);
         if (!results.affectedRows) reject(new Error('No row deleted'));
 

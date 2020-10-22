@@ -6,12 +6,12 @@ axios.defaults.baseURL = 'http://localhost:3000/api/v2';
 export type Sprs = {
   id: number,
   quizId: number,
-  kategoriId: number,
-  spørsmål: string,
-  svar0: string,
-  svar1: string,
-  svar2: string,
-  svar3: string
+  themeId: number,
+  question: string,
+  answ0: string,
+  answ1: string,
+  answ2: string,
+  answ3: string,
 };
 
 class QuizService {
