@@ -3,10 +3,10 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3000/api/v2';
 
-export type Sprs = {
+export type Kvisser = {
   id: number,
   quizId: number,
-  themeId: number,
+  categoryId: number,
   question: string,
   answ0: string,
   answ1: string,
@@ -17,7 +17,7 @@ export type Sprs = {
 export type Quiz = {
   title: string,
   id: number,
-  category: number[],
+  category: number,
 };
 
 /**
@@ -29,7 +29,7 @@ class QuestionService {
    * Get question with given Sprs id.
    */
   get(id: number) {
-    return axios.get<Sprs>('/tasks/' + id).then((response) => response.data);
+    return axios.get<Sprs>('/quizzes/' + id).then((response) => response.data);
   }
 
   /**
@@ -37,7 +37,7 @@ class QuestionService {
    * Get all questions.
    */
   getAll() {
-    return axios.get<Sprs[]>('/quizes').then((response) => response.data);
+    return axios.get<Sprs[]>('/quizzes').then((response) => response.data);
   }
 
   /**
@@ -68,11 +68,22 @@ class QuizService {
     console.log('hey');
   }
 
+  get(id: number) {
+    return axios.get<Kvisser>('/quizzes/' + id).then((response) => response.data);
+  }
+
+  /**
+   * WIP
+   * Get all questions.
+   */
+  getAll() {
+    return axios.get<Kvisser[]>('/quizzes').then((response) => response.data);
+  }
   /**
    * WIP
    * Get all quiz IDs.
    */
-  getAll() {
+  /*getAll() {
     return axios.get<Quiz[]>('/quizzes').then((response) => response.data);
   }
 
@@ -80,7 +91,7 @@ class QuizService {
    * WIP
    * Get questions in a specific quiz.
    */
-  get() {
+  /*get() {
     return axios.get<Quiz>('/quizzes/:id').then((response) => response.data);
   }
 

@@ -1,20 +1,20 @@
 // @flow
 import express from 'express';
-import quizService, { type Sprs } from './kazoot-service';
+import quizService, { type Kvisser } from './kazoot-service';
 
 /**
  * Express router containing task methods.
  */
 const router: express$Router<> = express.Router();
 
-router.get('/quizes', (request, response) => {
+router.get('/quizzes', (request, response) => {
   quizService
     .getAll()
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
 });
 
-router.get('/tasks/:id', (request, response) => {
+router.get('/quizzes/:id', (request, response) => {
   const id = Number(request.params.id);
   quizService
     .get(id)
@@ -24,7 +24,7 @@ router.get('/tasks/:id', (request, response) => {
 
 // Example request body: { title: "Ny oppgave" }
 // Example response body: { id: 4 }
-router.post('/tasks', (request, response) => {
+router.post('/task', (request, response) => {
   const data = request.body;
   if (data && typeof data.title == 'string' && data.title.length != 0)
     quizService
@@ -34,7 +34,7 @@ router.post('/tasks', (request, response) => {
   else response.status(400).send('Missing task title');
 });
 
-router.delete('/tasks/:id', (request, response) => {
+router.delete('/quizzes/:id', (request, response) => {
   quizService
     .delete(Number(request.params.id))
     .then((result) => response.send())
