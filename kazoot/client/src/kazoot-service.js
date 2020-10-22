@@ -15,6 +15,7 @@ export type Sprs = {
 };
 
 export type Quiz = {
+  title: string,
   id: number,
   category: number,
 };
@@ -84,7 +85,26 @@ class QuizService {
   }
 }
 
-export const quizService = new QuizService();
+/**
+ * WIP
+ * Service to manage categories
+ */
+class CategoryService {
+  get() {}
+
+  /**
+   * WIP
+   * Function to get all categories
+   */
+  getAll() {
+    // dummy
+    return Promise.resolve([1, 2, 3]);
+  }
+
+  post() {}
+}
 
 const questionService = new QuestionService();
 export default questionService;
+export const quizService = new QuizService();
+export const categoryService = new CategoryService();
