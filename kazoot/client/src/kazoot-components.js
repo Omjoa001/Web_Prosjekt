@@ -60,3 +60,6 @@ export class BrowseQuizzes extends Component {
 
   mounted() {}
 }
+export class NewQuiz extends Component {
+  
+}
