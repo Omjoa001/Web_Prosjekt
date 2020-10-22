@@ -120,8 +120,14 @@ export class EditQuiz extends Component {
   render() {
     return (
       <>
-        <Card>Categories</Card>
-        <Card>Search</Card>
+        <Card >
+            <Row>
+            rediger: 
+            <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+            <Button.Danger onClick={console.log("shiii")}>SLETT QUIZ</Button.Danger>
+            </Row>
+        </Card>
+
       </>
     );
   }
