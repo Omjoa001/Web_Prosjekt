@@ -90,7 +90,16 @@ class QuizService {
  */
 class CategoryService {
   get() {}
-  getAll() {}
+
+  /**
+   * WIP
+   * Function to get all categories
+   */
+  getAll() {
+    // dummy
+    return Promise.resolve([1, 2, 3]);
+  }
+
   post() {}
 }
 
