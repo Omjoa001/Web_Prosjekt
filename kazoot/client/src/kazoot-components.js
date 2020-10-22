@@ -2,12 +2,12 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Card, Row, Button, Form, Column, Alert } from './widgets';
 // import { NavLink } from 'react-router-dom';
+import { Card, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import questionService from './kazoot-service';
 import { quizService, categoryService } from './kazoot-service';
 
-export class App extends Component {
+export class Home extends Component {
   sprs: Sprs[] = [];
   question: string = '';
   id: number = 0;
@@ -32,6 +32,26 @@ export class App extends Component {
 
   mounted() {
     questionService.getAll().then((sprs) => (this.sprs = sprs));
+  }
+}
+
+export class BrowseQuiz extends Component {
+  render() {
+    return (
+      <>
+        <Card title="kjørda Browser"></Card>
+      </>
+    );
+  }
+}
+
+export class NewQuiz extends Component {
+  render() {
+    return (
+      <>
+        <Card title="kjørda med ny quiz"></Card>
+      </>
+    );
   }
 }
 
@@ -94,4 +114,17 @@ export class Quiz extends Component {
   mounted() {
     // quizService.get(this.props.id);
   }
+}
+
+export class EditQuiz extends Component {
+  render() {
+    return (
+      <>
+        <Card>Categories</Card>
+        <Card>Search</Card>
+      </>
+    );
+  }
+
+  mounted() {}
 }
