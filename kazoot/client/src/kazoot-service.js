@@ -84,7 +84,17 @@ class QuizService {
   }
 }
 
-export const quizService = new QuizService();
+/**
+ * WIP
+ * Service to manage categories
+ */
+class CategoryService {
+  get() {}
+  getAll() {}
+  post() {}
+}
 
 const questionService = new QuestionService();
 export default questionService;
+export const quizService = new QuizService();
+export const categoryService = new CategoryService();
