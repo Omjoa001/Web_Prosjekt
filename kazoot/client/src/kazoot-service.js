@@ -15,7 +15,7 @@ export type Sprs = {
 };
 
 /**
- * Service to retrieve and manage questions.
+ * Service to retrieve and manage questions (not entire quizzes).
  */
 class QuestionService {
   /**
@@ -46,8 +46,16 @@ class QuestionService {
   //put(title: string)
 }
 
-class QuizService {}
+/**
+ * Class to manage quizzes.
+ */
+class QuizService {
+  hey() {
+    console.log('hey');
+  }
+}
 
-const questionservice = new QuestionService();
-const quizServce = new QuizService();
-export default questionservice;
+export const quizService = new QuizService();
+
+const questionService = new QuestionService();
+export default questionService;
