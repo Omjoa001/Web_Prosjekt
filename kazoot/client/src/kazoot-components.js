@@ -60,17 +60,7 @@ export class NewQuiz extends Component{
         );
     }
 
-export class Menu extends Component {
-  render() {
-    return (
-      <NavBar>
-        <NavBar.Link to="/">
-          Test
-        </NavBar.Link>
-      </NavBar>
-    )
-  }
-}
+
 export class BrowseQuizzes extends Component {
   render() {
     return (
