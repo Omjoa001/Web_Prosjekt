@@ -59,7 +59,7 @@ export class NewQuiz extends Component{
         </>
         );
     }
-
+}
 
 export class BrowseQuizzes extends Component {
   render() {
@@ -73,3 +73,16 @@ export class BrowseQuizzes extends Component {
 
   mounted() {}
 }
+
+export class EditQuiz extends Component {
+    render() {
+      return (
+        <>
+          <Card>Categories</Card>
+          <Card>Search</Card>
+        </>
+      );
+    }
+  
+    mounted() {}
+  }
