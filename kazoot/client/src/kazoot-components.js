@@ -10,7 +10,7 @@ import { quizService, questionService, categoryService } from './kazoot-service'
 const history = createHashHistory();
 
 export class Home extends Component {
-  sprs: Sprs[] = [];
+  sprs: Kvisser[] = [];
   question: string = '';
   id: number = 0;
 
@@ -32,9 +32,9 @@ export class Home extends Component {
                 Back
             </Button.Light>
             <Button.Danger
-            onClick={() => history.push('/BrowseQuizes')}
+            onClick={() => history.push('/Browse')}
             >
-                Browse Quizes
+                Browse 
             </Button.Danger>
             <Button.Light
             onClick={() => {
@@ -385,8 +385,8 @@ export class EditQuiz extends Component {
           ))}
 */
 
-export class ListQuizes extends Component {
-    questions: Sprs[] =[];
+export class ListQuizzes extends Component {
+    quizzes: Kvisser[] =[];
 
     render() {
         return (
@@ -394,10 +394,12 @@ export class ListQuizes extends Component {
         <Card title="Categories">{this.categories}</Card>
         <Card title="Search"></Card>
         <Card title="Quizzes">
-          {this.questions.map((quiz) => (
+            
+          {this.quizzes.map((quiz) => (
             <Row key={quiz.id}>
               <Column>
-                {quiz.name}
+                {quiz.title}
+                {quiz.id}
                 {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
               </Column>
             </Row>
@@ -410,6 +412,6 @@ export class ListQuizes extends Component {
         )
     }
     mounted() {
-        questionService.getAll().then((categories) => (this.questions = categories));
+        quizService.getAll().then((i) => (this.quizzes = i));
       }
 }

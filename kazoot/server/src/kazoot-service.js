@@ -13,13 +13,26 @@ export type Sprs = {
   answ3: string,
 };
 
+export type Kvisser = {
+  id: number,
+  title: string,
+  description: string,
+  categoryId: number,
+}
+
+export type Kategorier = {
+  id: number,
+  category: string,
+}
+
 class QuizService {
   /**
-   * Get Sprs with given id.
+   * HENTER ALLE/EN, SLETTER OG LAGER QUIZZER
    */
+  
   get(id: number) {
-    return new Promise<?Sprs>((resolve, reject) => {
-      pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: Sprs[]) => {
+    return new Promise<?Kvisser>((resolve, reject) => {
+      pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: Kvisser[]) => {
         if (error) return reject(error);
 
         resolve(results[0]);
@@ -27,11 +40,8 @@ class QuizService {
     });
   }
 
-  /**
-   * Get all Sprs.
-   */
   getAll() {
-    return new Promise<Sprs[]>((resolve, reject) => {
+    return new Promise<Kvisser[]>((resolve, reject) => {
       pool.query('SELECT * FROM Quizzes', (error, results) => {
         if (error) return reject(error);
 
@@ -40,14 +50,9 @@ class QuizService {
     });
   }
 
-  /**
-   * Create new Sprs having the given title.
-   *
-   * Resolves the newly created Sprs id.
-   */
-  create(question: string) {
+  create(title: string, description: string, categoryId: number) {
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Questions SET question = ?', [question], (error, results) => {
+      pool.query('INSERT INTO Quizzes SET title=?, description=?, categoryId=?', [title, description, categoryId], (error, results) => {
         if (error) return reject(error);
         if (!results.insertId) return reject(new Error('No row inserted'));
 
@@ -56,12 +61,9 @@ class QuizService {
     });
   }
 
-  /**
-   * Delete Sprs with given id.
-   */
   delete(id: number) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('DELETE FROM Question WHERE id = ?', [id], (error, results) => {
+      pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
         if (error) return reject(error);
         if (!results.affectedRows) reject(new Error('No row deleted'));
 
@@ -70,6 +72,8 @@ class QuizService {
     });
   }
 }
+
+
 
 const quizService = new QuizService();
 export default quizService;

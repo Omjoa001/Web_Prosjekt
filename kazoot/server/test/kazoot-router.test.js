@@ -64,7 +64,7 @@ afterAll((done) => {
 
 describe('Fetch tasks (GET)', () => {
   test('Fetch all tasks (200 OK)', (done) => {
-    axios.get<Task[]>('/tasks').then((response) => {
+    axios.get<Task[]>('/quizzer').then((response) => {
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(testTasks);
       done();
