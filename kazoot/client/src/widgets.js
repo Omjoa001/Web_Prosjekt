@@ -132,10 +132,12 @@ export class Column extends Component<{ width?: number, right?: boolean, childre
   }
 }
 
+
 /**
  * Renders a success button using Bootstrap styles.
  */
 class ButtonSuccess extends Component<{
+  width?: number,
   onClick: () => mixed,
   small?: boolean,
   children?: React.Node,
@@ -157,6 +159,7 @@ class ButtonSuccess extends Component<{
  * Renders a danger button using Bootstrap styles.
  */
 class ButtonDanger extends Component<{
+  width?: number,
   onClick: () => mixed,
   small?: boolean,
   children?: React.Node,

@@ -121,11 +121,101 @@ export class EditQuiz extends Component {
   render() {
     return (
       <>
-        <Card>Categories</Card>
-        <Card>Search</Card>
+        <Card title="Edit Quiz">
+            <Row>
+                <Column width={3}>
+                    Quiz-title:
+                </Column>
+                <Column>
+                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                </Column>
+                <Column >                    
+                    <Button.Danger onClick={this.button()}>SLETT QUIZ</Button.Danger>
+                </Column>
+                
+            </Row>    
+            <Row>
+                <Column width={3}>
+                    Quiz-description:
+                </Column>
+                <Column >
+                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                </Column>
+                <Column>
+                </Column>
+            </Row>      
+            <Card>
+                <Row>
+                    <Column width={2}>
+                        Riktig:
+                    </Column>
+                    <Column>
+                        <Form.Input placeholder="spørsmål" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger>X</Button.Danger>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column width={2}>
+                        <Form.Checkbox></Form.Checkbox>
+                    </Column>
+                    <Column>
+                        <Form.Input placeholder="Svar1" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger>X</Button.Danger>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column width={2}>
+                        <Form.Checkbox></Form.Checkbox>
+                    </Column>
+                    <Column>
+                        <Form.Input placeholder="Svar2" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger>X</Button.Danger>
+                    </Column>  
+                </Row>
+                <Row>
+                    <Column width={2}>
+                        <Form.Checkbox></Form.Checkbox>
+                    </Column>
+                    <Column>
+                        <Form.Input placeholder="Svar3" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger>X</Button.Danger>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column width={2}>
+                        <Form.Checkbox></Form.Checkbox>
+                    </Column>
+                    <Column>
+                        <Form.Input placeholder="Svar4" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger>X</Button.Danger>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column center>
+                        <Button.Success  >+</Button.Success>
+                    </Column>
+                </Row>
+            </Card>
+            <Button.Success onClick={this.button}>Nytt spørsmål</Button.Success>
+        </Card>
+
       </>
     );
   }
 
   mounted() {}
+
+  button() {
+      console.log("LOL")
+  }
 }
