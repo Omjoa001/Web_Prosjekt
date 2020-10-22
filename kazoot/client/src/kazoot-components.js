@@ -115,6 +115,3 @@ export class EditQuiz extends Component {
 
   mounted() {}
 }
-export class NewQuiz extends Component {
-  
-}
