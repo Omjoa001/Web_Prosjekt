@@ -15,6 +15,7 @@ export type Sprs = {
 };
 
 export type Quiz = {
+  title: string,
   id: number,
   category: number,
 };
