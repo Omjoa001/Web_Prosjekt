@@ -16,8 +16,9 @@ export class App extends Component {
     return (
       <>
         <Card title="Welcome">This is Quiz App</Card>
-        <Card title="Kategorier"> </Card>
-        <Card title="Browse Quizzes">add some link stuff</Card>
+        <Card title="Browse Quizzes">
+          <BrowseQuizzes />
+        </Card>
         <Card title="spørsmål">
           {this.sprs.map((spr) => (
             <Row key={spr.id}>
@@ -36,5 +37,14 @@ export class App extends Component {
 }
 
 export class BrowseQuizzes extends Component {
+  render() {
+    return (
+      <>
+        <Card>Categories</Card>
+        <Card>Search</Card>
+      </>
+    );
+  }
+
   mounted() {}
 }
