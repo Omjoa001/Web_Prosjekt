@@ -10,7 +10,7 @@ import { quizService, questionService, categoryService } from './kazoot-service'
 const history = createHashHistory();
 
 export class Home extends Component {
-  sprs: Kvisser[] = [];
+  Question: Quiz[] = [];
   question: string = '';
   id: number = 0;
 
@@ -19,7 +19,7 @@ export class Home extends Component {
       <>
         <Card title="Welcome">This is Quiz App</Card>
         <Card title="spørsmål">
-          {this.sprs.map((spr) => (
+          {this.Question.map((spr) => (
             <Row key={spr.id}>
               <Column>{spr.question}</Column>
             </Row>
@@ -55,7 +55,7 @@ export class Home extends Component {
   }
 
   mounted() {
-    questionService.getAll().then((sprs) => (this.sprs = sprs));
+    questionService.getAll().then((Question) => (this.Question = Question));
   }
 }
 
@@ -386,25 +386,42 @@ export class EditQuiz extends Component {
 */
 
 export class ListQuizzes extends Component {
-    quizzes: Kvisser[] =[];
+    quizzes: Quiz[] = [];
+    questions: Question[] = [];
 
     render() {
         return (
             <>
-        <Card title="Quizzes">
-            
+        <Card title="Quizzes">       
           {this.quizzes.map((quiz) => (
             <Card key={quiz.id} title={quiz.title}>
               <Column>
                 <Row>Quiz Id: {quiz.id}</Row>
                 <Row>Description: {quiz.description}</Row>
-                <Row>Category Id: {quiz.categoryId}</Row>
+                <Row>Category: {quiz.category}</Row>
                 {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
               </Column>
             </Card>
           ))}
         </Card>
-        <Card title="Questions">{this.categories}</Card>
+        <Card title="Questions">
+            {this.questions.map((question) => (
+                <Card key={question.id} title="kjørr">
+                    <Column>
+                        <Row>Question Id: {question.id}</Row>
+                        <Row>Question: {question.title}</Row>
+                        <Row> hall</Row>
+                        {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
+                        <ul>
+                            <li>{question.answ0}</li>
+                            <li>{question.answ1}</li>
+                            <li>{question.title}</li>
+                            <li>{question.answ3}</li>
+                        </ul>
+                    </Column>
+                </Card>
+            ))}
+        </Card>
         <Card title="Categories"></Card>
         <Button.Light onClick={()=> history.push('/')}>
                 Back
@@ -413,6 +430,7 @@ export class ListQuizzes extends Component {
         )
     }
     mounted() {
-        quizService.getAll().then((i) => (this.quizzes = i));
+        quizService.getAllQui().then((i) => (this.quizzes = i));
+        questionService.getAllQE().then((p) => (this.questions = p));
       }
 }

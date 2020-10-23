@@ -1,15 +1,19 @@
 // @flow
 import express from 'express';
-import quizService, { type Kvisser } from './kazoot-service';
+import quizService, { type Quiz } from './kazoot-service';
+import questionService, { type Question } from './kazoot-service';
+import categoryService, { type Category } from './kazoot-service';
+
 
 /**
- * Express router containing task methods.
+ * Express router containing task methods.ss
  */
 const router: express$Router<> = express.Router();
 
 router.get('/quizzes', (request, response) => {
+  console.log("2")
   quizService
-    .getAll()
+    .getAllQui()
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
 });
@@ -37,6 +41,14 @@ router.delete('/quizzes/:id', (request, response) => {
   quizService
     .delete(Number(request.params.id))
     .then((result) => response.send())
+    .catch((error: Error) => response.status(500).send(error));
+});
+
+router.get('/questions', (request, response) => {
+  console.log("kj")
+  questionService
+    .getAll()
+    .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
 });
 
