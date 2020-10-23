@@ -29,7 +29,7 @@ class QuizService {
   /**
    * HENTER ALLE/EN, SLETTER OG LAGER QUIZZER
    */
-  
+
   get(id: number) {
     return new Promise<?Kvisser>((resolve, reject) => {
       pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: Kvisser[]) => {
@@ -73,7 +73,35 @@ class QuizService {
   }
 }
 
+class QuestionService {
+  // get all
+  getAll() {
+    return new Promise<Sprs[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Questions', (error, results) => {
+        if (error) return reject(error);
+
+        resolve(results);
+      });
+    });
+  }
+
+}
+
+class CategoryService {
+  // get all
+  getAll() {
+    return new Promise<Kategorier[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Categories', (error, results) => {
+        if (error) return reject(error);
+
+        resolve(results);
+      });
+    });
+  }
+}
 
 
 const quizService = new QuizService();
 export default quizService;
+export const questionService = new QuestionService();
+export const categoryService = new CategoryService();

@@ -17,7 +17,8 @@ export type Sprs = {
 export type Kvisser = {
   title: string,
   id: number,
-  category: number,
+  description: string,
+  categoryId: number,
 };
 
 /**

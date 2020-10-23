@@ -391,23 +391,24 @@ export class ListQuizzes extends Component {
     render() {
         return (
             <>
-        <Card title="Categories">{this.categories}</Card>
-        <Card title="Search"></Card>
         <Card title="Quizzes">
             
           {this.quizzes.map((quiz) => (
-            <Row key={quiz.id}>
+            <Card key={quiz.id} title={quiz.title}>
               <Column>
-                {quiz.title}
-                {quiz.id}
+                <Row>Quiz Id: {quiz.id}</Row>
+                <Row>Description: {quiz.description}</Row>
+                <Row>Category Id: {quiz.categoryId}</Row>
                 {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
               </Column>
-            </Row>
+            </Card>
           ))}
-            <Button.Light onClick={()=> history.push('/')}>
-                Back
-            </Button.Light>
         </Card>
+        <Card title="Questions">{this.categories}</Card>
+        <Card title="Categories"></Card>
+        <Button.Light onClick={()=> history.push('/')}>
+                Back
+        </Button.Light>
       </>
         )
     }
