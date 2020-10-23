@@ -95,7 +95,7 @@ export class TileCard extends Component<{ title?: React.Node, children?: React.N
   render() {
     return (
       <div className="card" style={{ width: '12rem' }}>
-        <div className="card-body">
+        <div className="card-body" align="center">
           <h5 className="card-title">{this.props.title}</h5>
           <div className="card-text">{this.props.children}</div>
         </div>
@@ -131,7 +131,6 @@ export class Column extends Component<{ width?: number, right?: boolean, childre
     );
   }
 }
-
 
 /**
  * Renders a success button using Bootstrap styles.
