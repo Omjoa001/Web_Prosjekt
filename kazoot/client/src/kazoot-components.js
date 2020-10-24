@@ -224,11 +224,20 @@ export class BrowseQuizzes extends Component {
 
 /**
  * Quiz component.
- * Should be called with an id.
+ * This component should always have it's ID passed to it.
+ * Ex: <Quiz id=3><Quiz/>
  */
 export class Quiz extends Component {
   title: string = 'hei';
   id: number = 0;
+
+  playButton() {
+    console.log(`Playing ${this.props.title}`);
+  }
+
+  editButton() {
+    console.log(`Editing ${this.props.title}`);
+  }
 
   render() {
     return (
@@ -236,10 +245,10 @@ export class Quiz extends Component {
         <TileCard title={this.props.title}>
           <Row>
             <Column left>
-              <Button.Success>Play</Button.Success>
+              <Button.Success onClick={this.playButton}>Play</Button.Success>
             </Column>
             <Column right>
-              <Button.Danger>Edit</Button.Danger>
+              <Button.Danger onClick={this.editButton}>Edit</Button.Danger>
             </Column>
           </Row>
         </TileCard>
