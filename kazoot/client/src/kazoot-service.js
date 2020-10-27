@@ -49,11 +49,14 @@ class QuestionService {
    * Get all questions.
    */
   getAllQuestions() {
-    console.log("kjørrrr")
+    console.log("alle spm: 42")
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
-
+  getQuestion() {
+    console.log("her skal enkelte spm komme")
+    return axios.get<QuestionType[]>('/questions').then((response) => response.data);
+  }
   /**
    * WIP
    * Delete question with given Question id.

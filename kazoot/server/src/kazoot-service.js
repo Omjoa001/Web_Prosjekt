@@ -49,7 +49,6 @@ class QuizService {
     return new Promise<QuizType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Quizzes', (error, results) => {
         if (error) return reject(error);
-
         resolve(results);
       });
     });
@@ -87,11 +86,20 @@ class QuizService {
     });
   }
 
+  getQuestion(id: number) {
+    return new Promise<?QuestionType>((resolve, reject) => {
+      pool.query('SELECT * FROM Questions WHERE id = ?', [id], (error, results: QuestionType[]) => {
+        if (error) return reject(error);
+
+        resolve(results[0]);
+      });
+    });
+  }
+
  getAllCategories() {
     return new Promise<CategoryType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Categories', (error, results) => {
         if (error) return reject(error);
-
         resolve(results);
       });
     });

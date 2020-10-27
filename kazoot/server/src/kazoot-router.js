@@ -4,7 +4,6 @@ import quizService, { type QuizType, type QuestionType, type CategoryType } from
 //import questionService, { type Question } from './kazoot-service';
 //import categoryService, { type Category } from './kazoot-service';
 
-
 /**
  * Express router containing task methods.ss
  */
@@ -17,13 +16,13 @@ router.get('/quizzes', (request, response) => {
     .catch((error: Error) => response.status(500).send(error));
 });
 
-// router.get('/quizzes/:id', (request, response) => {
-//   const id = Number(request.params.id);
-//   quizService
-//     .get(id)
-//     .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
-//     .catch((error: Error) => response.status(500).send(error));
-// });
+ router.get('/quizzes/:id', (request, response) => {
+   const id = Number(request.params.id);
+   quizService
+     .get(id)
+     .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
+     .catch((error: Error) => response.status(500).send(error));
+ });
 
 
 /*router.post('/quizzes', (request, response) => {
@@ -50,6 +49,15 @@ router.get('/questions', (request, response) => {
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
 });
+
+router.get('/questions/:id', (request, response) => {
+  const id = Number(request.params.id);
+  quizService
+    .getQuestion(id)
+    .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
+    .catch((error: Error) => response.status(500).send(error));
+});
+
 
 router.get('/categories', (request, response) => {
   console.log("list kategorier i kazoot-router")
