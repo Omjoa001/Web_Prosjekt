@@ -179,6 +179,7 @@ export class NewQuiz extends Component {
 /**
  * Dummy commit comment thingy
  *
+ * Example of pull request
  */
 export class BrowseQuizzes extends Component {
   render() {
