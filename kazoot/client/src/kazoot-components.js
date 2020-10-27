@@ -194,7 +194,7 @@ export class BrowseQuizzes extends Component {
           {/*     </Column> */}
           {/*   </Row> */}
           {/* ))} */}
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
+          <Button.Light onClick={() => history.push('/')}>Backkk</Button.Light>
         </Card>
       </>
     );
