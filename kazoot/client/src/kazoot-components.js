@@ -202,71 +202,18 @@ export class NewQuiz extends Component {
 }
 
 export class QuestionGrid extends Component {
-    
-    render() {
-        const grid: [] = this.quizzesToJSX();
-        return <>{grid}</>;
-      }
 
-      /**
-   * Generates the grid of quizzes and pushes it to an
-   * array of JSX elements.
-   */
-  quizzesToJSX() {
-    // Array of rows of quizzes in columns
-    let grid: [] = [];
-
-    
-    // width = number of quizzes per row
-    const width = 4;
-    let i = 1;
-    let k = 0;
-
-    /* Slices the array every 'width' iteration of the loop.
-     * Surround each quiz in a slice with Column (@see rowContents(row)),
-     * then surrounds the entire slice with a Row tag.
-     */
-    for (; i < quizzes.length + 1; ++i) {
-      if (i % width == 0) {
-        const currentRow = quizzes.slice(k, i);
-        const row = this.rowContents(currentRow);
-        grid.push(
-          <>
-            <Row>{row}</Row>
-            <div>&nbsp;</div>
-          </>
-        );
-        k = i;
-      }
+    render(){
+        return (
+            <>
+                
+            </>
+        )
     }
-
-    // Add the remaining quizzes to the last row
-    const remainingRow = quizzes.slice(k, i);
-    const row = this.rowContents(remainingRow);
-    grid.push(<Row>{row}</Row>);
-
-    return grid;
-  }
-
-  /**
-   * Surrounds each quiz in a row with a Column tag and pushes it to an array of
-   * JSX elements.
-   */
-  rowContents(row) {
-    let elements: [] = [];
-    for (const quiz of row) {
-      elements.push(
-        <Column>
-          <Quiz id={quiz.id} title={quiz.title} description={quiz.description}></Quiz>
-        </Column>
-      );
-    }
-    return elements;
-  }
     
 }
 
-export class QuestionCard extends Component {
+export class Questionside extends Component {
     
 
     render() {
@@ -295,17 +242,17 @@ export class QuestionCard extends Component {
                 </Row>
                 <Row>
                     <Column>
-                        <AnswerCard/>
+                        <Answerside/>
                     </Column>
                 </Row>
                 <Row>
                     <Column>
-                        <AnswerCard/>
+                        <Answerside/>
                     </Column>
                 </Row>
                 <Row>
                     <Column>
-                        <AnswerCard/>
+                        <Answerside/>
                     </Column>
                 </Row>
                 <Row>
@@ -316,7 +263,7 @@ export class QuestionCard extends Component {
     }
 }
 
-export class AnswerCard extends Component {
+export class Answerside extends Component {
     render() {
         return(
             <>
