@@ -178,6 +178,11 @@ export class NewQuiz extends Component {
   }
 }
 
+/**
+ * Dummy commit comment thingy
+ *
+ * Example of pull request
+ */
 export class BrowseQuizzes extends Component {
   // dummy quiz array
   quizzes: Quiz[] = [
@@ -220,9 +225,132 @@ export class BrowseQuizzes extends Component {
       </>
     );
   }
+}
 
-  mounted() {
-    categoryService.getAll().then((categories) => (this.categories = categories));
+/**
+ * Renders the quiz tile cards in a grid.
+ *
+ * TODO: Find a way to dynamically change the number of quizzes in the array.
+ *  Ex: Using the categories and search tools should remove the quizzes that don't match
+ *  the category and search conditions.
+ *  Maybe the quizzes array could be passed from the BrowseQuizzes component.
+ */
+export class QuizTileGrid extends Component {
+  render() {
+    const grid: [] = this.quizzesToJSX();
+    return <>{grid}</>;
+  }
+
+  /**
+   * Returns an array of dummy quizzes.
+   * TODO: This should be replaced with a database call sometime.
+   */
+  getQuizzes() {
+    let quizzes: Quiz[] = [
+      {
+        id: 1,
+        title: 'quiz 1',
+      },
+      {
+        id: 2,
+        title: 'quiz 2',
+      },
+      {
+        id: 3,
+        title: 'quiz 3',
+      },
+      {
+        id: 4,
+        title: 'quiz 4',
+      },
+      {
+        id: 5,
+        title: 'quiz 5',
+      },
+      {
+        id: 6,
+        title: 'quiz 6',
+      },
+      {
+        id: 7,
+        title: 'quiz 7',
+      },
+      {
+        id: 8,
+        title: 'quiz 8',
+      },
+      {
+        id: 9,
+        title: 'quiz 9',
+      },
+      {
+        id: 10,
+        title: 'quiz 10',
+      },
+      {
+        id: 11,
+        title: 'quiz 11',
+      },
+      {
+        id: 12,
+        title: 'quiz 12',
+      },
+    ];
+
+    return quizzes;
+  }
+
+  /**
+   * Generates the grid of quizzes and pushes it to an
+   * array of JSX elements.
+   */
+  quizzesToJSX() {
+    // Array of rows of quizzes in columns
+    let grid: [] = [];
+
+    // TODO: Replace with database call sometime?
+    let quizzes = this.getQuizzes();
+
+    // width = number of quizzes per row
+    const width = 4;
+    let i = 1;
+    let k = 0;
+
+    /* Slices the array every 'width' iteration of the loop.
+     * Surround each quiz in a slice with Column (@see rowContents(row)),
+     * then surrounds the entire slice with a Row tag.
+     */
+    for (; i < quizzes.length + 1; ++i) {
+      if (i % width == 0) {
+        const currentRow = quizzes.slice(k, i);
+        const row = this.rowContents(currentRow);
+        grid.push(<Row>{row}</Row>);
+        k = i;
+      }
+    }
+
+    // Add the remaining quizzes to the last row
+    const remainingRow = quizzes.slice(k, i);
+    const row = this.rowContents(remainingRow);
+    grid.push(<Row>{row}</Row>);
+
+    return grid;
+  }
+
+  /**
+   * Surrounds each quiz in a row with a Column tag and pushes it to an array of
+   * JSX elements.
+   */
+  rowContents(row) {
+    let elements: [] = [];
+    for (const quiz of row) {
+      elements.push(
+        <Column>
+          <Quiz id={quiz.id} title={quiz.title}></Quiz>
+        </Column>
+      );
+    }
+    return elements;
   }
 }
 
