@@ -177,8 +177,6 @@ export class NewQuiz extends Component {
 }
 
 export class BrowseQuizzes extends Component {
-  categories: number[] = [];
-
   render() {
     return (
       <>
@@ -186,22 +184,10 @@ export class BrowseQuizzes extends Component {
         <Card title="Search"></Card>
         <Card title="Quizzes">
           <QuizTileGrid></QuizTileGrid>
-          {/* {this.quizzes.map((quiz) => ( */}
-          {/*   <Row key={quiz.id}> */}
-          {/*     <Column> */}
-          {/*       <Quiz id={quiz.id} title={quiz.title}></Quiz> */}
-          {/*       {/\* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> *\/} */}
-          {/*     </Column> */}
-          {/*   </Row> */}
-          {/* ))} */}
           <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
     );
-  }
-
-  mounted() {
-    categoryService.getAll().then((categories) => (this.categories = categories));
   }
 }
 
@@ -214,29 +200,6 @@ export class BrowseQuizzes extends Component {
  *  Maybe the quizzes array could be passed from the BrowseQuizzes component.
  */
 export class QuizTileGrid extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     quizzes: [
-  //       {
-  //         title: 'quiz 1',
-  //         id: 1,
-  //         category: 1,
-  //       },
-  //       {
-  //         title: 'quiz 2',
-  //         id: 2,
-  //         category: 2,
-  //       },
-  //       {
-  //         title: 'quiz 3',
-  //         id: 3,
-  //         category: 3,
-  //       },
-  //     ],
-  //   };
-  // }
-
   render() {
     const elements: [] = this.quizzesToJSX();
     console.log(`render elements: ${elements}`);
@@ -297,16 +260,12 @@ export class QuizTileGrid extends Component {
       },
     ];
 
-    console.log(`getQuizzes: ${quizzes}`);
-
     return quizzes;
   }
 
   quizzesToJSX() {
     let elements: [] = [];
     let quizzes = this.getQuizzes();
-
-    console.log(`q2JSX test getQuizzes: ${quizzes}`);
 
     const width = 4;
     let i = 1;
@@ -315,10 +274,6 @@ export class QuizTileGrid extends Component {
       console.log(`i: ${i}`);
       if (i % width == 0) {
         const currentRow = quizzes.slice(k, i);
-        // const currentRow = quizzes;
-        console.log(`q2JSX test i: ${i}`);
-        console.log(`q2JSX test k: ${k}`);
-        console.log(`q2JSX test currentRow: ${currentRow}`);
         const element = this.rowContents(currentRow);
         elements.push(<Row>{element}</Row>);
         k = i;
@@ -342,11 +297,6 @@ export class QuizTileGrid extends Component {
     }
     return elements;
   }
-
-  mounted() {
-    // console.log('QuizTileGrid:');
-    // this.quizzes.map((quiz) => console.log(s
-  }
 }
 
 /**
@@ -355,7 +305,7 @@ export class QuizTileGrid extends Component {
  * TODO: Make this accept quiz objects instead.
  */
 export class Quiz extends Component {
-  title: string = 'hei';
+  title: string = '';
   id: number = 0;
 
   playButton() {
