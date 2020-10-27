@@ -14,7 +14,7 @@ class Menu extends Component {
         <NavBar.Link to="/BrowseQuizzes">Browse Quiz</NavBar.Link>
         <NavBar.Link to="/newQuiz">Ny quiz</NavBar.Link>
         <NavBar.Link to="/editQuiz">Endre quiz</NavBar.Link>
-        <NavBar.Link to="/listQuizzes">Kviss</NavBar.Link>
+        <NavBar.Link to="/listQuizzes">Kvisss</NavBar.Link>
       </NavBar>
     );
   }
