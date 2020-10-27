@@ -177,9 +177,7 @@ export class NewQuiz extends Component {
 }
 
 /**
- * Dummy commit comment thingy
- *
- * Example of pull request
+ * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
   render() {
@@ -219,50 +217,62 @@ export class QuizTileGrid extends Component {
       {
         id: 1,
         title: 'quiz 1',
+        description: 'woowowowoowow',
       },
       {
         id: 2,
         title: 'quiz 2',
+        description: 'wewewewewe',
       },
       {
         id: 3,
         title: 'quiz 3',
+        description: 'wuwuwuwuwu',
       },
       {
         id: 4,
         title: 'quiz 4',
+        description: 'wewewowow',
       },
       {
         id: 5,
         title: 'quiz 5',
+        description: 'djwidjwiwewewowow',
       },
       {
         id: 6,
         title: 'quiz 6',
+        description: 'kjdskad',
       },
       {
         id: 7,
         title: 'quiz 7',
+        description: 'hdsoafiosaj',
       },
       {
         id: 8,
         title: 'quiz 8',
+        description: 'jfkdlsajflkdsafø',
       },
       {
         id: 9,
         title: 'quiz 9',
+        description: 'jsidjaidsaj',
       },
       {
         id: 10,
         title: 'quiz 10',
+        description: 'sljdskal',
       },
       {
         id: 11,
         title: 'quiz 11',
+        description: 'jdksaljdskaljds',
       },
       {
         id: 12,
         title: 'quiz 12',
+        description: 'jdjskaldjskal',
       },
     ];
 
@@ -315,7 +325,7 @@ export class QuizTileGrid extends Component {
     for (const quiz of row) {
       elements.push(
         <Column>
-          <Quiz id={quiz.id} title={quiz.title}></Quiz>
+          <Quiz id={quiz.id} title={quiz.title} description={quiz.description}></Quiz>
         </Column>
       );
     }
@@ -331,6 +341,7 @@ export class QuizTileGrid extends Component {
 export class Quiz extends Component {
   title: string = '';
   id: number = 0;
+  description: string = '';
 
   playButton() {
     console.log(`Playing ${this.props.title}`);
@@ -344,6 +355,8 @@ export class Quiz extends Component {
     return (
       <>
         <TileCard title={this.props.title}>
+          {this.description}
+          <hr />
           <Row>
             <Column left>
               <Button.Success onClick={this.playButton}>Play</Button.Success>
@@ -359,6 +372,7 @@ export class Quiz extends Component {
 
   mounted() {
     // quizService.getQuizInfo(this.props.id).then((quiz) => (this.props.title = quiz.title));
+    this.description = 'test';
   }
 }
 
