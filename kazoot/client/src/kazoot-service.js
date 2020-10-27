@@ -25,6 +25,13 @@ export type CategoryType = {
   category: string,
 }
 
+export type Quiz = {
+  id: number,
+  title: string,
+  description: string,
+}
+
+
 /**
  * Service to retrieve and manage questions (not entire quizzes).
  */

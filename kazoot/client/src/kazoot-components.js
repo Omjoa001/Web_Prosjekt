@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
-import { type QuizType, type CategoryType, type QuestionType } from './kazoot-service';
+import { type QuizType, type CategoryType, type QuestionType, type Quiz } from './kazoot-service';
 
 const history = createHashHistory();
 
@@ -49,6 +49,9 @@ export class Home extends Component {
   }
 }
 
+/**
+ * Component which renders the New Quiz page.
+ */
 export class NewQuiz extends Component {
   quiz = '';
   hei = '';
@@ -579,16 +582,9 @@ export class EditQuiz extends Component {
   }
 }
 
-/*
-{this.tasks.map((task) => (
-            <Row key={task.id}>
-              <Column>
-                <NavLink to={'/tasks/' + task.id}>{task.title}</NavLink>
-              </Column>
-            </Row>
-          ))}
-*/
-
+/**
+ * 
+ */
 export class ListQuizzes extends Component {
   quizzes: QuizType[] = [];
   questions: QuestionType[] = [];

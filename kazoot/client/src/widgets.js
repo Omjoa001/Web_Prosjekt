@@ -104,6 +104,19 @@ export class TileCard extends Component<{ title?: React.Node, children?: React.N
   }
 }
 
+export class QuestionCard extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card" style={{ width: '102rem' }}>
+        <div className="card-body" align="center">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
 /**
  * Renders a row using Bootstrap classes.
  */
@@ -298,7 +311,7 @@ class FormLabel extends Component<{ children?: React.Node }> {
 /**
  * Renders a form input using Bootstrap styles.
  */
-class FormInput extends Component<{
+ class FormInput extends Component<{
   type?: string,
   value?: React.Node,
   onChange?: (SyntheticEvent<HTMLInputElement>) => mixed,
