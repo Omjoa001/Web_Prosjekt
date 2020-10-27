@@ -35,7 +35,7 @@ export class Home extends Component {
           >
             Ny quiz
           </Button.Light>
-          <Button.Success onClick={() => history.push('/editQuiz')}>Endre quiz</Button.Success>
+          <Button.Success onClick={() => history.push('/editQuiz')}>Endre hallaaaaa quiz</Button.Success>
         </Card>
       </>
     );
@@ -194,7 +194,7 @@ export class BrowseQuizzes extends Component {
           {/*     </Column> */}
           {/*   </Row> */}
           {/* ))} */}
-          <Button.Light onClick={() => history.push('/')}>Backkk</Button.Light>
+          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
     );
