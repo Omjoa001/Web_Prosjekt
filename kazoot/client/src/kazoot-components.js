@@ -28,7 +28,9 @@ export class Home extends Component {
         </Card>
         <Card title="Route test">
           <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-          <Button.Danger onClick={() => history.push('/BrowseQuizzes')}>Browse Quizzes</Button.Danger>
+          <Button.Danger onClick={() => history.push('/BrowseQuizzes')}>
+            Browse Quizzes
+          </Button.Danger>
           <Button.Light
             onClick={() => {
               history.push('/newQuiz');
@@ -194,13 +196,42 @@ export class NewQuiz extends Component {
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
+  arr: [] = [
+    {
+      id: 1,
+      title: 'quiz 1',
+      description: 'woowowowoowow',
+    },
+    {
+      id: 2,
+      title: 'quiz 2',
+      description: 'wewewewewe',
+    },
+    {
+      id: 3,
+      title: 'quiz 3',
+      description: 'wuwuwuwuwu',
+    },
+  ];
+
+  search() {}
+
   render() {
     return (
       <>
         <Card title="Categories">{this.categories}</Card>
-        <Card title="Search"></Card>
+        <Card title="Search">
+          <Row>
+            {/* <Button.Light>🔎</Button.Light> */}
+            <Button.OutlinePrimary>🔎</Button.OutlinePrimary>
+            <div style={{ width: '50rem' }}>
+              {'  '}
+              <Form.Input></Form.Input>
+            </div>
+          </Row>
+        </Card>
         <Card title="Quizzes">
-          <QuizTileGrid></QuizTileGrid>
+          <QuizTileGrid />
           <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
@@ -382,7 +413,7 @@ export class Quiz extends Component {
               <Button.Success onClick={this.playButton}>Play</Button.Success>
             </Column>
             <Column right>
-              <Button.Danger onClick={this.editButton}>Edit</Button.Danger>
+              <Button.Primary onClick={this.editButton}>Edit</Button.Primary>
             </Column>
           </Row>
         </TileCard>
@@ -395,11 +426,6 @@ export class Quiz extends Component {
     this.description = 'test';
   }
 }
-
-
-export class Search extends Component {
-}
-
 
 export class EditQuiz extends Component {
   quiz = '';

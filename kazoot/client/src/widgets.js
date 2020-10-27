@@ -211,12 +211,59 @@ class ButtonLight extends Component<{
 }
 
 /**
+ * Renders an Outline Primary button using Bootstrap styles.
+ * This button is white with a blue outline.
+ * It gets filled blue when hovered.
+ */
+class ButtonOutlinePrimary extends Component<{
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+      <button
+        type="button"
+        className={'btn btn-outline-primary' + (this.props.small ? ' btn-sm py-0' : '')}
+        onClick={this.props.onClick}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
+
+/**
+ * Renders a Primary button using Bootstrap styles.
+ * This button is blue.
+ */
+class ButtonPrimary extends Component<{
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+      <button
+        type="button"
+        className={'btn btn-primary' + (this.props.small ? ' btn-sm py-0' : '')}
+        onClick={this.props.onClick}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
+
+/**
  * Renders a button using Bootstrap styles.
  */
 export class Button {
   static Success = ButtonSuccess;
   static Danger = ButtonDanger;
   static Light = ButtonLight;
+  static OutlinePrimary = ButtonOutlinePrimary;
+  static Primary = ButtonPrimary;
 }
 
 /**
