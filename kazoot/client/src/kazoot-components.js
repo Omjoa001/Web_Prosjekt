@@ -341,7 +341,7 @@ export class QuizTileGrid extends Component {
 }
 
 /**
- * Quiz component.
+ * Quiz component used in BrowseQuizzes
  * This component should always have its ID passed to it.
  * TODO: Make this accept quiz objects instead.
  */
