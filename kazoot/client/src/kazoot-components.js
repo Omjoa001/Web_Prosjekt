@@ -192,7 +192,7 @@ export class BrowseQuizzes extends Component {
 }
 
 /**
- * Renders the quiz tile cards in a grid based on how many quizzes there are.
+ * Renders the quiz tile cards in a grid.
  *
  * TODO: Find a way to dynamically change the number of quizzes in the array.
  *  Ex: Using the categories and search tools should remove the quizzes that don't match
@@ -201,13 +201,14 @@ export class BrowseQuizzes extends Component {
  */
 export class QuizTileGrid extends Component {
   render() {
-    const elements: [] = this.quizzesToJSX();
-    console.log(`render elements: ${elements}`);
-    console.log(`render elements[0].title: ${elements.title}`);
-
-    return <>{elements}</>;
+    const grid: [] = this.quizzesToJSX();
+    return <>{grid}</>;
   }
 
+  /**
+   * Returns an array of dummy quizzes.
+   * TODO: This should be replaced with a database call sometime.
+   */
   getQuizzes() {
     let quizzes: Quiz[] = [
       {
@@ -263,29 +264,47 @@ export class QuizTileGrid extends Component {
     return quizzes;
   }
 
+  /**
+   * Generates the grid of quizzes and pushes it to an
+   * array of JSX elements.
+   */
   quizzesToJSX() {
-    let elements: [] = [];
+    // Array of rows of quizzes in columns
+    let grid: [] = [];
+
+    // TODO: Replace with database call sometime?
     let quizzes = this.getQuizzes();
 
+    // width = number of quizzes per row
     const width = 4;
     let i = 1;
     let k = 0;
+
+    /* Slices the array every 'width' iteration of the loop.
+     * Surround each quiz in a slice with Column (@see rowContents(row)),
+     * then surrounds the entire slice with a Row tag.
+     */
     for (; i < quizzes.length + 1; ++i) {
-      console.log(`i: ${i}`);
       if (i % width == 0) {
         const currentRow = quizzes.slice(k, i);
-        const element = this.rowContents(currentRow);
-        elements.push(<Row>{element}</Row>);
+        const row = this.rowContents(currentRow);
+        grid.push(<Row>{row}</Row>);
         k = i;
       }
     }
-    const remainingRow = quizzes.slice(k, i);
-    const element = this.rowContents(remainingRow);
-    elements.push(<Row>{element}</Row>);
 
-    return elements;
+    // Add the remaining quizzes to the last row
+    const remainingRow = quizzes.slice(k, i);
+    const row = this.rowContents(remainingRow);
+    grid.push(<Row>{row}</Row>);
+
+    return grid;
   }
 
+  /**
+   * Surrounds each quiz in a row with a Column tag and pushes it to an array of
+   * JSX elements.
+   */
   rowContents(row) {
     let elements: [] = [];
     for (const quiz of row) {
