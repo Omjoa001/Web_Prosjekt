@@ -137,7 +137,7 @@ export class Column extends Component<{ width?: number, right?: boolean, childre
  */
 class ButtonSuccess extends Component<{
   width?: number,
-  onClick: () => mixed,
+  onClick?: () => mixed,
   small?: boolean,
   children?: React.Node,
 }> {
@@ -159,7 +159,7 @@ class ButtonSuccess extends Component<{
  */
 class ButtonDanger extends Component<{
   width?: number,
-  onClick: () => mixed,
+  onClick?: () => mixed,
   small?: boolean,
   children?: React.Node,
 }> {
@@ -180,7 +180,7 @@ class ButtonDanger extends Component<{
  * Renders a light button using Bootstrap styles.
  */
 class ButtonLight extends Component<{
-  onClick: () => mixed,
+  onClick?: () => mixed,
   small?: boolean,
   children?: React.Node,
 }> {
@@ -252,9 +252,9 @@ class FormLabel extends Component<{ children?: React.Node }> {
  * Renders a form input using Bootstrap styles.
  */
 class FormInput extends Component<{
-  type: string,
-  value: React.Node,
-  onChange: (SyntheticEvent<HTMLInputElement>) => mixed,
+  type?: string,
+  value?: React.Node,
+  onChange?: (SyntheticEvent<HTMLInputElement>) => mixed,
 }> {
   render() {
     // ...rest will contain extra passed attributes such as disabled, required, width, height, pattern
@@ -291,8 +291,8 @@ class FormTextarea extends React.Component<{
  * Renders a form checkbox using Bootstrap styles.
  */
 class FormCheckbox extends Component<{
-  checked: React.Node,
-  onChange: (SyntheticEvent<HTMLInputElement>) => mixed,
+  checked?: React.Node,
+  onChange?: (SyntheticEvent<HTMLInputElement>) => mixed,
 }> {
   render() {
     // ...rest will contain extra passed attributes such as disabled, required, width, height, pattern
