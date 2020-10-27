@@ -179,48 +179,17 @@ export class NewQuiz extends Component {
 }
 
 /**
- * Dummy commit comment thingy
- *
- * Example of pull request
+ * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-  // dummy quiz array
-  quizzes: Quiz[] = [
-    {
-      title: 'quiz 1',
-      id: 1,
-      category: 1,
-    },
-    {
-      title: 'quiz 2',
-      id: 2,
-      category: 2,
-    },
-    {
-      title: 'quiz 3',
-      id: 3,
-      category: 3,
-    },
-  ];
-  categories: number[] = [];
-
   render() {
     return (
       <>
         <Card title="Categories">{this.categories}</Card>
         <Card title="Search"></Card>
         <Card title="Quizzes">
-          {this.quizzes.map((quiz) => (
-            <Row key={quiz.id}>
-              <Column>
-                <Quiz id={quiz.id} title={quiz.title}></Quiz>
-                {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
-              </Column>
-            </Row>
-          ))}
-            <Button.Light onClick={()=> history.push('/')}>
-                Back
-            </Button.Light>
+          <QuizTileGrid></QuizTileGrid>
+          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
     );
@@ -250,50 +219,62 @@ export class QuizTileGrid extends Component {
       {
         id: 1,
         title: 'quiz 1',
+        description: 'woowowowoowow',
       },
       {
         id: 2,
         title: 'quiz 2',
+        description: 'wewewewewe',
       },
       {
         id: 3,
         title: 'quiz 3',
+        description: 'wuwuwuwuwu',
       },
       {
         id: 4,
         title: 'quiz 4',
+        description: 'wewewowow',
       },
       {
         id: 5,
         title: 'quiz 5',
+        description: 'djwidjwiwewewowow',
       },
       {
         id: 6,
         title: 'quiz 6',
+        description: 'kjdskad',
       },
       {
         id: 7,
         title: 'quiz 7',
+        description: 'hdsoafiosaj',
       },
       {
         id: 8,
         title: 'quiz 8',
+        description: 'jfkdlsajflkdsafø',
       },
       {
         id: 9,
         title: 'quiz 9',
+        description: 'jsidjaidsaj',
       },
       {
         id: 10,
         title: 'quiz 10',
+        description: 'sljdskal',
       },
       {
         id: 11,
         title: 'quiz 11',
+        description: 'jdksaljdskaljds',
       },
       {
         id: 12,
         title: 'quiz 12',
+        description: 'jdjskaldjskal',
       },
     ];
 
@@ -346,7 +327,7 @@ export class QuizTileGrid extends Component {
     for (const quiz of row) {
       elements.push(
         <Column>
-          <Quiz id={quiz.id} title={quiz.title}></Quiz>
+          <Quiz id={quiz.id} title={quiz.title} description={quiz.description}></Quiz>
         </Column>
       );
     }
@@ -356,22 +337,34 @@ export class QuizTileGrid extends Component {
 
 /**
  * Quiz component.
- * Should be called with an id.
+ * This component should always have its ID passed to it.
+ * TODO: Make this accept quiz objects instead.
  */
 export class Quiz extends Component {
-  title: string = 'hei';
+  title: string = '';
   id: number = 0;
+  description: string = '';
+
+  playButton() {
+    console.log(`Playing ${this.props.title}`);
+  }
+
+  editButton() {
+    console.log(`Editing ${this.props.title}`);
+  }
 
   render() {
     return (
       <>
         <TileCard title={this.props.title}>
+          {this.description}
+          <hr />
           <Row>
             <Column left>
-              <Button.Success onClick={()=>{}}>Play</Button.Success>
+              <Button.Success onClick={this.playButton}>Play</Button.Success>
             </Column>
             <Column right>
-              <Button.Danger onClick={()=>{}}>Edit</Button.Danger>
+              <Button.Danger onClick={this.editButton}>Edit</Button.Danger>
             </Column>
           </Row>
         </TileCard>
@@ -381,6 +374,7 @@ export class Quiz extends Component {
 
   mounted() {
     // quizService.getQuizInfo(this.props.id).then((quiz) => (this.props.title = quiz.title));
+    this.description = 'test';
   }
 }
 
