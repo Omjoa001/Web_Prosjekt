@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
-import { type QuizType, type CategoryType, type QuestionType, type Quiz } from './kazoot-service';
+import { type QuizType, type CategoryType, type QuestionType } from './kazoot-service';
 
 const history = createHashHistory();
 
@@ -185,12 +185,82 @@ export class NewQuiz extends Component {
             </Column>
           </Row>
         </Card>
+        <Card>
+            <QuestionCard />
+        </Card>
+        <Card>
+            <QuestionCard />
+        </Card>
+        <Card>
+            <QuestionCard />
+        </Card>
       </>
     );
   }
 }
 
 export class QuestionGrid extends Component {
+    
+    render() {
+        const grid: [] = this.quizzesToJSX();
+        return <>{grid}</>;
+      }
+
+      /**
+   * Generates the grid of quizzes and pushes it to an
+   * array of JSX elements.
+   */
+  quizzesToJSX() {
+    // Array of rows of quizzes in columns
+    let grid: [] = [];
+
+    
+    // width = number of quizzes per row
+    const width = 4;
+    let i = 1;
+    let k = 0;
+
+    /* Slices the array every 'width' iteration of the loop.
+     * Surround each quiz in a slice with Column (@see rowContents(row)),
+     * then surrounds the entire slice with a Row tag.
+     */
+    for (; i < quizzes.length + 1; ++i) {
+      if (i % width == 0) {
+        const currentRow = quizzes.slice(k, i);
+        const row = this.rowContents(currentRow);
+        grid.push(
+          <>
+            <Row>{row}</Row>
+            <div>&nbsp;</div>
+          </>
+        );
+        k = i;
+      }
+    }
+
+    // Add the remaining quizzes to the last row
+    const remainingRow = quizzes.slice(k, i);
+    const row = this.rowContents(remainingRow);
+    grid.push(<Row>{row}</Row>);
+
+    return grid;
+  }
+
+  /**
+   * Surrounds each quiz in a row with a Column tag and pushes it to an array of
+   * JSX elements.
+   */
+  rowContents(row) {
+    let elements: [] = [];
+    for (const quiz of row) {
+      elements.push(
+        <Column>
+          <Quiz id={quiz.id} title={quiz.title} description={quiz.description}></Quiz>
+        </Column>
+      );
+    }
+    return elements;
+  }
     
 }
 
@@ -205,7 +275,7 @@ export class QuestionCard extends Component {
                         Spørsmål: 1
                     </Column>
                     <Column> 
-                        <Form.Input></Form.Input>
+                        <Form.Input placeholder="spørsmål"></Form.Input>
                     </Column>
                     <Column>
                         <Button.Danger>Slett Spørsmål</Button.Danger>
@@ -222,16 +292,19 @@ export class QuestionCard extends Component {
                     </Column>
                 </Row>
                 <Row>
-                    <AnswerCard/>
+                    <Column>
+                        <AnswerCard/>
+                    </Column>
                 </Row>
                 <Row>
-                    <AnswerCard/>
+                    <Column>
+                        <AnswerCard/>
+                    </Column>
                 </Row>
                 <Row>
-                    <AnswerCard/>
-                </Row>
-                <Row>
-                    <AnswerCard/>
+                    <Column>
+                        <AnswerCard/>
+                    </Column>
                 </Row>
                 <Row>
                     <Button.Success>Legg til svaralternativ</Button.Success>
@@ -250,10 +323,10 @@ export class AnswerCard extends Component {
                         <Form.Checkbox></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input></Form.Input>
+                        <Form.Input placeholder="svar"></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger></Button.Danger>
+                        <Button.Light>➖</Button.Light>
                     </Column>
                 </Row>
             </>
