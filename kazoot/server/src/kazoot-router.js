@@ -1,8 +1,8 @@
 // @flow
 import express from 'express';
-import quizService, { type Quiz } from './kazoot-service';
-import questionService, { type Question } from './kazoot-service';
-import categoryService, { type Category } from './kazoot-service';
+import quizService, { type QuizType, type QuestionType, type CategoryType } from './kazoot-service';
+//import questionService, { type Question } from './kazoot-service';
+//import categoryService, { type Category } from './kazoot-service';
 
 
 /**
@@ -11,20 +11,19 @@ import categoryService, { type Category } from './kazoot-service';
 const router: express$Router<> = express.Router();
 
 router.get('/quizzes', (request, response) => {
-  console.log("2")
   quizService
-    .getAllQui()
+    .getAllQuizzes()
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
 });
 
-router.get('/quizzes/:id', (request, response) => {
-  const id = Number(request.params.id);
-  quizService
-    .get(id)
-    .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
-    .catch((error: Error) => response.status(500).send(error));
-});
+// router.get('/quizzes/:id', (request, response) => {
+//   const id = Number(request.params.id);
+//   quizService
+//     .get(id)
+//     .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
+//     .catch((error: Error) => response.status(500).send(error));
+// });
 
 
 /*router.post('/quizzes', (request, response) => {
@@ -37,19 +36,27 @@ router.get('/quizzes/:id', (request, response) => {
   else response.status(400).send('Missing task title');
 });*/
 
-router.delete('/quizzes/:id', (request, response) => {
-  quizService
-    .delete(Number(request.params.id))
-    .then((result) => response.send())
-    .catch((error: Error) => response.status(500).send(error));
-});
+// router.delete('/quizzes/:id', (request, response) => {
+//   quizService
+//     .delete(Number(request.params.id))
+//     .then((result) => response.send())
+//     .catch((error: Error) => response.status(500).send(error));
+// });
 
 router.get('/questions', (request, response) => {
   console.log("kj")
-  questionService
-    .getAll()
+  quizService
+    .getAllQuestions()
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
 });
+
+router.get('/categories', (request, response) => {
+  console.log("list kategorier i kazoot-router")
+    quizService
+      .getAllCategories()
+      .then((rows) => response.send(rows))
+      .catch((error: Error) => response.status(500).send(error));
+})
 
 export default router;

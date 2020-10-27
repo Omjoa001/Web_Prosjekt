@@ -2,7 +2,7 @@
 
 import pool from './mysql-pool';
 
-export type Question = {
+export type QuestionType = {
   id: number,
   quizId: number,
   question: string,
@@ -12,17 +12,23 @@ export type Question = {
   answ3: string,
 };
 
-export type Quiz = {
+export type QuizType = {
   id: number,
   title: string,
   description: string,
+  categoryId: number,
+}
+
+export type CategoryType = {
+  id: Number,
   category: string,
 }
 
+/*
 export type Category = {
   id: number,
   category: string,
-}
+}*/
 
 class QuizService {
   /**
@@ -30,8 +36,8 @@ class QuizService {
    */
 
   get(id: number) {
-    return new Promise<?Quiz>((resolve, reject) => {
-      pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: Quiz[]) => {
+    return new Promise<?QuizType>((resolve, reject) => {
+      pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: QuizType[]) => {
         if (error) return reject(error);
 
         resolve(results[0]);
@@ -39,8 +45,8 @@ class QuizService {
     });
   }
 
-  getAllQui() {
-    return new Promise<Quiz[]>((resolve, reject) => {
+  getAllQuizzes() {
+    return new Promise<QuizType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Quizzes', (error, results) => {
         if (error) return reject(error);
 
@@ -70,12 +76,9 @@ class QuizService {
       });
     });
   }
-}
 
-class QuestionService {
-  // get all
-  getAll() {
-    return new Promise<Question[]>((resolve, reject) => {
+  getAllQuestions() {
+    return new Promise<QuestionType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Questions', (error, results) => {
         if (error) return reject(error);
 
@@ -84,12 +87,8 @@ class QuestionService {
     });
   }
 
-}
-
-class CategoryService {
-  // get all
-  getAll() {
-    return new Promise<Category[]>((resolve, reject) => {
+ getAllCategories() {
+    return new Promise<CategoryType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Categories', (error, results) => {
         if (error) return reject(error);
 
@@ -99,8 +98,35 @@ class CategoryService {
   }
 }
 
+class QuestionService {
+  // get all
+ /* getall() {
+    return new Promise<Question[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Questions', (error, results) => {
+        if (error) return reject(error);
 
-export const quizService = new QuizService();
-//export default quizService;
-export const questionService = new QuestionService();
-export const categoryService = new CategoryService();
+        resolve(results);
+      });
+    });
+  }*/
+
+}
+
+class CategoryService {
+  // get all
+  // getAllCategories() {
+  //   return new Promise<Category[]>((resolve, reject) => {
+  //     pool.query('SELECT * FROM Categories', (error, results) => {
+  //       if (error) return reject(error);
+
+  //       resolve(results);
+  //     });
+  //   });
+  // }
+}
+
+
+ const quizService = new QuizService();
+export default quizService;
+//export const questionService = new QuestionService();
+//export const categoryService = new CategoryService();

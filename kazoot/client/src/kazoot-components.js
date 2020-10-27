@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
+import {  type QuizType, type CategoryType, type QuestionType } from './kazoot-service';
+
 
 const history = createHashHistory();
 
@@ -55,12 +57,13 @@ export class Home extends Component {
   }
 
   mounted() {
-    questionService.getAll().then((Question) => (this.Question = Question));
+    questionService.getAllQuestions().then((Question) => (this.Question = Question));
   }
 }
 
 export class NewQuiz extends Component {
-  render() {
+  
+    render() {
     return (
         <>
         <Card title="New Quiz!">
@@ -69,7 +72,7 @@ export class NewQuiz extends Component {
                     Quiz-title:
                 </Column>
                 <Column>
-                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    <Form.Input type="text" onChange={(event) => (this.hei = event.currentTarget.value)} value={this.hei}></Form.Input>
                 </Column>  
                 <Column>
                 </Column>
@@ -79,7 +82,7 @@ export class NewQuiz extends Component {
                     Quiz-description:
                 </Column>
                 <Column >
-                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    <Form.Input type="text" onChange={(event) => (this.halla = event.currentTarget.value)} value={this.halla}></Form.Input>
                 </Column>
                 <Column>
                 </Column>
@@ -89,7 +92,7 @@ export class NewQuiz extends Component {
                     Quiz-Category:
                 </Column>
                 <Column >
-                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    <Form.Input type="text" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                 </Column>
                 <Column>
                 </Column>
@@ -100,10 +103,10 @@ export class NewQuiz extends Component {
                         Riktig:
                     </Column>
                     <Column >
-                        <Form.Input placeholder="spørsmål" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="spørsmål" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}}>X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
@@ -111,10 +114,10 @@ export class NewQuiz extends Component {
                         <Form.Checkbox></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar1" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar1" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger >X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
@@ -122,10 +125,10 @@ export class NewQuiz extends Component {
                         <Form.Checkbox></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar2" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar2" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}} >X</Button.Danger>
                     </Column>  
                 </Row>
                 <Row>
@@ -133,10 +136,10 @@ export class NewQuiz extends Component {
                         <Form.Checkbox></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar3" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar3" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}}>X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
@@ -144,27 +147,27 @@ export class NewQuiz extends Component {
                         <Form.Checkbox ></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar4" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar4" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}} >X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
                     <Column >
-                        <Button.Success  >+</Button.Success>
+                        <Button.Success onClick={()=>{}} >+</Button.Success>
                     </Column>
                 </Row>
             </Card>
             <Row>
-                <Button.Success onClick={this.button}>Nytt spørsmål</Button.Success>
+                <Button.Success >Nytt spørsmål</Button.Success>
             </Row>
             <Row>
                 <Button.Light onClick={()=> history.push('/')}>
                     Back
                 </Button.Light>
                 <Column>
-                    <Button.Success>Save</Button.Success>
+                    <Button.Success onClick={()=>{}}>Save</Button.Success>
                 </Column>
             </Row>
         </Card>
@@ -236,10 +239,10 @@ export class Quiz extends Component {
         <TileCard title={this.props.title}>
           <Row>
             <Column left>
-              <Button.Success>Play</Button.Success>
+              <Button.Success onClick={()=>{}}>Play</Button.Success>
             </Column>
             <Column right>
-              <Button.Danger>Edit</Button.Danger>
+              <Button.Danger onClick={()=>{}}>Edit</Button.Danger>
             </Column>
           </Row>
         </TileCard>
@@ -262,7 +265,7 @@ export class EditQuiz extends Component {
                     Quiz-title:
                 </Column>
                 <Column>
-                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    <Form.Input type="text" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                 </Column>
                 <Column >                    
                     <Button.Danger onClick={this.button()}>SLETT QUIZ</Button.Danger>
@@ -274,7 +277,7 @@ export class EditQuiz extends Component {
                     Quiz-description:
                 </Column>
                 <Column >
-                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    <Form.Input type="text" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                 </Column>
                 <Column>
                 </Column>
@@ -284,7 +287,7 @@ export class EditQuiz extends Component {
                     Quiz-Category:
                 </Column>
                 <Column >
-                    <Form.Input onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                    <Form.Input type="text" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                 </Column>
                 <Column>
                 </Column>
@@ -295,10 +298,10 @@ export class EditQuiz extends Component {
                         Riktig:
                     </Column>
                     <Column>
-                        <Form.Input placeholder="spørsmål" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="spørsmål" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}}>X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
@@ -306,10 +309,10 @@ export class EditQuiz extends Component {
                         <Form.Checkbox></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar1" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar1" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}}>X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
@@ -317,37 +320,37 @@ export class EditQuiz extends Component {
                         <Form.Checkbox></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar2" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar2" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}}>X</Button.Danger>
                     </Column>  
                 </Row>
                 <Row>
                     <Column width={2}>
-                        <Form.Checkbox></Form.Checkbox>
+                        <Form.Checkbox id="hall" checked={false} onChange={hall = true}></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar3" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar3" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}}>X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
                     <Column width={2}>
-                        <Form.Checkbox></Form.Checkbox>
+                        <Form.Checkbox checked={false} onChange={()=>{}}></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="Svar4" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="Svar4" onChange={(event) => (this.hei = event.currentTarget.value)} value={this.hei}></Form.Input>
                     </Column>
                     <Column>
-                        <Button.Danger>X</Button.Danger>
+                        <Button.Danger onClick={()=>{}}>X</Button.Danger>
                     </Column>
                 </Row>
                 <Row>
                     <Column center>
-                        <Button.Success  >+</Button.Success>
+                        <Button.Success onClick={() => {}} >+</Button.Success>
                     </Column>
                 </Row>
             </Card>
@@ -359,7 +362,7 @@ export class EditQuiz extends Component {
                     Back
                 </Button.Light>
                 <Column>
-                    <Button.Success>Save</Button.Success>
+                    <Button.Success onClick={()=>{}}>Save</Button.Success>
                 </Column>
             </Row>        
         </Card>
@@ -386,8 +389,9 @@ export class EditQuiz extends Component {
 */
 
 export class ListQuizzes extends Component {
-    quizzes: Quiz[] = [];
-    questions: Question[] = [];
+    quizzes: QuizType[] = [];
+    questions: QuestionType[] = [];
+    categories: CategoryType[] = [];
 
     render() {
         return (
@@ -398,7 +402,7 @@ export class ListQuizzes extends Component {
               <Column>
                 <Row>Quiz Id: {quiz.id}</Row>
                 <Row>Description: {quiz.description}</Row>
-                <Row>Category: {quiz.category}</Row>
+                <Row>Category: </Row>
                 {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
               </Column>
             </Card>
@@ -406,23 +410,28 @@ export class ListQuizzes extends Component {
         </Card>
         <Card title="Questions">
             {this.questions.map((question) => (
-                <Card key={question.id} title="kjørr">
+                <Card key={question.id} title={question.question}>
                     <Column>
                         <Row>Question Id: {question.id}</Row>
-                        <Row>Question: {question.title}</Row>
-                        <Row> hall</Row>
+                        <Row> <br></br></Row>
                         {/* <NavLink to={'/quizzes/' + quiz.id}>{quiz.title}</NavLink> */}
                         <ul>
                             <li>{question.answ0}</li>
                             <li>{question.answ1}</li>
-                            <li>{question.title}</li>
+                            <li>{question.answ2}</li>
                             <li>{question.answ3}</li>
                         </ul>
                     </Column>
                 </Card>
             ))}
         </Card>
-        <Card title="Categories"></Card>
+        <Card title="Categories">
+            {this.categories.map((category) => (
+                <Card key={category.id} title={category.category}>
+                        <Row>Category Id: {category.id}</Row>   
+                </Card>
+            ))}
+        </Card>
         <Button.Light onClick={()=> history.push('/')}>
                 Back
         </Button.Light>
@@ -430,7 +439,8 @@ export class ListQuizzes extends Component {
         )
     }
     mounted() {
-        quizService.getAllQui().then((i) => (this.quizzes = i));
-        questionService.getAllQE().then((p) => (this.questions = p));
+        quizService.getAllQuizzes().then((q) => (this.quizzes = q));
+        questionService.getAllQuestions().then((p) => (this.questions = p));
+        categoryService.getAllCategories().then((c) => (this.categories = c));
       }
 }
