@@ -61,6 +61,9 @@ export class Home extends Component {
   }
 }
 
+/**
+ * Component which renders the New Quiz page.
+ */
 export class NewQuiz extends Component {
   quiz= '';
   hei= '';
@@ -378,6 +381,9 @@ export class Quiz extends Component {
   }
 }
 
+/**
+ * 
+ */
 export class EditQuiz extends Component {
     quiz= '';
     hei= '';
@@ -504,16 +510,9 @@ export class EditQuiz extends Component {
   }
 }
 
-/*
-{this.tasks.map((task) => (
-            <Row key={task.id}>
-              <Column>
-                <NavLink to={'/tasks/' + task.id}>{task.title}</NavLink>
-              </Column>
-            </Row>
-          ))}
-*/
-
+/**
+ * 
+ */
 export class ListQuizzes extends Component {
     quizzes: QuizType[] = [];
     questions: QuestionType[] = [];
