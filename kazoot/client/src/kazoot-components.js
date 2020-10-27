@@ -35,7 +35,7 @@ export class Home extends Component {
           >
             Ny quiz
           </Button.Light>
-          <Button.Success onClick={() => history.push('/editQuiz')}>Endre hallaaaaa quiz</Button.Success>
+          <Button.Success onClick={() => history.push('/editQuiz')}>Endre quiz</Button.Success>
         </Card>
       </>
     );
