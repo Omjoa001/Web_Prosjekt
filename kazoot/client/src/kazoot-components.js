@@ -28,7 +28,7 @@ export class Home extends Component {
         </Card>
         <Card title="Route test">
           <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-          <Button.Danger onClick={() => history.push('/Browse')}>Browse</Button.Danger>
+          <Button.Danger onClick={() => history.push('/BrowseQuizzes')}>Browse Quizzes</Button.Danger>
           <Button.Light
             onClick={() => {
               history.push('/newQuiz');
