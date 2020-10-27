@@ -210,6 +210,7 @@ export class BrowseQuizzes extends Component {
 
 /**
  * Renders the quiz tile cards in a grid.
+ * Used in BrowseQuizzes.
  *
  * TODO: Find a way to dynamically change the number of quizzes in the array.
  *  Ex: Using the categories and search tools should remove the quizzes that don't match
@@ -395,9 +396,11 @@ export class Quiz extends Component {
   }
 }
 
-/**
- * 
- */
+
+export class Search extends Component {
+}
+
+
 export class EditQuiz extends Component {
   quiz = '';
   hei = '';
