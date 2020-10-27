@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
-import { type QuizType, type CategoryType, type QuestionType, type Quiz } from './kazoot-service';
+import { type QuizType, type CategoryType, type QuestionType } from './kazoot-service';
 
 const history = createHashHistory();
 
@@ -196,76 +196,8 @@ export class NewQuiz extends Component {
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-  arr: [] = [
-    {
-      id: 1,
-      title: 'quiz 1',
-      description: 'woowowowoowow',
-    },
-    {
-      id: 2,
-      title: 'quiz 2',
-      description: 'wewewewewe',
-    },
-    {
-      id: 3,
-      title: 'quiz 3',
-      description: 'wuwuwuwuwu',
-    },
-  ];
 
-  search() {
-    console.log("Search() ran");
-  }
-
-  render() {
-    return (
-      <>
-        <Card title="Categories">{this.categories}</Card>
-
-
-        <Card title="Search">
-          <Row>
-            {/* The weird box with numbers is a magnifying glass emoji */}
-            <Button.OutlinePrimary onClick={() => this.search()}>🔎</Button.OutlinePrimary>
-            <div style={{ width: '50rem' }}>
-              {'  '}
-              <Form.Input></Form.Input>
-            </div>
-          </Row>
-        </Card>
-
-
-        <Card title="Quizzes">
-          <QuizTileGrid />
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-        </Card>
-      </>
-    );
-  }
-}
-
-/**
- * Renders the quiz tile cards in a grid.
- * Used in BrowseQuizzes.
- *
- * TODO: Find a way to dynamically change the number of quizzes in the array.
- *  Ex: Using the categories and search tools should remove the quizzes that don't match
- *  the category and search conditions.
- *  Maybe the quizzes array could be passed from the BrowseQuizzes component.
- */
-export class QuizTileGrid extends Component {
-  render() {
-    const grid: [] = this.quizzesToJSX();
-    return <>{grid}</>;
-  }
-
-  /**
-   * Returns an array of dummy quizzes.
-   * TODO: This should be replaced with a database call sometime.
-   */
-  getQuizzes() {
-    let quizzes: Quiz[] = [
+  quizzes: [] = [
       {
         id: 1,
         title: 'quiz 1',
@@ -328,8 +260,62 @@ export class QuizTileGrid extends Component {
       },
     ];
 
-    return quizzes;
+  search() {
+    console.log("Search() ran");
   }
+
+  render() {
+    return (
+      <>
+        <Card title="Categories">{this.categories}</Card>
+
+
+        <Card title="Search">
+          <Row>
+            {/* The weird box with numbers is a magnifying glass emoji */}
+            <Button.OutlinePrimary onClick={() => this.search()}>🔎</Button.OutlinePrimary>
+            <div style={{ width: '50rem' }}>
+              {'  '}
+              <Form.Input></Form.Input>
+            </div>
+          </Row>
+        </Card>
+
+
+        <Card title="Quizzes">
+          <QuizTileGrid quizarr={this.quizzes}/>
+          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
+        </Card>
+      </>
+    );
+  }
+}
+
+/**
+ * Renders the quiz tile cards in a grid.
+ * Used in BrowseQuizzes.
+ *
+ * TODO: Find a way to dynamically change the number of quizzes in the array.
+ *  Ex: Using the categories and search tools should remove the quizzes that don't match
+ *  the category and search conditions.
+ *  Maybe the quizzes array could be passed from the BrowseQuizzes component.
+ */
+export class QuizTileGrid extends Component {
+
+  quizzarr: [] = [];
+
+  render() {
+    const grid: [] = this.quizzesToJSX();
+    return <>{grid}</>;
+  }
+
+  // /**
+  //  * Returns an array of dummy quizzes.
+  //  * TODO: This should be replaced with a database call sometime.
+  //  */
+  // getQuizzes() {
+  //   return quizzes;
+  // }
 
   /**
    * Generates the grid of quizzes and pushes it to an
@@ -340,7 +326,7 @@ export class QuizTileGrid extends Component {
     let grid: [] = [];
 
     // TODO: Replace with database call sometime?
-    let quizzes = this.getQuizzes();
+    let quizzes = this.props.quizarr;
 
     // width = number of quizzes per row
     const width = 4;
