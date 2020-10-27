@@ -12,7 +12,7 @@ import {  type QuizType, type CategoryType, type QuestionType } from './kazoot-s
 const history = createHashHistory();
 
 export class Home extends Component {
-  Question: Quiz[] = [];
+  Question: QuizType[] = [];
   question: string = '';
   id: number = 0;
 
@@ -23,7 +23,7 @@ export class Home extends Component {
         <Card title="spørsmål">
           {this.Question.map((spr) => (
             <Row key={spr.id}>
-              <Column>{spr.question}</Column>
+              <Column>{spr.title}</Column>
             </Row>
           ))}
         </Card>
@@ -57,12 +57,13 @@ export class Home extends Component {
   }
 
   mounted() {
-    questionService.getAllQuestions().then((Question) => (this.Question = Question));
+    questionService.getAllQuestions().then((c) => (this.Question = c));
   }
 }
 
 export class NewQuiz extends Component {
-  
+  quiz= '';
+  hei= '';
     render() {
     return (
         <>
@@ -82,7 +83,7 @@ export class NewQuiz extends Component {
                     Quiz-description:
                 </Column>
                 <Column >
-                    <Form.Input type="text" onChange={(event) => (this.halla = event.currentTarget.value)} value={this.halla}></Form.Input>
+                    <Form.Input type="text" onChange={(event) => (this.hei = event.currentTarget.value)} value={this.hei}></Form.Input>
                 </Column>
                 <Column>
                 </Column>
@@ -256,6 +257,9 @@ export class Quiz extends Component {
 }
 
 export class EditQuiz extends Component {
+    quiz= '';
+    hei= '';
+
   render() {
     return (
       <>
@@ -298,7 +302,7 @@ export class EditQuiz extends Component {
                         Riktig:
                     </Column>
                     <Column>
-                        <Form.Input type="text" placeholder="spørsmål" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
+                        <Form.Input type="text" placeholder="spørsmål" onChange={(event) => (this.hei = event.currentTarget.value)} value={this.hei}></Form.Input>
                     </Column>
                     <Column>
                         <Button.Danger onClick={()=>{}}>X</Button.Danger>
@@ -328,7 +332,7 @@ export class EditQuiz extends Component {
                 </Row>
                 <Row>
                     <Column width={2}>
-                        <Form.Checkbox id="hall" checked={false} onChange={hall = true}></Form.Checkbox>
+                        <Form.Checkbox ></Form.Checkbox>
                     </Column>
                     <Column>
                         <Form.Input type="text" placeholder="Svar3" onChange={(event) => (this.quiz = event.currentTarget.value)} value={this.quiz}></Form.Input>
