@@ -203,14 +203,7 @@ export class NewQuiz extends Component {
 
 export class QuestionGrid extends Component {
 
-    render(){
-        return (
-            <>
-                
-            </>
-        )
-    }
-    
+ 
 }
 
 export class Questionside extends Component {
