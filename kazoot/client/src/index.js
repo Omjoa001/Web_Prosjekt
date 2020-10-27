@@ -11,10 +11,10 @@ class Menu extends Component {
   render() {
     return (
       <NavBar brand="Kazoot">
-        <NavBar.Link to="/BrowseQuizzes">Browse Quiz</NavBar.Link>
-        <NavBar.Link to="/newQuiz">Ny quiz</NavBar.Link>
-        <NavBar.Link to="/editQuiz">Endre quiz</NavBar.Link>
-        <NavBar.Link to="/listQuizzes">Kviss</NavBar.Link>
+        <NavBar.Link to="/BrowseQuizzes">Browse Quizzes</NavBar.Link>
+        <NavBar.Link to="/newQuiz">New quiz</NavBar.Link>
+        <NavBar.Link to="/editQuiz">TESTING: Endre quiz</NavBar.Link>
+        <NavBar.Link to="/listQuizzes">TESTING: Kviss</NavBar.Link>
       </NavBar>
     );
   }
