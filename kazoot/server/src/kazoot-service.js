@@ -2,10 +2,9 @@
 
 import pool from './mysql-pool';
 
-export type Sprs = {
+export type QuestionType = {
   id: number,
   quizId: number,
-  themeId: number,
   question: string,
   answ0: string,
   answ1: string,
@@ -13,25 +12,32 @@ export type Sprs = {
   answ3: string,
 };
 
-export type Kvisser = {
+export type QuizType = {
   id: number,
   title: string,
   description: string,
   categoryId: number,
 }
 
-export type Kategorier = {
-  id: number,
+export type CategoryType = {
+  id: Number,
   category: string,
 }
+
+/*
+export type Category = {
+  id: number,
+  category: string,
+}*/
 
 class QuizService {
   /**
    * HENTER ALLE/EN, SLETTER OG LAGER QUIZZER
    */
+
   get(id: number) {
-    return new Promise<?Kvisser>((resolve, reject) => {
-      pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: Kvisser[]) => {
+    return new Promise<?QuizType>((resolve, reject) => {
+      pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: QuizType[]) => {
         if (error) return reject(error);
 
         resolve(results[0]);
@@ -39,8 +45,8 @@ class QuizService {
     });
   }
 
-  getAll() {
-    return new Promise<Kvisser[]>((resolve, reject) => {
+  getAllQuizzes() {
+    return new Promise<QuizType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Quizzes', (error, results) => {
         if (error) return reject(error);
 
@@ -49,9 +55,9 @@ class QuizService {
     });
   }
 
-  create(title: string, description: string, categoryId: number) {
+  create(title: string, description: string, category: string) {
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Quizzes SET title=?, description=?, categoryId=?', [title, description, categoryId], (error, results) => {
+      pool.query('INSERT INTO Quizzes SET title=?, description=?, category=?', [title, description, category], (error, results) => {
         if (error) return reject(error);
         if (!results.insertId) return reject(new Error('No row inserted'));
 
@@ -70,9 +76,57 @@ class QuizService {
       });
     });
   }
+
+  getAllQuestions() {
+    return new Promise<QuestionType[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Questions', (error, results) => {
+        if (error) return reject(error);
+
+        resolve(results);
+      });
+    });
+  }
+
+ getAllCategories() {
+    return new Promise<CategoryType[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Categories', (error, results) => {
+        if (error) return reject(error);
+
+        resolve(results);
+      });
+    });
+  }
+}
+
+class QuestionService {
+  // get all
+ /* getall() {
+    return new Promise<Question[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Questions', (error, results) => {
+        if (error) return reject(error);
+
+        resolve(results);
+      });
+    });
+  }*/
+
+}
+
+class CategoryService {
+  // get all
+  // getAllCategories() {
+  //   return new Promise<Category[]>((resolve, reject) => {
+  //     pool.query('SELECT * FROM Categories', (error, results) => {
+  //       if (error) return reject(error);
+
+  //       resolve(results);
+  //     });
+  //   });
+  // }
 }
 
 
-
-const quizService = new QuizService();
+ const quizService = new QuizService();
 export default quizService;
+//export const questionService = new QuestionService();
+//export const categoryService = new CategoryService();
