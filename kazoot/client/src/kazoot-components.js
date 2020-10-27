@@ -196,79 +196,94 @@ export class NewQuiz extends Component {
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-
   quizzes: [] = [
-      {
-        id: 1,
-        title: 'quiz 1',
-        description: 'woowowowoowow',
-      },
-      {
-        id: 2,
-        title: 'quiz 2',
-        description: 'wewewewewe',
-      },
-      {
-        id: 3,
-        title: 'quiz 3',
-        description: 'wuwuwuwuwu',
-      },
-      {
-        id: 4,
-        title: 'quiz 4',
-        description: 'wewewowow',
-      },
-      {
-        id: 5,
-        title: 'quiz 5',
-        description: 'djwidjwiwewewowow',
-      },
-      {
-        id: 6,
-        title: 'quiz 6',
-        description: 'kjdskad',
-      },
-      {
-        id: 7,
-        title: 'quiz 7',
-        description: 'hdsoafiosaj',
-      },
-      {
-        id: 8,
-        title: 'quiz 8',
-        description: 'jfkdlsajflkdsafø',
-      },
-      {
-        id: 9,
-        title: 'quiz 9',
-        description: 'jsidjaidsaj',
-      },
-      {
-        id: 10,
-        title: 'quiz 10',
-        description: 'sljdskal',
-      },
-      {
-        id: 11,
-        title: 'quiz 11',
-        description: 'jdksaljdskaljds',
-      },
-      {
-        id: 12,
-        title: 'quiz 12',
-        description: 'jdjskaldjskal',
-      },
-    ];
+    {
+      id: 1,
+      title: 'quiz 1',
+      description: 'woowowowoowow',
+    },
+    {
+      id: 2,
+      title: 'quiz 2',
+      description: 'wewewewewe',
+    },
+    {
+      id: 3,
+      title: 'quiz 3',
+      description: 'wuwuwuwuwu',
+    },
+    {
+      id: 4,
+      title: 'quiz 4',
+      description: 'wewewowow',
+    },
+    {
+      id: 5,
+      title: 'quiz 5',
+      description: 'djwidjwiwewewowow',
+    },
+    {
+      id: 6,
+      title: 'quiz 6',
+      description: 'kjdskad',
+    },
+    {
+      id: 7,
+      title: 'quiz 7',
+      description: 'hdsoafiosaj',
+    },
+    {
+      id: 8,
+      title: 'quiz 8',
+      description: 'jfkdlsajflkdsafø',
+    },
+    {
+      id: 9,
+      title: 'quiz 9',
+      description: 'jsidjaidsaj',
+    },
+    {
+      id: 10,
+      title: 'quiz 10',
+      description: 'sljdskal',
+    },
+    {
+      id: 11,
+      title: 'quiz 11',
+      description: 'jdksaljdskaljds',
+    },
+    {
+      id: 12,
+      title: 'quiz 12',
+      description: 'jdjskaldjskal',
+    },
+  ];
 
   search() {
-    console.log("Search() ran");
+    console.log('Search() ran');
+    console.log(`search quizzes: ${this.quizzes}`);
+    let quizname: string = 'quiz 1';
+
+    let OGquizzes: [] = this.quizzes;
+    let retQuizzes: [] = [];
+
+    for (const quiz of OGquizzes) {
+      console.log(`inside the loop: ${quiz}`);
+      console.log(`inside the loop: ${quiz.id}`);
+      retQuizzes.push(
+        OGquizzes.find((quiz) => {
+          quiz.id == 1;
+        })
+      );
+    }
+
+    this.quizzes = retQuizzes;
   }
 
   render() {
     return (
       <>
         <Card title="Categories">{this.categories}</Card>
-
 
         <Card title="Search">
           <Row>
@@ -281,9 +296,8 @@ export class BrowseQuizzes extends Component {
           </Row>
         </Card>
 
-
         <Card title="Quizzes">
-          <QuizTileGrid quizarr={this.quizzes}/>
+          <QuizTileGrid quizarr={this.quizzes} />
           <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
@@ -301,7 +315,6 @@ export class BrowseQuizzes extends Component {
  *  Maybe the quizzes array could be passed from the BrowseQuizzes component.
  */
 export class QuizTileGrid extends Component {
-
   quizzarr: [] = [];
 
   render() {
@@ -327,34 +340,37 @@ export class QuizTileGrid extends Component {
 
     // TODO: Replace with database call sometime?
     let quizzes = this.props.quizarr;
+    if (quizzes == undefined) {
+      grid.push(<div>No quizzes matched the combination of categories and search 😢</div>);
+    } else {
+      // width = number of quizzes per row
+      const width = 4;
+      let i = 1;
+      let k = 0;
 
-    // width = number of quizzes per row
-    const width = 4;
-    let i = 1;
-    let k = 0;
-
-    /* Slices the array every 'width' iteration of the loop.
-     * Surround each quiz in a slice with Column (@see rowContents(row)),
-     * then surrounds the entire slice with a Row tag.
-     */
-    for (; i < quizzes.length + 1; ++i) {
-      if (i % width == 0) {
-        const currentRow = quizzes.slice(k, i);
-        const row = this.rowContents(currentRow);
-        grid.push(
-          <>
-            <Row>{row}</Row>
-            <div>&nbsp;</div>
-          </>
-        );
-        k = i;
+      /* Slices the array every 'width' iteration of the loop.
+       * Surround each quiz in a slice with Column (@see rowContents(row)),
+       * then surrounds the entire slice with a Row tag.
+       */
+      for (; i < quizzes.length + 1; ++i) {
+        if (i % width == 0) {
+          const currentRow = quizzes.slice(k, i);
+          const row = this.rowContents(currentRow);
+          grid.push(
+            <>
+              <Row>{row}</Row>
+              <div>&nbsp;</div>
+            </>
+          );
+          k = i;
+        }
       }
-    }
 
-    // Add the remaining quizzes to the last row
-    const remainingRow = quizzes.slice(k, i);
-    const row = this.rowContents(remainingRow);
-    grid.push(<Row>{row}</Row>);
+      // Add the remaining quizzes to the last row
+      const remainingRow = quizzes.slice(k, i);
+      const row = this.rowContents(remainingRow);
+      grid.push(<Row>{row}</Row>);
+    }
 
     return grid;
   }
@@ -569,7 +585,7 @@ export class EditQuiz extends Component {
 }
 
 /**
- * 
+ *
  */
 export class ListQuizzes extends Component {
   quizzes: QuizType[] = [];
