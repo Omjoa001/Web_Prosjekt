@@ -357,7 +357,7 @@ export class Quiz extends Component {
     return (
       <>
         <TileCard title={this.props.title}>
-          {this.description}
+          {this.props.description}
           <hr />
           <Row>
             <Column left>
