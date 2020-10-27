@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
-import { type QuizType, type CategoryType, type QuestionType } from './kazoot-service';
+import { type QuizType, type CategoryType, type QuestionType, type Quiz } from './kazoot-service';
 
 const history = createHashHistory();
 
