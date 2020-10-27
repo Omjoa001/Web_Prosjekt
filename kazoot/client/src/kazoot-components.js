@@ -305,7 +305,12 @@ export class QuizTileGrid extends Component {
       if (i % width == 0) {
         const currentRow = quizzes.slice(k, i);
         const row = this.rowContents(currentRow);
-        grid.push(<Row>{row}</Row>);
+        grid.push(
+          <>
+            <Row>{row}</Row>
+            <div>&nbsp;</div>
+          </>
+        );
         k = i;
       }
     }
