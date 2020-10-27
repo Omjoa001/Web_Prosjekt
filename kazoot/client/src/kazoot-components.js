@@ -176,6 +176,10 @@ export class NewQuiz extends Component {
   }
 }
 
+/**
+ * Dummy commit comment thingy
+ *
+ */
 export class BrowseQuizzes extends Component {
   render() {
     return (
