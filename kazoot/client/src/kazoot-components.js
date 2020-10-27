@@ -190,6 +190,82 @@ export class NewQuiz extends Component {
   }
 }
 
+export class QuestionGrid extends Component {
+    
+}
+
+export class QuestionCard extends Component {
+    
+
+    render() {
+        return (
+            <>
+                <Row>
+                    <Column>
+                        Spørsmål: 1
+                    </Column>
+                    <Column> 
+                        <Form.Input></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger>Slett Spørsmål</Button.Danger>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        Riktig:
+                    </Column>
+                    <Column> 
+                        Svar:
+                    </Column>
+                    <Column>
+                    </Column>
+                </Row>
+                <Row>
+                    <AnswerCard/>
+                </Row>
+                <Row>
+                    <AnswerCard/>
+                </Row>
+                <Row>
+                    <AnswerCard/>
+                </Row>
+                <Row>
+                    <AnswerCard/>
+                </Row>
+                <Row>
+                    <Button.Success>Legg til svaralternativ</Button.Success>
+                </Row>
+            </>
+        );
+    }
+}
+
+export class AnswerCard extends Component {
+    render() {
+        return(
+            <>
+                <Row>
+                    <Column>
+                        <Form.Checkbox></Form.Checkbox>
+                    </Column>
+                    <Column>
+                        <Form.Input></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger></Button.Danger>
+                    </Column>
+                </Row>
+            </>
+        );
+    }
+
+
+    DelAnswer() {
+        //kommando som sletter dette svaralternativet
+    }
+}
+
 /**
  * Component which renders the Browse Quizzes page.
  */
@@ -200,7 +276,7 @@ export class BrowseQuizzes extends Component {
         <Card title="Categories">{this.categories}</Card>
         <Card title="Search"></Card>
         <Card title="Quizzes">
-          <QuizTileGrid></QuizTileGrid>
+          <QuizTileGrid />
           <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
