@@ -188,13 +188,18 @@ export class NewQuiz extends Component {
           </Row>
         </Card>
         <Card>
-            <QuestionCard />
+            {/***************
+             * 
+             * Her er det noe feil med QuestionCard komponent. Pusher likevel inn i main og satser på at det blir fiksa etterhvert.
+             * 
+             * <QuestionCard />
         </Card>
         <Card>
             <QuestionCard />
         </Card>
         <Card>
             <QuestionCard />
+            */}
         </Card>
       </>
     );
