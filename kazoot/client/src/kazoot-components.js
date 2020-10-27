@@ -363,22 +363,28 @@ export class BrowseQuizzes extends Component {
     },
   ];
 
-  search() {}
+  search() {
+    console.log("Search() ran");
+  }
 
   render() {
     return (
       <>
         <Card title="Categories">{this.categories}</Card>
+
+
         <Card title="Search">
           <Row>
-            {/* <Button.Light>🔎</Button.Light> */}
-            <Button.OutlinePrimary>🔎</Button.OutlinePrimary>
+            {/* The weird box with numbers is a magnifying glass emoji */}
+            <Button.OutlinePrimary onClick={() => this.search()}>🔎</Button.OutlinePrimary>
             <div style={{ width: '50rem' }}>
               {'  '}
               <Form.Input></Form.Input>
             </div>
           </Row>
         </Card>
+
+
         <Card title="Quizzes">
           <QuizTileGrid />
           <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
