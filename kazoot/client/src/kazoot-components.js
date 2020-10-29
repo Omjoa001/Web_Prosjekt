@@ -266,12 +266,12 @@ export class BrowseQuizzes extends Component {
 
   search() {
     return this.quizzes.filter((quiz) =>
-      quiz.title.toLowerCase().includes(this.searchterm.toLowerCase())
+      quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
+      quiz.description.toLowerCase().includes(this.searchterm.toLowerCase())
     );
   }
 
   editSearchTerm(event) {
-    // this.setState({searchterm: event.target.value})
     this.searchterm = event.currentTarget.value;
   }
 
@@ -282,15 +282,11 @@ export class BrowseQuizzes extends Component {
 
         <Card title="Search">
           <Row>
-            {/* The weird box with numbers is a magnifying glass emoji */}
-            {/* <Button.OutlinePrimary onClick={() => (this.filtered = this.search())}> */}
-            {/*   🔎 */}
-            {/* </Button.OutlinePrimary> */}
-            <div style={{ width: '50rem' }}>
+            <div style={{ width: '50%' }}>
               {'  '}
               <Form.Input
                 type="text"
-                placeholder="🔎 Search for the title of a quiz"
+                placeholder="🔎 Search for the title or description of a quiz"
                 value={this.searchterm}
                 onChange={this.editSearchTerm}
               ></Form.Input>
