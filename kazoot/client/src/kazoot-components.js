@@ -584,7 +584,7 @@ export class EditQuiz extends Component {
   }
 }
 
-/**
+/*
  *
  */
 export class ListQuizzes extends Component {

@@ -33,7 +33,7 @@ ReactDOM.render(
       <Route exact path="/BrowseQuizzes" component={BrowseQuizzes}></Route>
       <Route exact path="/newQuiz" component={NewQuiz}></Route>
       <Route exact path="/editQuiz" component={EditQuiz}></Route>
-      <Route exect path="/listQuizzes" component={ListQuizzes}></Route>
+      <Route exact path="/listQuizzes" component={ListQuizzes}></Route>
       </ div>
     </HashRouter>,
   root
