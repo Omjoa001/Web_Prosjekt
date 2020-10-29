@@ -219,6 +219,12 @@ export class NewQuiz extends Component {
     );
   }
 
+  mounted(){
+      quizService
+        
+    
+  }
+
   createQuiz(){
     console.log('component')
    // console.log(oo.value)
@@ -236,13 +242,6 @@ export class NewQuiz extends Component {
       .createQuestion(this.question, this.answ0, this.answ1, this.answ2, this.answ3)
   }
 
-
-
-}
-
-export class QuestionGrid extends Component {
-
- 
 }
 
 export class Questionside extends Component {
@@ -296,18 +295,25 @@ export class Questionside extends Component {
 }
 
 export class Answerside extends Component {
+  answ0: string = '';
+
     render() {
         return(
             <>
-                <Row>
+                <Row >
                     <Column>
-                        <Form.Checkbox></Form.Checkbox>
+                        <Form.Checkbox ></Form.Checkbox>
                     </Column>
                     <Column>
-                        <Form.Input placeholder="svar"></Form.Input>
+                        <Form.Input 
+                        placeholder="svar"
+                        value={this.answ0}
+                        onchange={(event) = (this.answ0 = event.currentTarget.value)}
+                        >
+                        </Form.Input>
                     </Column>
                     <Column>
-                        <Button.Light>➖</Button.Light>
+                        <Button.Light onClick={this.DelAnswer()}>➖</Button.Light>
                     </Column>
                 </Row>
             </>
