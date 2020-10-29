@@ -286,12 +286,12 @@ export class BrowseQuizzes extends Component {
               {'  '}
               <Form.Input></Form.Input>
             </div>
+          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
           </Row>
         </Card>
 
         <Card title="Quizzes">
           <QuizTileGrid quizarr={this.quizzes} />
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
     );
