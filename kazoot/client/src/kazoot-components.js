@@ -288,12 +288,12 @@ export class BrowseQuizzes extends Component {
                 onChange={this.editSearchTerm}
               ></Form.Input>
             </div>
+          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
           </Row>
         </Card>
 
         <Card title="Quizzes">
-          <QuizTileGrid quizarr={this.search()} />
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
+          <QuizTileGrid quizarr={this.quizzes} />
         </Card>
       </>
     );
