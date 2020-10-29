@@ -296,7 +296,6 @@ export class BrowseQuizzes extends Component {
 
   editSearchTerm(event) {
     this.searchterm = event.currentTarget.value;
-    console.log(`searchterm: ${this.searchterm}`);
   }
 
   render() {
@@ -321,7 +320,7 @@ export class BrowseQuizzes extends Component {
         </Card>
 
         <Card title="Quizzes">
-          <QuizTileGrid quizarr={this.quizzes} />
+          <QuizTileGrid quizarr={this.search()} />
         </Card>
       </>
     );
