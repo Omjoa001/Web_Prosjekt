@@ -196,7 +196,7 @@ export class NewQuiz extends Component {
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-  quizzes: [] = [
+  quizzes: Array<{id: number, title: string, description: string}> = [
     {
       id: 1,
       title: 'quiz 1',
@@ -315,7 +315,7 @@ export class BrowseQuizzes extends Component {
  *  Maybe the quizzes array could be passed from the BrowseQuizzes component.
  */
 export class QuizTileGrid extends Component {
-  quizzarr: [] = [];
+  quizzarr: Array<any> = []; //Needs fix
 
   render() {
     const grid: [] = this.quizzesToJSX();
@@ -352,7 +352,7 @@ export class QuizTileGrid extends Component {
        * Surround each quiz in a slice with Column (@see rowContents(row)),
        * then surrounds the entire slice with a Row tag.
        */
-      for (; i < quizzes.length + 1; ++i) {
+      for (i; i < quizzes.length + 1; ++i) {
         if (i % width == 0) {
           const currentRow = quizzes.slice(k, i);
           const row = this.rowContents(currentRow);
@@ -404,6 +404,7 @@ export class Quiz extends Component {
 
   playButton() {
     console.log(`Playing ${this.props.title}`);
+    //TODO: Link to quiz play site.
   }
 
   editButton() {
