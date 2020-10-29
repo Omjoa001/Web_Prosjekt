@@ -268,21 +268,23 @@ export class BrowseQuizzes extends Component {
   // Quiz array after it's been filtered by the search function
   filtered: Quiz[] = [];
   searchterm: string = '';
-  categories = new Map([
-    [1, 'Sport'],
-    [2, 'Math'],
-    [3, 'Geography'],
-    [4, 'History'],
-    [5, 'Yo mama'],
-  ]);
 
-  categorySelection() {
-    jsx: [] = [];
-    for (const category of this.categories.values()) {
-      jsx.push(<div>{category}</div>);
-    }
-    return jsx;
-  }
+
+  // categories = new Map([
+  //   [1, 'Sport'],
+  //   [2, 'Math'],
+  //   [3, 'Geography'],
+  //   [4, 'History'],
+  //   [5, 'Yo mama'],
+  // ]);
+
+  // categorySelection() {
+  //   jsx: [] = [];
+  //   for (const category of this.categories.values()) {
+  //     jsx.push(<div>{category}</div>);
+  //   }
+  //   return jsx;
+  // }
 
   search() {
     return this.quizzes.filter(
@@ -294,13 +296,13 @@ export class BrowseQuizzes extends Component {
 
   editSearchTerm(event) {
     this.searchterm = event.currentTarget.value;
+    console.log(`searchterm: ${this.searchterm}`);
   }
 
   render() {
     return (
       <>
         <Card title="Categories">
-          <Row>{this.categorySelection.forEach(cat => {})}</Row>
         </Card>
 
         <Card title="Search">
