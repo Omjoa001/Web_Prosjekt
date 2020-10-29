@@ -27,18 +27,11 @@ export class Home extends Component {
           ))}
         </Card>
         <Card title="Route test">
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-          <Button.Danger onClick={() => history.push('/BrowseQuizzes')}>
-            Browse Quizzes
-          </Button.Danger>
-          <Button.Light
-            onClick={() => {
-              history.push('/newQuiz');
-            }}
-          >
+          <Button.Success onClick={() => history.push('/BrowseQuizzes')}>
+            Browse Quizzes </Button.Success>
+          <Button.Success onClick={() => { history.push('/newQuiz');}}>
             Ny quiz
-          </Button.Light>
-          <Button.Success onClick={() => history.push('/editQuiz')}>Endre quiz</Button.Success>
+          </Button.Success>
         </Card>
       </>
     );
