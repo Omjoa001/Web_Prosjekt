@@ -194,62 +194,74 @@ export class BrowseQuizzes extends Component {
       id: 1,
       title: 'quiz 1',
       description: 'woowowowoowow',
+      category: 1,
     },
     {
       id: 2,
       title: 'quiz 2',
       description: 'wewewewewe',
+      category: 1,
     },
     {
       id: 3,
       title: 'quiz 3',
       description: 'wuwuwuwuwu',
+      category: 1,
     },
     {
       id: 4,
       title: 'quiz 4',
       description: 'wewewowow',
+      category: 1,
     },
     {
       id: 5,
       title: 'quiz 5',
       description:
         'long ass description. This description is multiple lines long. It is huge. Waow',
+      category: 1,
     },
     {
       id: 6,
       title: 'quiz 6',
       description: 'kjdskad',
+      category: 1,
     },
     {
       id: 7,
       title: 'quiz 7',
       description: 'hdsoafiosaj',
+      category: 1,
     },
     {
       id: 8,
       title: 'quiz 8',
       description: 'jfkdlsajflkdsafø',
+      category: 1,
     },
     {
       id: 9,
       title: 'quiz 9',
       description: 'jsidjaidsaj',
+      category: 1,
     },
     {
       id: 10,
       title: 'quiz 10',
       description: 'sljdskal',
+      category: 1,
     },
     {
       id: 11,
       title: 'quiz 11',
       description: 'jdksaljdskaljds',
+      category: 1,
     },
     {
       id: 12,
       title: 'quiz 12',
       description: 'jdjskaldjskal',
+      category: 1,
     },
   ];
 
@@ -257,43 +269,58 @@ export class BrowseQuizzes extends Component {
   filtered: Quiz[] = [];
   searchterm: string = '';
 
+
+  // categories = new Map([
+  //   [1, 'Sport'],
+  //   [2, 'Math'],
+  //   [3, 'Geography'],
+  //   [4, 'History'],
+  //   [5, 'Yo mama'],
+  // ]);
+
+  // categorySelection() {
+  //   jsx: [] = [];
+  //   for (const category of this.categories.values()) {
+  //     jsx.push(<div>{category}</div>);
+  //   }
+  //   return jsx;
+  // }
+
   search() {
-    return this.quizzes.filter((quiz) =>
-      quiz.title.toLowerCase().includes(this.searchterm.toLowerCase())
+    return this.quizzes.filter(
+      (quiz) =>
+        quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
+        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase())
     );
   }
 
   editSearchTerm(event) {
-    // this.setState({searchterm: event.target.value})
     this.searchterm = event.currentTarget.value;
   }
 
   render() {
     return (
       <>
-        <Card title="Categories">{this.categories}</Card>
+        <Card title="Categories">
+        </Card>
 
         <Card title="Search">
           <Row>
-            {/* The weird box with numbers is a magnifying glass emoji */}
-            {/* <Button.OutlinePrimary onClick={() => (this.filtered = this.search())}> */}
-            {/*   🔎 */}
-            {/* </Button.OutlinePrimary> */}
-            <div style={{ width: '50rem' }}>
+            <div style={{ width: '50%' }}>
               {'  '}
               <Form.Input
                 type="text"
-                placeholder="🔎 Search for the title of a quiz"
+                placeholder="🔎 Search for the title or description of a quiz"
                 value={this.searchterm}
                 onChange={this.editSearchTerm}
               ></Form.Input>
             </div>
+          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
           </Row>
         </Card>
 
         <Card title="Quizzes">
           <QuizTileGrid quizarr={this.search()} />
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
     );
