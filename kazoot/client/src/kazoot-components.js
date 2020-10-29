@@ -189,7 +189,7 @@ export class NewQuiz extends Component {
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-  quizzes: Array<{id: number, title: string, description: string}> = [
+  quizzes: Array<{ id: number, title: string, description: string }> = [
     {
       id: 1,
       title: 'quiz 1',
@@ -315,14 +315,6 @@ export class QuizTileGrid extends Component {
     return <>{grid}</>;
   }
 
-  // /**
-  //  * Returns an array of dummy quizzes.
-  //  * TODO: This should be replaced with a database call sometime.
-  //  */
-  // getQuizzes() {
-  //   return quizzes;
-  // }
-
   /**
    * Generates the grid of quizzes and pushes it to an
    * array of JSX elements.
@@ -336,35 +328,16 @@ export class QuizTileGrid extends Component {
     if (quizzes == undefined) {
       grid.push(<div>No quizzes matched the combination of categories and search 😢</div>);
     } else {
-      // width = number of quizzes per row
-      const width = 4;
-      let i = 1;
-      let k = 0;
-
-      /* Slices the array every 'width' iteration of the loop.
-       * Surround each quiz in a slice with Column (@see rowContents(row)),
-       * then surrounds the entire slice with a Row tag.
-       */
-      for (i; i < quizzes.length + 1; ++i) {
-        if (i % width == 0) {
-          const currentRow = quizzes.slice(k, i);
-          const row = this.rowContents(currentRow);
-          grid.push(
-            <>
-              <Row>{row}</Row>
-              <div>&nbsp;</div>
-            </>
-          );
-          k = i;
-        }
-      }
-
-      // Add the remaining quizzes to the last row
-      const remainingRow = quizzes.slice(k, i);
-      const row = this.rowContents(remainingRow);
-      grid.push(<Row>{row}</Row>);
+      let elements = [];
+      quizzes.forEach((quiz) => {
+        elements.push(
+          <Column>
+            <Quiz title={quiz.title} id={quiz.id} description={quiz.description}></Quiz>
+          </Column>
+        );
+      });
+      grid.push(<Row>{elements}</Row>);
     }
-
     return grid;
   }
 
@@ -401,7 +374,7 @@ export class Quiz extends Component {
   }
 
   editButton() {
-     history.push('/editQuiz');
+    history.push('/editQuiz');
   }
 
   render() {
@@ -420,7 +393,6 @@ export class Quiz extends Component {
           </Row>
         </TileCard>
       </>
-     
     );
   }
 
