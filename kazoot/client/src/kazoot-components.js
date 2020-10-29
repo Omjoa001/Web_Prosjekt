@@ -409,7 +409,7 @@ export class Quiz extends Component {
   }
 
   editButton() {
-    console.log(`Editing ${this.props.title}`);
+     history.push('/editQuiz');
   }
 
   render() {
@@ -432,6 +432,7 @@ export class Quiz extends Component {
           </Row>
         </TileCard>
       </>
+     
     );
   }
 
