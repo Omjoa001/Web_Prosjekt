@@ -12,7 +12,7 @@ class Menu extends Component {
     return (
       <NavBar brand="Kazoot">
         <NavBar.Link to="/BrowseQuizzes">Browse Quizzes</NavBar.Link>
-        <NavBar.Link to="/newQuiz">New quiz</NavBar.Link>
+        <NavBar.Link to="/quiz/new">New quiz</NavBar.Link>
         <NavBar.Link to="/editQuiz">TESTING: Endre quiz</NavBar.Link>
         <NavBar.Link to="/listQuizzes">TESTING: Kviss</NavBar.Link>
       </NavBar>
@@ -31,7 +31,7 @@ ReactDOM.render(
       <Menu />
       <Route exact path="/" component={Home} />
       <Route exact path="/BrowseQuizzes" component={BrowseQuizzes}></Route>
-      <Route exact path="/newQuiz" component={NewQuiz}></Route>
+      <Route exact path="/quiz/new" component={NewQuiz}></Route>
       <Route exact path="/editQuiz" component={EditQuiz}></Route>
       <Route exect path="/listQuizzes" component={ListQuizzes}></Route>
       </ div>

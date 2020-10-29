@@ -38,7 +38,8 @@ export class Home extends Component {
           >
             Ny quiz
           </Button.Light>
-          <Button.Success onClick={() => history.push('/editQuiz')}>Endre quiz</Button.Success>
+          <Button.Success onClick={() => history.push('/quiz/edit')}>Endre quiz</Button.Success>
+          <Button.Success onClick={() => history.push('/quiz/new')}>New Quiz</Button.Success>
         </Card>
       </>
     );
@@ -54,7 +55,15 @@ export class Home extends Component {
  */
 export class NewQuiz extends Component {
   quiz = '';
-  hei = '';
+  title: string = '';
+  description: string = '';
+  question = '';
+  answ0 = '';
+  answ1 = '';
+  answ2 = '';
+  answ3 = '';
+  categoryId: number = 0;
+
   render() {
     return (
       <>
@@ -64,33 +73,38 @@ export class NewQuiz extends Component {
             <Column>
               <Form.Input
                 type="text"
-                onChange={(event) => (this.hei = event.currentTarget.value)}
-                value={this.hei}
+                value={this.title}
+                onChange={(event) => (this.title = event.currentTarget.value)}
               ></Form.Input>
             </Column>
-            <Column></Column>
-          </Row>
-          <Row>
-            <Column width={3}>Quiz-description:</Column>
-            <Column>
-              <Form.Input
-                type="text"
-                onChange={(event) => (this.hei = event.currentTarget.value)}
-                value={this.hei}
-              ></Form.Input>
-            </Column>
-            <Column></Column>
           </Row>
           <Row>
             <Column width={3}>Quiz-Category:</Column>
             <Column>
-              <Form.Input
-                type="text"
-                onChange={(event) => (this.quiz = event.currentTarget.value)}
-                value={this.quiz}
-              ></Form.Input>
+                <select 
+                name="Category" 
+                id="oo" 
+                value={this.categoryId}
+                onChange={(event)=>(this.categoryId = event.currentTarget.value)}
+                >
+                     <option value="0">Velg en kategori</option>
+                    <option value="1">Matte</option>
+                    <option value="2">Fysikk</option>
+                    <option value="3">Geografi</option>
+                    <option value="4">It</option>
+                </select>  
             </Column>
-            <Column></Column>
+          </Row>
+          <Row>
+            <Column width={3}>Quiz-description:</Column>
+            <Column>
+              <Form.Textarea
+                type="text"
+                value={this.description}
+                onChange={(event) => (this.description = event.currentTarget.value)}
+                row={10}
+              ></Form.Textarea>
+            </Column>
           </Row>
           <Card>
             <Row>
@@ -99,8 +113,8 @@ export class NewQuiz extends Component {
                 <Form.Input
                   type="text"
                   placeholder="spørsmål"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
+                  value={this.question}
+                  onChange={(event) => (this.question = event.currentTarget.value)}
                 ></Form.Input>
               </Column>
               <Column>
@@ -114,9 +128,9 @@ export class NewQuiz extends Component {
               <Column>
                 <Form.Input
                   type="text"
-                  placeholder="Svar1"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
+                  placeholder="Answer 1"
+                  value={this.answ0}
+                  onChange={(event) => (this.answ0 = event.currentTarget.value)}
                 ></Form.Input>
               </Column>
               <Column>
@@ -130,9 +144,9 @@ export class NewQuiz extends Component {
               <Column>
                 <Form.Input
                   type="text"
-                  placeholder="Svar2"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
+                  placeholder="Answer 2"
+                  onChange={(event) => (this.answ1 = event.currentTarget.value)}
+                  value={this.answ1}
                 ></Form.Input>
               </Column>
               <Column>
@@ -146,9 +160,9 @@ export class NewQuiz extends Component {
               <Column>
                 <Form.Input
                   type="text"
-                  placeholder="Svar3"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
+                  placeholder="Answer 3"
+                  value={this.answ2}
+                  onChange={(event) => (this.answ2 = event.currentTarget.value)}
                 ></Form.Input>
               </Column>
               <Column>
@@ -162,18 +176,18 @@ export class NewQuiz extends Component {
               <Column>
                 <Form.Input
                   type="text"
-                  placeholder="Svar4"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
+                  placeholder="Answer 4"
+                  value={this.answ3}
+                  onChange={(event) => (this.answ3 = event.currentTarget.value)}
                 ></Form.Input>
               </Column>
               <Column>
-                <Button.Danger onClick={() => {}}>X</Button.Danger>
+                <Button.Danger onClick={() => {console.log("funker ikke bro")}}>X</Button.Danger>
               </Column>
             </Row>
             <Row>
               <Column>
-                <Button.Success onClick={() => {}}>+</Button.Success>
+                <Button.Success onClick={() => {console.log("funker ikke bro")}}>+</Button.Success>
               </Column>
             </Row>
           </Card>
@@ -183,7 +197,7 @@ export class NewQuiz extends Component {
           <Row>
             <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
             <Column>
-              <Button.Success onClick={() => {}}>Save</Button.Success>
+              <Button.Success onClick={() => {this.createQuiz()}}>Save</Button.Success>
             </Column>
           </Row>
         </Card>
@@ -204,6 +218,26 @@ export class NewQuiz extends Component {
       </>
     );
   }
+
+  createQuiz(){
+    console.log('component')
+   // console.log(oo.value)
+    console.log(this.categoryId)
+    quizService
+      .createQuiz(this.title, this.description, this.categoryId)
+      .then((id) => history.push('/tasks/' + id))
+      .catch((error: Error) => Alert.danger('Error creating task: ' + error.message)); 
+  }
+
+  save () {
+
+    
+    questionService
+      .createQuestion(this.question, this.answ0, this.answ1, this.answ2, this.answ3)
+  }
+
+
+
 }
 
 export class QuestionGrid extends Component {
@@ -564,11 +598,12 @@ export class EditQuiz extends Component {
           <Row>
             <Column width={3}>Quiz-Category:</Column>
             <Column>
-              <Form.Input
-                type="text"
-                onChange={(event) => (this.quiz = event.currentTarget.value)}
-                value={this.quiz}
-              ></Form.Input>
+                <select name="Category" id="Category">
+                    <option value="Matte">Matte</option>
+                    <option value="Fysikk">Fysikk</option>
+                    <option value="Geografi">Geografi</option>
+                    <option value="It">It</option>
+                </select>  
             </Column>
             <Column></Column>
           </Row>
@@ -576,12 +611,7 @@ export class EditQuiz extends Component {
             <Row>
               <Column width={2}>Riktig:</Column>
               <Column>
-                <Form.Input
-                  type="text"
-                  placeholder="spørsmål"
-                  onChange={(event) => (this.hei = event.currentTarget.value)}
-                  value={this.hei}
-                ></Form.Input>
+                    <Form.Input></Form.Input> 
               </Column>
               <Column>
                 <Button.Danger onClick={() => {}}>X</Button.Danger>

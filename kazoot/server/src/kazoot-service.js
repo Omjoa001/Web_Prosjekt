@@ -54,7 +54,25 @@ class QuizService {
     });
   }
 
-  create(title: string, description: string, category: string) {
+
+  //Ikke ferdig - CategorId er ikke en string!!
+  createQuiz(title: string, description: string, categoryId: string) {
+    console.log('create')
+    return new Promise<number>((resolve, reject) => {
+      pool.query('INSERT INTO Quizzes SET title=?, description=?, categoryId=?', [title, description, categoryId], (error, results) => {
+        if (error) return reject(error);
+        if (!results.insertId) return reject(new Error('No row inserted'));
+
+        resolve(Number(results.insertId));
+      });
+    });
+  }
+
+  
+
+
+  // ikke ferdig 
+  createQuestions(title: string, description: string, category: string) {
     return new Promise<number>((resolve, reject) => {
       pool.query('INSERT INTO Quizzes SET title=?, description=?, category=?', [title, description, category], (error, results) => {
         if (error) return reject(error);
@@ -64,6 +82,7 @@ class QuizService {
       });
     });
   }
+
 
   delete(id: number) {
     return new Promise<void>((resolve, reject) => {

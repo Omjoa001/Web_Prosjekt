@@ -25,15 +25,17 @@ router.get('/quizzes', (request, response) => {
  });
 
 
-/*router.post('/quizzes', (request, response) => {
-  const data = request.body;
-  if (data && typeof data.title == 'string' && data.title.length != 0)
+  router.post('/quizzes', (request, response) => {
+    console.log('post')
+    const data = request.body;
+    if (data && typeof data.title == 'string' && data.title.length != 0 &&
+    typeof data.description == 'string' && typeof data.categoryId == 'number') {
     quizService
-      .create(data.title)
+      .createQuiz(data.title, data.description, data.categoryId)
       .then((id) => response.send({ id: id }))
       .catch((error: Error) => response.status(500).send(error));
-  else response.status(400).send('Missing task title');
-});*/
+    } else {response.status(400).send('Missing QUIZ information');}
+});
 
 // router.delete('/quizzes/:id', (request, response) => {
 //   quizService
@@ -43,7 +45,6 @@ router.get('/quizzes', (request, response) => {
 // });
 
 router.get('/questions', (request, response) => {
-  console.log("kj")
   quizService
     .getAllQuestions()
     .then((rows) => response.send(rows))
