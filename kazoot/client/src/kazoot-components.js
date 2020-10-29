@@ -403,9 +403,9 @@ export class Quiz extends Component {
   description: string = '';
 
   playButton() {
-    console.log(`Playing ${this.props.title}`);
+    console.log(`Playing quiz ${this.props.id}`);
     //TODO: Link to quiz play site.
-    history.push('/playQuiz')
+    history.push('/playQuiz/' + this.props.id)
   }
 
   editButton() {
@@ -451,6 +451,7 @@ export class playQuiz extends Component {
     )
   }
 }
+
 export class EditQuiz extends Component {
   quiz = '';
   hei = '';
