@@ -405,6 +405,7 @@ export class Quiz extends Component {
   playButton() {
     console.log(`Playing ${this.props.title}`);
     //TODO: Link to quiz play site.
+    history.push('/playQuiz')
   }
 
   editButton() {
@@ -419,7 +420,11 @@ export class Quiz extends Component {
           <hr />
           <Row>
             <Column left>
-              <Button.Success onClick={this.playButton}>Play</Button.Success>
+              
+              <Button.Success onClick={this.playButton}>
+                {/*<NavBar.Link to='/playQuiz'>Play</NavBar.Link>*/}
+                Play
+              </Button.Success>
             </Column>
             <Column right>
               <Button.Primary onClick={this.editButton}>Edit</Button.Primary>
@@ -436,6 +441,15 @@ export class Quiz extends Component {
   }
 }
 
+export class playQuiz extends Component {
+  render() {
+    return (
+      <>
+    <Card title="Play Quiz"></Card>
+    </>
+    )
+  }
+}
 export class EditQuiz extends Component {
   quiz = '';
   hei = '';
