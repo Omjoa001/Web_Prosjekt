@@ -27,17 +27,11 @@ export class Home extends Component {
           ))}
         </Card>
         <Card title="Route test">
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-          <Button.Danger onClick={() => history.push('/BrowseQuizzes')}>
-            Browse Quizzes
-          </Button.Danger>
-          <Button.Light
-            onClick={() => {
-              history.push('/newQuiz');
-            }}
-          >
+          <Button.Success onClick={() => history.push('/BrowseQuizzes')}>
+            Browse Quizzes </Button.Success>
+          <Button.Success onClick={() => { history.push('/newQuiz');}}>
             Ny quiz
-          </Button.Light>
+          </Button.Success>
           <Button.Success onClick={() => history.push('/quiz/edit')}>Endre quiz</Button.Success>
           <Button.Success onClick={() => history.push('/quiz/new')}>New Quiz</Button.Success>
         </Card>
@@ -330,7 +324,7 @@ export class Answerside extends Component {
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-  quizzes: [] = [
+  quizzes: Array<{ id: number, title: string, description: string }> = [
     {
       id: 1,
       title: 'quiz 1',
@@ -354,7 +348,8 @@ export class BrowseQuizzes extends Component {
     {
       id: 5,
       title: 'quiz 5',
-      description: 'djwidjwiwewewowow',
+      description:
+        'long ass description. This description is multiple lines long. It is huge. Waow',
     },
     {
       id: 6,
@@ -393,25 +388,19 @@ export class BrowseQuizzes extends Component {
     },
   ];
 
+  // Quiz array after it's been filtered by the search function
+  filtered: Quiz[] = [];
+  searchterm: string = '';
+
   search() {
-    console.log('Search() ran');
-    console.log(`search quizzes: ${this.quizzes}`);
-    let quizname: string = 'quiz 1';
+    return this.quizzes.filter((quiz) =>
+      quiz.title.toLowerCase().includes(this.searchterm.toLowerCase())
+    );
+  }
 
-    let OGquizzes: [] = this.quizzes;
-    let retQuizzes: [] = [];
-
-    for (const quiz of OGquizzes) {
-      console.log(`inside the loop: ${quiz}`);
-      console.log(`inside the loop: ${quiz.id}`);
-      retQuizzes.push(
-        OGquizzes.find((quiz) => {
-          quiz.id == 1;
-        })
-      );
-    }
-
-    this.quizzes = retQuizzes;
+  editSearchTerm(event) {
+    // this.setState({searchterm: event.target.value})
+    this.searchterm = event.currentTarget.value;
   }
 
   render() {
@@ -422,17 +411,24 @@ export class BrowseQuizzes extends Component {
         <Card title="Search">
           <Row>
             {/* The weird box with numbers is a magnifying glass emoji */}
-            <Button.OutlinePrimary onClick={() => this.search()}>🔎</Button.OutlinePrimary>
+            {/* <Button.OutlinePrimary onClick={() => (this.filtered = this.search())}> */}
+            {/*   🔎 */}
+            {/* </Button.OutlinePrimary> */}
             <div style={{ width: '50rem' }}>
               {'  '}
-              <Form.Input></Form.Input>
+              <Form.Input
+                type="text"
+                placeholder="🔎 Search for the title of a quiz"
+                value={this.searchterm}
+                onChange={this.editSearchTerm}
+              ></Form.Input>
             </div>
+          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
           </Row>
         </Card>
 
         <Card title="Quizzes">
           <QuizTileGrid quizarr={this.quizzes} />
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
         </Card>
       </>
     );
@@ -449,24 +445,15 @@ export class BrowseQuizzes extends Component {
  *  Maybe the quizzes array could be passed from the BrowseQuizzes component.
  */
 export class QuizTileGrid extends Component {
-  quizzarr: [] = [];
+  quizzarr: Array<any> = []; //Needs fix
 
   render() {
     const grid: [] = this.quizzesToJSX();
     return <>{grid}</>;
   }
 
-  // /**
-  //  * Returns an array of dummy quizzes.
-  //  * TODO: This should be replaced with a database call sometime.
-  //  */
-  // getQuizzes() {
-  //   return quizzes;
-  // }
-
   /**
-   * Generates the grid of quizzes and pushes it to an
-   * array of JSX elements.
+   * Generates the grid of quizzes and pushes it to an array of JSX elements.
    */
   quizzesToJSX() {
     // Array of rows of quizzes in columns
@@ -474,38 +461,23 @@ export class QuizTileGrid extends Component {
 
     // TODO: Replace with database call sometime?
     let quizzes = this.props.quizarr;
-    if (quizzes == undefined) {
+    console.log(`quizzes length: ${quizzes.length}`);
+    console.log(`q2j: quizzes: ${quizzes}`);
+    if (quizzes.length == 0) {
       grid.push(<div>No quizzes matched the combination of categories and search 😢</div>);
     } else {
-      // width = number of quizzes per row
-      const width = 4;
-      let i = 1;
-      let k = 0;
-
-      /* Slices the array every 'width' iteration of the loop.
-       * Surround each quiz in a slice with Column (@see rowContents(row)),
-       * then surrounds the entire slice with a Row tag.
-       */
-      for (; i < quizzes.length + 1; ++i) {
-        if (i % width == 0) {
-          const currentRow = quizzes.slice(k, i);
-          const row = this.rowContents(currentRow);
-          grid.push(
-            <>
-              <Row>{row}</Row>
-              <div>&nbsp;</div>
-            </>
+      let elements = [];
+      quizzes.forEach((quiz) => {
+        if (quiz != undefined) {
+          elements.push(
+            <Column>
+              <Quiz title={quiz.title} id={quiz.id} description={quiz.description}></Quiz>
+            </Column>
           );
-          k = i;
         }
-      }
-
-      // Add the remaining quizzes to the last row
-      const remainingRow = quizzes.slice(k, i);
-      const row = this.rowContents(remainingRow);
-      grid.push(<Row>{row}</Row>);
+      });
+      grid.push(<Row>{elements}</Row>);
     }
-
     return grid;
   }
 
@@ -538,10 +510,11 @@ export class Quiz extends Component {
 
   playButton() {
     console.log(`Playing ${this.props.title}`);
+    //TODO: Link to quiz play site.
   }
 
   editButton() {
-    console.log(`Editing ${this.props.title}`);
+    history.push('/editQuiz');
   }
 
   render() {
@@ -714,7 +687,7 @@ export class EditQuiz extends Component {
   }
 }
 
-/**
+/*
  *
  */
 export class ListQuizzes extends Component {
