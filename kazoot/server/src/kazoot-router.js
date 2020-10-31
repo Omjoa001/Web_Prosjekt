@@ -29,7 +29,7 @@ router.get('/quizzes', (request, response) => {
     console.log('post')
     const data = request.body;
     if (data && typeof data.title == 'string' && data.title.length != 0 &&
-    typeof data.description == 'string' && typeof data.categoryId == 'number') {
+    typeof data.description == 'string' && typeof data.categoryId == 'string') {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)
       .then((id) => response.send({ id: id }))
