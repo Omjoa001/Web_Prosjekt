@@ -536,8 +536,9 @@ export class Quiz extends Component {
   description: string = '';
 
   playButton() {
-    console.log(`Playing ${this.props.title}`);
+    console.log(`Playing quiz ${this.props.id}`);
     //TODO: Link to quiz play site.
+    history.push('/playQuiz/' + this.props.id)
   }
 
   editButton() {
@@ -552,7 +553,11 @@ export class Quiz extends Component {
           <hr />
           <Row>
             <Column left>
-              <Button.Success onClick={this.playButton}>Play</Button.Success>
+              
+              <Button.Success onClick={this.playButton}>
+                {/*<NavBar.Link to='/playQuiz'>Play</NavBar.Link>*/}
+                Play
+              </Button.Success>
             </Column>
             <Column right>
               <Button.Primary onClick={this.editButton}>Edit</Button.Primary>
@@ -566,6 +571,16 @@ export class Quiz extends Component {
   mounted() {
     // quizService.getQuizInfo(this.props.id).then((quiz) => (this.props.title = quiz.title));
     this.description = 'test';
+  }
+}
+
+export class playQuiz extends Component {
+  render() {
+    return (
+      <>
+    <Card title="Play Quiz"></Card>
+    </>
+    )
   }
 }
 
