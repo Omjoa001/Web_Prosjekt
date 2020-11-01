@@ -35,6 +35,16 @@ export type Category = {
 
 class QuizService {
 
+  getNextId(){
+    return new Promise<{}>((resolve, reject) => {
+      pool.query('SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "Quizzes"', (error, results) => {
+        if (error) return reject(error);
+        resolve(results[0])
+      })
+    })
+  }
+
+  /* GAMMEL
   getMaxId(){
     console.log('utenfor')
     return new Promise<{}>((resolve, reject) => {
@@ -44,7 +54,7 @@ class QuizService {
         console.log('kjørr')
       })
     })
-  }
+  }*/
 
   /**
    * HENTER ALLE/EN, SLETTER OG LAGER QUIZZER

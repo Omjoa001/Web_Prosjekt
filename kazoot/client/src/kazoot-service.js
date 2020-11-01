@@ -83,14 +83,18 @@ class QuestionService {
  */
 class QuizService {
   
+  getNextId(){
+    return axios.get('/nextId').then((response) => response.data);
+  }
+
   /**
    * Get Max Id 
    */
 
-   // nå lokes det...
-  getMaxId(){
+   // GAMMEL
+  /*getMaxId(){
     return axios.get('/maxQuizId').then((response) => response.data);
-  }
+  }*/
   
   /**
    * Test that the class is imported correctly
