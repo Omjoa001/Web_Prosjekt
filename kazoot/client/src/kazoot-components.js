@@ -32,6 +32,8 @@ export class Home extends Component {
           <Button.Success onClick={() => { history.push('/newQuiz');}}>
             Ny quiz
           </Button.Success>
+          <Button.Success onClick={() => history.push('/quiz/edit')}>Endre quiz</Button.Success>
+          <Button.Success onClick={() => history.push('/quiz/new')}>New Quiz</Button.Success>
         </Card>
       </>
     );
@@ -47,142 +49,319 @@ export class Home extends Component {
  */
 export class NewQuiz extends Component {
   quiz = '';
-  hei = '';
+  title: string = '';
+  description: string = '';
+  question: string = '';
+  answ0 = '';
+  answ1 = '';
+  answ2 = '';
+  answ3 = '';
+  id: number = 0
+  categoryId: number = 0;
+  maxId: number = 0
+  iid: number = 0
+
+  newquestion: Array<{ id: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string}> = [
+    {
+      id: 0,
+      question: '',
+      answ0: '',
+      answ1: '',
+      answ2: '',
+      answ3: '',
+    }
+  ]
+
   render() {
     return (
       <>
         <Card title="New Quiz!">
-          <Row>
-            <Column width={3}>Quiz-title:</Column>
-            <Column>
-              <Form.Input
-                type="text"
-                onChange={(event) => (this.hei = event.currentTarget.value)}
-                value={this.hei}
-              ></Form.Input>
-            </Column>
-            <Column></Column>
-          </Row>
-          <Row>
-            <Column width={3}>Quiz-description:</Column>
-            <Column>
-              <Form.Input
-                type="text"
-                onChange={(event) => (this.hei = event.currentTarget.value)}
-                value={this.hei}
-              ></Form.Input>
-            </Column>
-            <Column></Column>
-          </Row>
-          <Row>
-            <Column width={3}>Quiz-Category:</Column>
-            <Column>
-              <Form.Input
-                type="text"
-                onChange={(event) => (this.quiz = event.currentTarget.value)}
-                value={this.quiz}
-              ></Form.Input>
-            </Column>
-            <Column></Column>
-          </Row>
           <Card>
             <Row>
-              <Column width={2}>Riktig:</Column>
+              <Column width={3}>Quiz-title:</Column>
               <Column>
                 <Form.Input
+                  placeholder='Quiz title'
                   type="text"
-                  placeholder="spørsmål"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
+                  value={this.title}
+                  onChange={(event) => (this.title = event.currentTarget.value)}
                 ></Form.Input>
-              </Column>
-              <Column>
-                <Button.Danger onClick={() => {}}>X</Button.Danger>
               </Column>
             </Row>
             <Row>
-              <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
-              </Column>
+              <Column width={3}>Quiz-Category:</Column>
               <Column>
-                <Form.Input
-                  type="text"
-                  placeholder="Svar1"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
-                ></Form.Input>
-              </Column>
-              <Column>
-                <Button.Danger>X</Button.Danger>
-              </Column>
-            </Row>
-            <Row>
-              <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
-              </Column>
-              <Column>
-                <Form.Input
-                  type="text"
-                  placeholder="Svar2"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
-                ></Form.Input>
-              </Column>
-              <Column>
-                <Button.Danger onClick={() => {}}>X</Button.Danger>
-              </Column>
-            </Row>
-            <Row>
-              <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
-              </Column>
-              <Column>
-                <Form.Input
-                  type="text"
-                  placeholder="Svar3"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
-                ></Form.Input>
-              </Column>
-              <Column>
-                <Button.Danger onClick={() => {}}>X</Button.Danger>
-              </Column>
-            </Row>
-            <Row>
-              <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
-              </Column>
-              <Column>
-                <Form.Input
-                  type="text"
-                  placeholder="Svar4"
-                  onChange={(event) => (this.quiz = event.currentTarget.value)}
-                  value={this.quiz}
-                ></Form.Input>
-              </Column>
-              <Column>
-                <Button.Danger onClick={() => {}}>X</Button.Danger>
+                  <select 
+                  name="Category" 
+                  value={this.categoryId}
+                  onChange={(event) => (this.categoryId = event.currentTarget.value)}
+                  >
+                      <option value="0">Velg en kategori</option>
+                      <option value="1">Matte</option>
+                      <option value="2">Fotball</option>
+                      <option value="3">Geografi</option>
+                      <option value="4">It</option>
+                      <option value="5">History</option>
+                  </select>  
               </Column>
             </Row>
             <Row>
               <Column>
-                <Button.Success onClick={() => {}}>+</Button.Success>
+                Quiz-Id:
+              </Column>
+              <Column>
+                <Form.Input value={this.maxId} disabled></Form.Input>
+              </Column>
+            </Row>
+            <Row>
+              <Column width={3}>Quiz-description:</Column>
+              <Column>
+                <Form.Textarea
+                  placeholder='Quiz description'
+                  type="text"
+                  value={this.description}
+                  onChange={(event) => (this.description = event.currentTarget.value)}
+                  row={10}
+                ></Form.Textarea>
               </Column>
             </Row>
           </Card>
-          <Row>
-            <Button.Success>Nytt spørsmål</Button.Success>
-          </Row>
-          <Row>
-            <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-            <Column>
-              <Button.Success onClick={() => {}}>Save</Button.Success>
-            </Column>
-          </Row>
+
+          {this.newquestion.map((q, index) => (
+          <Card key={q.id} title={'Spørsmål '+ (index+1)}>
+            <Row>
+              <Column width={2}>Riktig: {q.id}</Column>
+              <Column>
+                <Form.Input
+                    placeholder='Question'
+                    value={q.question}
+                    onChange={(event) => (q.question = event.currentTarget.value)}
+                ></Form.Input>
+              </Column>
+              <Column>
+                <Button.Danger onClick={() => {}}>X</Button.Danger>
+              </Column>
+            </Row>
+            <Row>
+              <Column width={2}>
+                <Form.Checkbox></Form.Checkbox>
+              </Column>
+              <Column>
+                <Form.Input
+                  placeholder='Answer 1'
+                  value={q.answ0}
+                  onChange={(event) => (q.answ0 = event.currentTarget.value)}
+                ></Form.Input>
+              </Column>
+              <Column>
+               <Button.Danger>X</Button.Danger>
+              </Column>
+            </Row>
+            <Row>
+              <Column width={2}>
+                <Form.Checkbox></Form.Checkbox>
+              </Column>
+              <Column>
+                <Form.Input
+                    placeholder='Answer 2'
+                    onChange={(event) => (q.answ1 = event.currentTarget.value)}
+                    value={q.answ1}
+                ></Form.Input>
+              </Column>
+              <Column>
+                <Button.Danger onClick={() => {}}>X</Button.Danger>
+              </Column>
+            </Row>
+            <Row>
+              <Column width={2}>
+                <Form.Checkbox></Form.Checkbox>
+              </Column>
+              <Column>
+                <Form.Input
+                    placeholder='Answer 3'
+                    value={q.answ2}
+                    onChange={(event) => (q.answ2 = event.currentTarget.value)}
+                ></Form.Input>
+              </Column>
+              <Column>
+                <Button.Danger onClick={() => {}}>X</Button.Danger>
+              </Column>
+            </Row>
+            <Row>
+              <Column width={2}>
+                <Form.Checkbox></Form.Checkbox>
+              </Column>
+              <Column>
+                <Form.Input
+                  placeholder='Answer 4'
+                  value={q.answ3}
+                  onChange={(event) => (q.answ3 = event.currentTarget.value)}
+                ></Form.Input>
+              </Column>
+              <Column>
+                <Button.Danger onClick={() => {console.log("funker ikke bro")}}>X</Button.Danger>
+              </Column>
+            </Row>
+            <Row>
+              <Column>
+                <Button.Success onClick={() => {console.log("funker ikke bro")}}>+</Button.Success>
+              </Column>
+            </Row>
+          </Card>
+          ))}
+          
+          <Card> 
+            <Row>
+              <Button.Success id="newquest" disabled={false} onClick={this.add}>Nytt spørsmål</Button.Success>
+            </Row>
+            <Row>
+              <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
+              <Column>
+                <Button.Success onClick={this.save}>Save</Button.Success>
+              </Column>
+            </Row>
+          </Card>
         </Card>
       </>
     );
   }
+
+ 
+
+  mounted(){
+    quizService.getMaxId().then((max) => (this.maxId = (max['MAX(id)']+ 1)));
+  }
+
+  add(){
+    if(this.newquestion.length >= 10 ){
+      console.log("stopppp");
+      Alert.danger("shii");
+      newquest.disabled =true
+    }
+    this.id = (this.id + 1);
+    this.newquestion.push(
+      {
+        id: this.id,
+        question: '',
+        answ0: '',
+        answ1: '',
+        answ2: '',
+        answ3: ''
+      }
+    )
+  }
+
+  createQuiz() {
+   // console.log(oo.value)
+    console.log(this.categoryId)
+    quizService
+      .createQuiz(this.title, this.description, this.categoryId)
+      .then((id) => history.push('/tasks/' + id))
+      .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message)); 
+  }
+
+  save() {
+    for (let i = 0; i < this.newquestion.length; i++){
+      console.log(this.newquestion[i]);
+    questionService
+      .createQuestion(this.maxId, this.newquestion[i].question, this.newquestion[i].answ0, this.newquestion[i].answ1, this.newquestion[i].answ2, this.newquestion[i].answ3)
+      .catch((error: Error) => Alert.danger('Error creating Question: ' + error.message)); 
+    }
+    console.log('save funksjon')
+  }
+}
+
+
+export class Questionside extends Component {
+    
+
+    render() {
+        return (
+            <>
+                <Row>
+                    <Column>
+                        Spørsmål: 1
+                    </Column>
+                    <Column> 
+                        <Form.Input placeholder="spørsmål"></Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger>Slett Spørsmål</Button.Danger>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        Riktig:
+                    </Column>
+                    <Column> 
+                        Svar:
+                    </Column>
+                    <Column>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        <Answerside/>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        <Answerside/>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        <Answerside/>
+                    </Column>
+                </Row>
+                <Row>
+                    <Column>
+                        <Answerside/>
+                    </Column>
+                </Row>
+                <Row>
+                    <Button.Success onClick={this.click} >Legg til svaralternativ</Button.Success>
+                </Row>
+            </>
+        );
+    }
+
+   click(){
+     console.log('kjørr')
+   }
+}
+
+export class Answerside extends Component {
+  answ0: string = '';
+
+    render() {
+        return(
+            <>
+                <Row >
+                    <Column>
+                        <Form.Checkbox></Form.Checkbox>
+                    </Column>
+                    <Column>
+                        <Form.Input 
+                        placeholder="svar"
+                        type="text"
+                        value={this.answ0}
+                        onChange={(event) => (this.answ0 = event.currentTarget.value)}
+                        >
+                        </Form.Input>
+                    </Column>
+                    <Column>
+                        <Button.Danger onClick={this.DelAnswer()}>⚽️</Button.Danger>
+                    </Column>
+                </Row>
+            </>
+        );
+    }
+
+
+    DelAnswer() {
+        //kommando som sletter dette svaralternativet
+    }
 }
 
 /**
@@ -484,11 +663,12 @@ export class EditQuiz extends Component {
           <Row>
             <Column width={3}>Quiz-Category:</Column>
             <Column>
-              <Form.Input
-                type="text"
-                onChange={(event) => (this.quiz = event.currentTarget.value)}
-                value={this.quiz}
-              ></Form.Input>
+                <select name="Category" id="Category">
+                    <option value="Matte">Matte</option>
+                    <option value="Fysikk">Fysikk</option>
+                    <option value="Geografi">Geografi</option>
+                    <option value="It">It</option>
+                </select>  
             </Column>
             <Column></Column>
           </Row>
@@ -496,12 +676,7 @@ export class EditQuiz extends Component {
             <Row>
               <Column width={2}>Riktig:</Column>
               <Column>
-                <Form.Input
-                  type="text"
-                  placeholder="spørsmål"
-                  onChange={(event) => (this.hei = event.currentTarget.value)}
-                  value={this.hei}
-                ></Form.Input>
+                    <Form.Input></Form.Input> 
               </Column>
               <Column>
                 <Button.Danger onClick={() => {}}>X</Button.Danger>
@@ -605,10 +780,16 @@ export class ListQuizzes extends Component {
   quizzes: QuizType[] = [];
   questions: QuestionType[] = [];
   categories: CategoryType[] = [];
+  maxId: number = 0;
 
   render() {
     return (
       <>
+        <Card title='Max id in Quizzes table'>
+          <Card>
+            {this.maxId}
+          </Card>
+        </Card>
         <Card title="Quizzes">
           {this.quizzes.map((quiz) => (
             <Card key={quiz.id} title={quiz.title}>
@@ -636,7 +817,7 @@ export class ListQuizzes extends Component {
                   <li>{question.answ1}</li>
                   <li>{question.answ2}</li>
                   <li>{question.answ3}</li>
-                </ul>
+                 </ul>
               </Column>
             </Card>
           ))}
@@ -652,7 +833,11 @@ export class ListQuizzes extends Component {
       </>
     );
   }
+
+
+
   mounted() {
+    quizService.getMaxId().then((max) => (this.maxId = max['MAX(id)']));
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
     questionService.getAllQuestions().then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
