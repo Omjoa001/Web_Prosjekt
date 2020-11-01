@@ -217,7 +217,7 @@ export class NewQuiz extends Component {
             <Row>
               <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
               <Column>
-                <Button.Success onClick={this.save}>Save</Button.Success>
+                <Button.Success onClick={this.createQuiz}>Save</Button.Success>
               </Column>
             </Row>
           </Card>
@@ -236,7 +236,6 @@ export class NewQuiz extends Component {
     if(this.newquestion.length >= 10 ){
       console.log("stopppp");
       Alert.danger("shii");
-      newquest.disabled =true
     }
     this.id = (this.id + 1);
     this.newquestion.push(
@@ -258,16 +257,13 @@ export class NewQuiz extends Component {
       .createQuiz(this.title, this.description, this.categoryId)
       .then((id) => history.push('/tasks/' + id))
       .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message)); 
-  }
 
-  save() {
-    for (let i = 0; i < this.newquestion.length; i++){
-      console.log(this.newquestion[i]);
-    questionService
-      .createQuestion(this.maxId, this.newquestion[i].question, this.newquestion[i].answ0, this.newquestion[i].answ1, this.newquestion[i].answ2, this.newquestion[i].answ3)
-      .catch((error: Error) => Alert.danger('Error creating Question: ' + error.message)); 
-    }
-    console.log('save funksjon')
+      for (let i = 0; i < this.newquestion.length; i++){
+        console.log(this.newquestion[i]);
+      questionService
+        .createQuestion(this.maxId, this.newquestion[i].question, this.newquestion[i].answ0, this.newquestion[i].answ1, this.newquestion[i].answ2, this.newquestion[i].answ3)
+        .catch((error: Error) => Alert.danger('Error creating Question: ' + error.message)); 
+      }
   }
 }
 
@@ -807,6 +803,7 @@ export class ListQuizzes extends Component {
             <Card key={question.id} title={question.question}>
               <Column>
                 <Row>Question Id: {question.id}</Row>
+                <Row>quizId: {question.quizId}</Row>
                 <Row>
                   {' '}
                   <br></br>
