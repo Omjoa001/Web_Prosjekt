@@ -9,12 +9,20 @@ import quizService, { type QuizType, type QuestionType, type CategoryType } from
  */
 const router: express$Router<> = express.Router();
 
+router.get('/nextId', (request, response) => {
+  quizService
+    .getNextId()
+    .then((rows) => response.send(rows))
+    .catch((error: Error) => response.status(500).send(error));
+})
+
+/* GAMMEL
 router.get('/maxQuizId', (request, response) => {
   quizService
     .getMaxId()
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
-})
+})*/
 
 router.get('/quizzes', (request, response) => {
   quizService

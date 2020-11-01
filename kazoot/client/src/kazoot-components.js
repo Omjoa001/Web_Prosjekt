@@ -58,8 +58,7 @@ export class NewQuiz extends Component {
   answ3 = '';
   id: number = 0
   categoryId: number = 0;
-  maxId: number = 0
-  iid: number = 0
+  nextId: number = 0;
 
   newquestion: Array<{ id: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string}> = [
     {
@@ -110,7 +109,7 @@ export class NewQuiz extends Component {
                 Quiz-Id:
               </Column>
               <Column>
-                <Form.Input value={this.maxId} disabled></Form.Input>
+                <Form.Input value={this.nextId} disabled></Form.Input>
               </Column>
             </Row>
             <Row>
@@ -226,10 +225,9 @@ export class NewQuiz extends Component {
     );
   }
 
- 
 
   mounted(){
-    quizService.getMaxId().then((max) => (this.maxId = (max['MAX(id)']+ 1)));
+    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
   }
 
   add(){
@@ -261,9 +259,17 @@ export class NewQuiz extends Component {
       for (let i = 0; i < this.newquestion.length; i++){
         console.log(this.newquestion[i]);
       questionService
-        .createQuestion(this.maxId, this.newquestion[i].question, this.newquestion[i].answ0, this.newquestion[i].answ1, this.newquestion[i].answ2, this.newquestion[i].answ3)
+        .createQuestion(this.nextId, this.newquestion[i].question, this.newquestion[i].answ0, this.newquestion[i].answ1, this.newquestion[i].answ2, this.newquestion[i].answ3)
         .catch((error: Error) => Alert.danger('Error creating Question: ' + error.message)); 
       }
+  }
+
+  delQuiz(){
+
+  }
+
+  del(){
+
   }
 }
 
@@ -776,16 +782,16 @@ export class ListQuizzes extends Component {
   quizzes: QuizType[] = [];
   questions: QuestionType[] = [];
   categories: CategoryType[] = [];
-  maxId: number = 0;
+  nextId: number = 0;
 
   render() {
     return (
       <>
         <Card title='Max id in Quizzes table'>
           <Card>
-            {this.maxId}
+            <Row>{this.nextId}</Row>          
+             </Card>
           </Card>
-        </Card>
         <Card title="Quizzes">
           {this.quizzes.map((quiz) => (
             <Card key={quiz.id} title={quiz.title}>
@@ -834,7 +840,7 @@ export class ListQuizzes extends Component {
 
 
   mounted() {
-    quizService.getMaxId().then((max) => (this.maxId = max['MAX(id)']));
+    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
     questionService.getAllQuestions().then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
