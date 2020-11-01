@@ -1,5 +1,5 @@
 // @flow
-import express from 'express';
+import express, { request } from 'express';
 import quizService, { type QuizType, type QuestionType, type CategoryType } from './kazoot-service';
 //import questionService, { type Question } from './kazoot-service';
 //import categoryService, { type Category } from './kazoot-service';
@@ -8,6 +8,13 @@ import quizService, { type QuizType, type QuestionType, type CategoryType } from
  * Express router containing task methods.ss
  */
 const router: express$Router<> = express.Router();
+
+router.get('/maxQuizId', (request, response) => {
+  quizService
+    .getMaxId()
+    .then((rows) => response.send(rows))
+    .catch((error: Error) => response.status(500).send(error));
+})
 
 router.get('/quizzes', (request, response) => {
   quizService
@@ -37,6 +44,16 @@ router.get('/quizzes', (request, response) => {
     } else {response.status(400).send('Missing QUIZ information');}
 });
 
+router.post('/questions', (request, response) => {
+  const data = request.body;
+  if(data && typeof data.question == 'string' && data.question.length != 0 && typeof data.quizId == 'number' && typeof data.answ0 == 'string' && typeof data.answ1 == 'string' && typeof data.answ2 == 'string' && typeof data.answ3 == 'string'){
+    quizService
+      .createQuestions(data.quizId, data.question, data.answ0, data.answ1, data.answ2, data.answ3)
+      .then((id) => response.send({ id: id }))
+      .catch((error: Error) => response.status(500).send(error));
+    } else {response.status(400).send('Missing QUIZ information');}
+})
+
 // router.delete('/quizzes/:id', (request, response) => {
 //   quizService
 //     .delete(Number(request.params.id))
@@ -61,7 +78,6 @@ router.get('/questions/:id', (request, response) => {
 
 
 router.get('/categories', (request, response) => {
-  console.log("list kategorier i kazoot-router")
     quizService
       .getAllCategories()
       .then((rows) => response.send(rows))

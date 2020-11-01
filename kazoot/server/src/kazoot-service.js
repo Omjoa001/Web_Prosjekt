@@ -24,6 +24,9 @@ export type CategoryType = {
   category: string,
 }
 
+
+
+
 /*
 export type Category = {
   id: number,
@@ -31,6 +34,18 @@ export type Category = {
 }*/
 
 class QuizService {
+
+  getMaxId(){
+    console.log('utenfor')
+    return new Promise<{}>((resolve, reject) => {
+      pool.query('SELECT MAX(id) FROM Quizzes', (error, results) => {
+        if (error) return reject(error);
+        resolve(results[0])
+        console.log('kjørr')
+      })
+    })
+  }
+
   /**
    * HENTER ALLE/EN, SLETTER OG LAGER QUIZZER
    */
@@ -72,13 +87,15 @@ class QuizService {
 
 
   // ikke ferdig 
-  createQuestions(title: string, description: string, category: string) {
+  createQuestions(quizId: number, question: string, answ0: string , answ1: string, answ2: string, answ3: string) {
+    console.log("utenfor create question - router")
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Quizzes SET title=?, description=?, category=?', [title, description, category], (error, results) => {
+      pool.query('INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?', [quizId, question, answ0, answ1, answ2, answ3], (error, results) => {
         if (error) return reject(error);
         if (!results.insertId) return reject(new Error('No row inserted'));
 
         resolve(Number(results.insertId));
+        console.log('inni create qustion - reuter')
       });
     });
   }
@@ -123,6 +140,9 @@ class QuizService {
       });
     });
   }
+
+
+   
 }
 
 class QuestionService {

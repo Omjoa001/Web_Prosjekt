@@ -31,7 +31,8 @@ export type Quiz = {
   description: string,
 }
 
-
+//maxId: number = 0;
+ 
 /**
  * Service to retrieve and manage questions (not entire quizzes).
  */
@@ -58,9 +59,21 @@ class QuestionService {
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
   
-  createQuestion() {
-    
+
+  createQuestion(quizId: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string) {
+    console.log("create question")
+    return axios
+    .post<{}, {id: number}>('/questions', {
+      quizId: quizId,
+      question: question,
+      answ0: answ0,
+      answ1: answ1,
+      answ2: answ2,
+      answ3: answ3,
+    })
+    .then((response) => response.data.id)
   }
+
 
 }
 
@@ -69,6 +82,16 @@ class QuestionService {
  * Class to manage quizzes.
  */
 class QuizService {
+  
+  /**
+   * Get Max Id 
+   */
+
+   // nå lokes det...
+  getMaxId(){
+    return axios.get('/maxQuizId').then((response) => response.data);
+  }
+  
   /**
    * Test that the class is imported correctly
    */
