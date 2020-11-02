@@ -28,8 +28,13 @@ export class Home extends Component {
         </Card>
         <Card title="Route test">
           <Button.Success onClick={() => history.push('/BrowseQuizzes')}>
-            Browse Quizzes </Button.Success>
-          <Button.Success onClick={() => { history.push('/newQuiz');}}>
+            Browse Quizzes{' '}
+          </Button.Success>
+          <Button.Success
+            onClick={() => {
+              history.push('/newQuiz');
+            }}
+          >
             Ny quiz
           </Button.Success>
         </Card>
@@ -269,7 +274,6 @@ export class BrowseQuizzes extends Component {
   filtered: Quiz[] = [];
   searchterm: string = '';
 
-
   // categories = new Map([
   //   [1, 'Sport'],
   //   [2, 'Math'],
@@ -278,16 +282,68 @@ export class BrowseQuizzes extends Component {
   //   [5, 'Yo mama'],
   // ]);
 
-  // categorySelection() {
-  //   jsx: [] = [];
-  //   for (const category of this.categories.values()) {
-  //     jsx.push(<div>{category}</div>);
+  categories = [
+    { id: 1, name: 'Sport', checked: false },
+    { id: 2, name: 'Math', checked: false },
+    { id: 3, name: 'Geography', checked: false },
+    { id: 4, name: 'History', checked: false },
+    { id: 5, name: 'Yo Mama', checked: false },
+  ];
+
+  checkedCategories: [] = [];
+
+  renderCategories() {
+    let jsx: [] = [];
+    this.categories.forEach((category) => {
+      jsx.push(
+        <div>
+          <Form.Checkbox onChange={(category) => this.categoryChecked(category.id)} />
+          {category.name}
+        </div>
+      );
+    });
+    {
+      console.log(this.categories);
+    }
+    return jsx;
+  }
+
+  // categoryChecked(key) {
+  //   if (this.checkedCategories.includes(key)) {
+  //     console.log(`removing ${key} from checkedCats`);
+  //     const index = this.checkedCategories.indexOf(key);
+  //     if (index > -1) {
+  //       this.checkedCategories.splice(index, 1);
+  //     }
+  //   } else {
+  //     console.log(`adding ${key} to checkedCats`);
+  //     this.checkedCategories.push(key);
   //   }
-  //   return jsx;
   // }
 
+  categoryChecked(id) {
+    this.categories.forEach((category) => {
+      if (category.id == id) {
+        console.log(`Set category with id ${id} to ${category.checked}`);
+      }
+    });
+  }
+
+  categoryFilter() {
+    if (this.checkedCategories.length == 0) {
+      console.log(`catfilter: ${this.checkedCategories}`);
+      return this.quizzes;
+    } else {
+      return this.quizzes.filter((quiz) => {
+        console.log(`catfilter: ${this.checkedCategories}`);
+        this.checkedCategories.includes(quiz.category);
+      });
+    }
+  }
+
   search() {
-    return this.quizzes.filter(
+    const filteredQuizzes = this.categoryFilter();
+    return filteredQuizzes.filter(
       (quiz) =>
         quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
         quiz.description.toLowerCase().includes(this.searchterm.toLowerCase())
@@ -302,6 +358,7 @@ export class BrowseQuizzes extends Component {
     return (
       <>
         <Card title="Categories">
+          <div>{this.renderCategories()}</div>
         </Card>
 
         <Card title="Search">
@@ -315,7 +372,7 @@ export class BrowseQuizzes extends Component {
                 onChange={this.editSearchTerm}
               ></Form.Input>
             </div>
-          <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
+            <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
           </Row>
         </Card>
 
