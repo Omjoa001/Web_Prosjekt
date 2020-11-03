@@ -476,19 +476,26 @@ export class BrowseQuizzes extends Component {
     let jsx: [] = [];
     this.categories.forEach((category) => {
       jsx.push(
-        <div>
+        <Column>
           <Form.Checkbox
             onChange={(event) => {
               category.checked = event.target.checked;
             }}
           />
           {category.name}
-        </div>
+        </Column>
       );
     });
     {
       console.log(`rendercats: ${this.categories}`);
     }
+
+    // jsx = (
+    //   <div style={{ margin: '25px' }}>
+    //     <Row>{jsx}</Row>
+    //   </div>
+    // );
+
     return jsx;
   }
 
