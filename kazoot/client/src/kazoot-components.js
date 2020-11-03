@@ -608,7 +608,7 @@ export class QuizTileGrid extends Component {
         if (quiz != undefined) {
           elements.push(
             <Column>
-              <Quiz title={quiz.title} id={quiz.id} description={quiz.description}></Quiz>
+              <Quiz quiz={quiz}></Quiz>
             </Column>
           );
         }
@@ -626,7 +626,7 @@ export class QuizTileGrid extends Component {
     for (const quiz of row) {
       jsx.push(
         <Column>
-          <Quiz id={quiz.id} title={quiz.title} description={quiz.description}></Quiz>
+          <Quiz quiz={quiz}></Quiz>
         </Column>
       );
     }
@@ -641,14 +641,14 @@ export class QuizTileGrid extends Component {
  * TODO: Make this accept quiz objects instead.
  */
 export class Quiz extends Component {
-  title: string = '';
-  id: number = 0;
-  description: string = '';
+  title: string = this.props.quiz.title;
+  id: number = this.props.quiz.id
+  description: string = this.props.quiz.description
 
   playButton() {
-    console.log(`Playing quiz ${this.props.id}`);
+    console.log(`Playing quiz ${this.id}`);
     //TODO: Link to quiz play site.
-    history.push('/playQuiz/' + this.props.id);
+    history.push('/playQuiz/' + this.id);
   }
 
   editButton() {
@@ -658,8 +658,8 @@ export class Quiz extends Component {
   render() {
     return (
       <>
-        <TileCard title={this.props.title}>
-          {this.props.description}
+        <TileCard title={this.title}>
+          {this.description}
           <hr />
           <Row>
             <Column left>
@@ -678,8 +678,6 @@ export class Quiz extends Component {
   }
 
   mounted() {
-    // quizService.getQuizInfo(this.props.id).then((quiz) => (this.props.title = quiz.title));
-    this.description = 'test';
   }
 }
 
