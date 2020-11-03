@@ -407,9 +407,9 @@ export class Quiz extends Component {
   }
 
   editButton() {
-    history.push('/editQuiz');
+    history.push('/editQuiz/' + this.props.id);
   }
-
+  
   render() {
     return (
       <>
