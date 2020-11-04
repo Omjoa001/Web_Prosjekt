@@ -63,7 +63,7 @@ export class NewQuiz extends Component {
   categoryId: number = 0;
   nextId: number = 0;
 
-  // questions: QuestionType[];
+  questions: QuestionType[] = [];
 
   // placeholderQuestion: QuestionType = {
   //   id,
@@ -99,6 +99,14 @@ export class NewQuiz extends Component {
     },
   ];
 
+  // This could handle the state of the questions array based on
+  // what the component returns
+  renderQuestions() {
+    let jsx: [] = [];
+    jsx.push(<NewQuizQuestion title="Question component thingy"></NewQuizQuestion>);
+    return jsx;
+  }
+
   render() {
     return (
       <>
@@ -110,7 +118,7 @@ export class NewQuiz extends Component {
             nextId={this.nextId}
           ></NewQuizInfoCard>
 
-          <NewQuizQuestion title="heihoitestyo"></NewQuizQuestion>
+          {this.renderQuestions()}
 
           {this.newquestion.map((q, index) => (
             <Card key={q.id} title={'Spørsmål ' + (index + 1)}>
