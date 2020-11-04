@@ -13,7 +13,7 @@ class Menu extends Component {
       <NavBar brand="Kazoot">
         <NavBar.Link to="/BrowseQuizzes">Browse Quizzes</NavBar.Link>
         <NavBar.Link to="/quiz/new">New quiz</NavBar.Link>
-        <NavBar.Link to="/editQuiz">TESTING: Endre quiz</NavBar.Link>
+    {/*<NavBar.Link to="/editQuiz">TESTING: Endre quiz</NavBar.Link>*/}
         <NavBar.Link to="/listQuizzes">TESTING: Kviss</NavBar.Link>
       </NavBar>
     );
@@ -33,6 +33,7 @@ ReactDOM.render(
       <Route exact path="/BrowseQuizzes" component={BrowseQuizzes}></Route>
       <Route exact path="/quiz/new" component={NewQuiz}></Route>
       <Route exact path="/editQuiz" component={EditQuiz}></Route>
+      <Route exact path="/quiz/:id(\d+)/edit" component={EditQuiz}></Route>
       <Route exact path="/listQuizzes" component={ListQuizzes}></Route>
       <Route exact path="/playQuiz" component={playQuiz}></Route>
       </ div>

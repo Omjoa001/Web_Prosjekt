@@ -34,7 +34,7 @@ router.get('/quizzes', (request, response) => {
  router.get('/quizzes/:id', (request, response) => {
    const id = Number(request.params.id);
    quizService
-     .get(id)
+     .getQuiz(id)
      .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
      .catch((error: Error) => response.status(500).send(error));
  });
@@ -69,6 +69,7 @@ router.post('/questions', (request, response) => {
 //     .catch((error: Error) => response.status(500).send(error));
 // });
 
+// funker 
 router.get('/questions', (request, response) => {
   quizService
     .getAllQuestions()
@@ -76,6 +77,8 @@ router.get('/questions', (request, response) => {
     .catch((error: Error) => response.status(500).send(error));
 });
 
+
+// funker ikke 
 router.get('/questions/:id', (request, response) => {
   const id = Number(request.params.id);
   quizService
@@ -83,6 +86,15 @@ router.get('/questions/:id', (request, response) => {
     .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
     .catch((error: Error) => response.status(500).send(error));
 });
+
+// henter questions til en quiz
+router.get('/questions/:quizId', (request, response) => {
+  const quizId = Number(request.params.id)
+  quizService
+    .getQuizQuestions(quizId)
+    .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
+    .catch((error: Error) => response.status(500).send(error));
+})
 
 
 router.get('/categories', (request, response) => {

@@ -54,9 +54,12 @@ class QuestionService {
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
-  getQuestion() {
+  /**
+   * henter spørsmål til quiz med id 
+   */
+  getQuizQuestions(quizId: number) {
     console.log("her skal enkelte spm komme")
-    return axios.get<QuestionType[]>('/questions').then((response) => response.data);
+    return axios.get<QuestionType[]>('/questions/' + quizId).then((response) => response.data);
   }
   
 
@@ -103,7 +106,7 @@ class QuizService {
     console.log('hey');
   }
 
-  get(id: number) {
+  getQuiz(id: number) {
     return axios.get<QuizType>('/quizzes/' + id).then((response) => response.data);
   }
 
