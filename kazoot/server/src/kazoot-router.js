@@ -9,6 +9,7 @@ import quizService, { type QuizType, type QuestionType, type CategoryType } from
  */
 const router: express$Router<> = express.Router();
 
+// 
 router.get('/nextId', (request, response) => {
   quizService
     .getNextId()

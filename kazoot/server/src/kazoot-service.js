@@ -25,8 +25,6 @@ export type CategoryType = {
 }
 
 
-
-
 /*
 export type Category = {
   id: number,

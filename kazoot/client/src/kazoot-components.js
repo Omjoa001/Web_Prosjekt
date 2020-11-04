@@ -854,6 +854,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
 
 
   render() {
+    if (questions[0] = undefined) return <div>loading</div>
     return (
       <>
         <Card title="Edit Quiz!" >
@@ -911,7 +912,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
             </Row>
           </Card>
 
-          {/*{this.questions.map((q, index) => (
+          {this.questions.map((q, index) => (
             <Card key={q.id} title={'Spørsmål ' + (index + 1)}>
               <Row>
                 <Column width={2}>Riktig: {q.id}</Column>
@@ -923,8 +924,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 ></Form.Input>
               </Column>
               <Column>
-                {/*<Button.Danger onClick={() => {}}>X</Button.Danger>*/}
-                {/*
               </Column>
             </Row>
             <Row>
@@ -939,7 +938,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 ></Form.Input>
               </Column>
               <Column>
-               {/*<Button.Danger>X</Button.Danger>*
               </Column>
             </Row>
             <Row>
@@ -954,7 +952,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 ></Form.Input>
               </Column>
               <Column>
-               {/*<Button.Danger>X</Button.Danger>*
                </Column>
             </Row>
             <Row>
@@ -969,7 +966,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 ></Form.Input>
               </Column>
               <Column>
-               {/*<Button.Danger>X</Button.Danger>*
               </Column>
             </Row>
             <Row>
@@ -984,10 +980,8 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 ></Form.Input>
               </Column>
               <Column>
-                {/*<Button.Danger>X</Button.Danger>
               </Column>
-            </Row>
-                 
+            </Row>  
             <Row>
               <Column>
                 <Button.Success onClick={() => {console.log("funker ikke bro")}}>Legg til et svaralternativ?? nei!</Button.Success>
@@ -997,7 +991,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               </Column>
             </Row>
           </Card>
-          ))} */}
+          ))}
 
           <Card>
             <Row>
@@ -1026,9 +1020,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     questionService
       .getQuizQuestions(this.props.match.params.id)
       .then((questions) => (this.questions = questions))
-      .catch((error: Error) => Alert.danger('Error getting quiz: ' + error.message));
-
-    
+      .catch((error: Error) => Alert.danger('Error getting quiz: ' + error.message)); // trenger kanskje ikke 
   }
 
   saveQuiz(){
