@@ -61,19 +61,31 @@ export class NewQuiz extends Component {
   newquestion: Array<{
     id: number,
     question: string,
-    answ0: string,
-    answ1: string,
-    answ2: string,
-    answ3: string,
   }> = [
     {
       id: 0,
       question: '',
-      answ0: '',
-      answ1: '',
-      answ2: '',
-      answ3: '',
-    },
+      answ0: {
+        id: 0,
+        ans: '',
+        bool: false
+      },
+      answ1: {
+        id: 0,
+        ans: '',
+        bool: false
+      },
+      answ2: {
+        id: 0,
+        ans: '',
+        bool: false
+      },
+      answ3: {
+        id: 0,
+        ans: '',
+        bool: false
+      }
+    }
   ];
 
   render() {
@@ -146,7 +158,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -161,7 +173,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -176,7 +188,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -191,7 +203,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
