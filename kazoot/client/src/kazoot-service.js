@@ -119,7 +119,7 @@ class QuizService {
   createQuiz(title: string, description: string, categoryId: number) {
     console.log('service1')  
     return axios
-      .post<{}, {id: number}>('/quizzes', {
+        .post<{}, {id: number}>('/quizzes', {
         title: title,
         description: description,
         categoryId: categoryId,
