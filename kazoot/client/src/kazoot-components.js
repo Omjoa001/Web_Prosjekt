@@ -684,6 +684,7 @@ export class playQuiz extends Component {
     quizService.get(this.id).then((q) => (this.quiz = q));
     questionService.getQuestion(this.id).then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
+    console.log(this.questions);
   }
 }
 
