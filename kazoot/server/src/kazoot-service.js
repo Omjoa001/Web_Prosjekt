@@ -134,7 +134,7 @@ class QuizService {
 
   getQuestion(id: number) {
     return new Promise<?QuestionType>((resolve, reject) => {
-      pool.query('SELECT * FROM Questions WHERE id = ?', [id], (error, results: QuestionType[]) => {
+      pool.query('SELECT * FROM Questions WHERE id = ?', [id], (error, results: QuestionType) => {
         if (error) return reject(error);
 
         resolve(results[0]);

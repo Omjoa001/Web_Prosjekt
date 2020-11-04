@@ -54,9 +54,9 @@ class QuestionService {
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
-  getQuestion() {
+  getQuestion(id: number) {
     console.log("her skal enkelte spm komme")
-    return axios.get<QuestionType[]>('/questions').then((response) => response.data);
+    return axios.get<QuestionType>('/questions/' + id).then((response) => response.data);
   }
   
 
