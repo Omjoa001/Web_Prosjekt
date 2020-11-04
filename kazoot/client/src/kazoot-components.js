@@ -53,14 +53,9 @@ export class Home extends Component {
  * Component which renders the New Quiz page.
  */
 export class NewQuiz extends Component {
-  quiz = '';
   title: string = '';
   description: string = '';
-  question: string = '';
-  answ0 = '';
-  answ1 = '';
-  answ2 = '';
-  answ3 = '';
+  
   id: number = 0;
   categoryId: number = 0;
   nextId: number = 0;
@@ -153,7 +148,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
+                <Form.Checkbox disabled></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -168,7 +163,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
+                <Form.Checkbox disabled></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -183,7 +178,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
+                <Form.Checkbox disabled></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -814,7 +809,10 @@ export class EditQuiz extends Component {
     );
   }
 
-  mounted() {}
+  mounted() {
+    questionService
+      .get()
+  }
 
   button() {
     console.log('LOL');
