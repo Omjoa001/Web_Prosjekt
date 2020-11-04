@@ -55,8 +55,6 @@ export class Home extends Component {
 export class NewQuiz extends Component {
   title: string = '';
   description: string = '';
-  
-  id: number = 0;
   categoryId: number = 0;
   nextId: number = 0;
 
@@ -143,7 +141,7 @@ export class NewQuiz extends Component {
                 ></Form.Input>
               </Column>
               <Column>
-                <Button.Danger onClick={() => {}}>X</Button.Danger>
+                {/*<Button.Danger onClick={() => {}}>X</Button.Danger>*/}
               </Column>
             </Row>
             <Row>
@@ -193,7 +191,7 @@ export class NewQuiz extends Component {
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox></Form.Checkbox>
+                <Form.Checkbox disabled></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -211,7 +209,7 @@ export class NewQuiz extends Component {
                 <Button.Success onClick={() => {console.log("funker ikke bro")}}>Legg til et svaralternativ?? nei!</Button.Success>
               </Column>
               <Column>
-                <Button.Danger onClick={this.delQuestion}>Slett Quiz</Button.Danger>
+                <Button.Danger onClick={this.delQuestion}>Delete question</Button.Danger>
               </Column>
             </Row>
           </Card>
@@ -220,7 +218,7 @@ export class NewQuiz extends Component {
           <Card>
             <Row>
               <Button.Success id="newquest" disabled={false} onClick={this.add}>
-                Nytt spørsmål
+                New question
               </Button.Success>
             </Row>
             <Row>
