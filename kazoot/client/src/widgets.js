@@ -104,6 +104,21 @@ export class TileCard extends Component<{ title?: React.Node, children?: React.N
   }
 }
 
+export class QuestionCard extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card" style={{ width: '50rem' }}>
+        <div className="card-body" align="center">
+          <h5 className="card-title">{this.props.title}</h5>
+          <div className="card-text">{this.props.children}</div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
+
 /**
  * Renders a row using Bootstrap classes.
  */
@@ -137,7 +152,7 @@ export class Column extends Component<{ width?: number, right?: boolean, childre
  */
 class ButtonSuccess extends Component<{
   width?: number,
-  onClick: () => mixed,
+  onClick?: () => mixed,
   small?: boolean,
   children?: React.Node,
 }> {
@@ -159,7 +174,7 @@ class ButtonSuccess extends Component<{
  */
 class ButtonDanger extends Component<{
   width?: number,
-  onClick: () => mixed,
+  onClick?: () => mixed,
   small?: boolean,
   children?: React.Node,
 }> {
@@ -180,7 +195,7 @@ class ButtonDanger extends Component<{
  * Renders a light button using Bootstrap styles.
  */
 class ButtonLight extends Component<{
-  onClick: () => mixed,
+  onClick?: () => mixed,
   small?: boolean,
   children?: React.Node,
 }> {
@@ -198,12 +213,59 @@ class ButtonLight extends Component<{
 }
 
 /**
+ * Renders an Outline Primary button using Bootstrap styles.
+ * This button is white with a blue outline.
+ * It gets filled blue when hovered.
+ */
+class ButtonOutlinePrimary extends Component<{
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+      <button
+        type="button"
+        className={'btn btn-outline-primary' + (this.props.small ? ' btn-sm py-0' : '')}
+        onClick={this.props.onClick}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
+
+/**
+ * Renders a Primary button using Bootstrap styles.
+ * This button is blue.
+ */
+class ButtonPrimary extends Component<{
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+      <button
+        type="button"
+        className={'btn btn-primary' + (this.props.small ? ' btn-sm py-0' : '')}
+        onClick={this.props.onClick}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
+
+/**
  * Renders a button using Bootstrap styles.
  */
 export class Button {
   static Success = ButtonSuccess;
   static Danger = ButtonDanger;
   static Light = ButtonLight;
+  static OutlinePrimary = ButtonOutlinePrimary;
+  static Primary = ButtonPrimary;
 }
 
 /**
@@ -251,10 +313,10 @@ class FormLabel extends Component<{ children?: React.Node }> {
 /**
  * Renders a form input using Bootstrap styles.
  */
-class FormInput extends Component<{
-  type: string,
-  value: React.Node,
-  onChange: (SyntheticEvent<HTMLInputElement>) => mixed,
+ class FormInput extends Component<{
+  type?: string,
+  value?: React.Node,
+  onChange?: (SyntheticEvent<HTMLInputElement>) => mixed,
 }> {
   render() {
     // ...rest will contain extra passed attributes such as disabled, required, width, height, pattern
@@ -291,8 +353,8 @@ class FormTextarea extends React.Component<{
  * Renders a form checkbox using Bootstrap styles.
  */
 class FormCheckbox extends Component<{
-  checked: React.Node,
-  onChange: (SyntheticEvent<HTMLInputElement>) => mixed,
+  checked?: React.Node,
+  onChange?: (SyntheticEvent<HTMLInputElement>) => mixed,
 }> {
   render() {
     // ...rest will contain extra passed attributes such as disabled, required, width, height, pattern
