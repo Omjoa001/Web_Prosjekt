@@ -263,7 +263,9 @@ export class NewQuiz extends Component {
 export class NewQuizQuestion extends Component {
   title: string = '';
   questionText: string = '';
-  correct: [] = [1, 2, 3];
+  correct: string[] = [];
+  incorrect: string[] = [];
+  numCorrect: number = 0;
   answers: AnswerType[] = [];
 
   mounted() {
@@ -279,20 +281,11 @@ export class NewQuizQuestion extends Component {
     console.log(`answers: ${this.answers}`);
   }
 
-  // <Row>
-  //   <Column width={2}>
-  //     <Form.Checkbox></Form.Checkbox>
-  //   </Column>
-  //   <Column>
-  //     <Form.Input
-  //       placeholder="Answer 1"
-  //       value={q.answ0}
-  //       onChange={(event) => (q.answ0 = event.currentTarget.value)}
-  //     ></Form.Input>
-  //   </Column>
-  //   <Column>{/*<Button.Danger>X</Button.Danger>*/}</Column>
-  // </Row>
-
+  /**
+   * Generates each answer with checkbox etc.
+   * The output varies based on how many answers there are for
+   * a given question:
+   */
   renderAnswers() {
     let jsx: [] = [];
 
@@ -325,12 +318,15 @@ export class NewQuizQuestion extends Component {
     return jsx;
   }
 
+  /**
+   * Add number of correct answers to the first column
+   */
   render() {
     return (
       <>
         <Card title={this.title}>
           <Row>
-            <Column width={2}>Riktig: {this.correct.length}</Column>
+            <Column width={2}>Correct: {}</Column>
             <Column>
               <Form.Input
                 placeholder="Question"
@@ -341,8 +337,8 @@ export class NewQuizQuestion extends Component {
               ></Form.Input>
             </Column>
           </Row>
+          {this.renderAnswers()}
         </Card>
-        <Card>{this.renderAnswers()}</Card>
       </>
     );
   }
