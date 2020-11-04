@@ -33,7 +33,7 @@ ReactDOM.render(
       <Route exact path="/" component={Home} />
       <Route exact path="/BrowseQuizzes" component={BrowseQuizzes}></Route>
       <Route exact path="/newQuiz" component={NewQuiz}></Route>
-      <Route exact path="/editQuiz/:id" component={EditQuiz}></Route>
+      <Route exact path="/editQuiz/:id" component={EditQuiz}></Route>    
       <Route exact path="/listQuizzes" component={ListQuizzes}></Route>
       <Route exact path="/playQuiz/:id" component={playQuiz}></Route>
       </ div>

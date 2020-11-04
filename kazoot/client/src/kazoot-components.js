@@ -440,12 +440,16 @@ export class Quiz extends Component {
 }
 
 export class playQuiz extends Component {
+  id= ''
   render() {
     return (
       <>
-    <Card title="Play Quiz"></Card>
+    <Card title="Play Quiz">{this.id}</Card>
     </>
     )
+  }
+  mounted() {
+    this.id = this.props.match.params.id;
   }
 }
 
