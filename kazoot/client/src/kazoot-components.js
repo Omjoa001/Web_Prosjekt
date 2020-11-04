@@ -382,81 +382,95 @@ export class Answerside extends Component {
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-  quizzes: Array<{ id: number, title: string, description: string }> = [
-    {
-      id: 1,
-      title: 'Sportsquiz',
-      description: 'woowowowoowow',
-      category: 1,
-    },
-    {
-      id: 2,
-      title: 'Mattequiz',
-      description: 'wewewewewe',
-      category: 2,
-    },
-    {
-      id: 3,
-      title: 'Geografiquiz',
-      description: 'wuwuwuwuwu',
-      category: 3,
-    },
-    {
-      id: 4,
-      title: 'Historiequiz',
-      description: 'wewewowow',
-      category: 4,
-    },
-    {
-      id: 5,
-      title: 'Noe rart noe',
-      description:
-        'long ass description. This description is multiple lines long. It is huge. Waow',
-      category: 5,
-    },
-    {
-      id: 6,
-      title: 'quiz 6',
-      description: 'kjdskad',
-      category: 1,
-    },
-    {
-      id: 7,
-      title: 'quiz 7',
-      description: 'hdsoafiosaj',
-      category: 1,
-    },
-    {
-      id: 8,
-      title: 'quiz 8',
-      description: 'jfkdlsajflkdsafø',
-      category: 1,
-    },
-    {
-      id: 9,
-      title: 'quiz 9',
-      description: 'jsidjaidsaj',
-      category: 1,
-    },
-    {
-      id: 10,
-      title: 'quiz 10',
-      description: 'sljdskal',
-      category: 1,
-    },
-    {
-      id: 11,
-      title: 'quiz 11',
-      description: 'jdksaljdskaljds',
-      category: 1,
-    },
-    {
-      id: 12,
-      title: 'quiz 12',
-      description: 'jdjskaldjskal',
-      category: 1,
-    },
-  ];
+  // quizzes: Array<{ id: number, title: string, description: string }> = [
+  //   {
+  //     id: 1,
+  //     title: 'Sportsquiz',
+  //     description: 'woowowowoowow',
+  //     category: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Mattequiz',
+  //     description: 'wewewewewe',
+  //     category: 2,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Geografiquiz',
+  //     description: 'wuwuwuwuwu',
+  //     category: 3,
+  //   },
+  //   {
+  //     id: 4,
+  //     title: 'Historiequiz',
+  //     description: 'wewewowow',
+  //     category: 4,
+  //   },
+  //   {
+  //     id: 5,
+  //     title: 'Noe rart noe',
+  //     description:
+  //       'long ass description. This description is multiple lines long. It is huge. Waow',
+  //     category: 5,
+  //   },
+  //   {
+  //     id: 6,
+  //     title: 'quiz 6',
+  //     description: 'kjdskad',
+  //     category: 1,
+  //   },
+  //   {
+  //     id: 7,
+  //     title: 'quiz 7',
+  //     description: 'hdsoafiosaj',
+  //     category: 1,
+  //   },
+  //   {
+  //     id: 8,
+  //     title: 'quiz 8',
+  //     description: 'jfkdlsajflkdsafø',
+  //     category: 1,
+  //   },
+  //   {
+  //     id: 9,
+  //     title: 'quiz 9',
+  //     description: 'jsidjaidsaj',
+  //     category: 1,
+  //   },
+  //   {
+  //     id: 10,
+  //     title: 'quiz 10',
+  //     description: 'sljdskal',
+  //     category: 1,
+  //   },
+  //   {
+  //     id: 11,
+  //     title: 'quiz 11',
+  //     description: 'jdksaljdskaljds',
+  //     category: 1,
+  //   },
+  //   {
+  //     id: 12,
+  //     title: 'quiz 12',
+  //     description: 'jdjskaldjskal',
+  //     category: 1,
+  //   },
+  // ];
+
+  // quizzes: Array<{ id: number, title: string, description: string }> = [];
+  quizzes: QuizType[] = [];
+
+  mounted() {
+    // window.quizzes = quizService.getAllQuizzes();
+    quizService.getAllQuizzes().then((result) => {
+      this.quizzes = result;
+    })
+    console.log(`db call quizzes: ${window.quizzes}`);
+    window.quizzes.forEach((quiz) => {
+      console.log(`db quizzes: ${quiz.title}`);
+    })
+  }
 
   // Dummy array of categories
   // TODO: Replace with database call
@@ -642,8 +656,8 @@ export class QuizTileGrid extends Component {
  */
 export class Quiz extends Component {
   title: string = this.props.quiz.title;
-  id: number = this.props.quiz.id
-  description: string = this.props.quiz.description
+  id: number = this.props.quiz.id;
+  description: string = this.props.quiz.description;
 
   playButton() {
     console.log(`Playing quiz ${this.id}`);
@@ -677,8 +691,7 @@ export class Quiz extends Component {
     );
   }
 
-  mounted() {
-  }
+  mounted() {}
 }
 
 export class playQuiz extends Component {
