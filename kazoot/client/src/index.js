@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Home, BrowseQuizzes, NewQuiz, EditQuiz, ListQuizzes } from './kazoot-components'
-import { playQuiz } from './newquiz-components'
+import { playQuiz } from './playquiz-components'
 import { Alert, NavBar } from './widgets'
 import { HashRouter, Route } from 'react-router-dom';
 import { quizService } from './kazoot-service';
