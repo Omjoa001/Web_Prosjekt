@@ -15,7 +15,7 @@ import {
 
 const history = createHashHistory();
 
-export class playQuiz extends Component {
+export class PlayQuiz extends Component {
   id: number = 0;
   quizzes: QuizType = [];
   questions: QuestionType[] = [];

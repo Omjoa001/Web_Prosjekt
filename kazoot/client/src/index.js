@@ -9,7 +9,9 @@ import { HashRouter, Route } from 'react-router-dom';
 import { quizService } from './kazoot-service';
 import { BrowseQuizzes } from './browsequizzes-components';
 import { NewQuiz } from './newquiz-components';
-import { playQuiz } from './playquiz-components';
+import { EditQuiz } from './editquizzes-components.js';
+import { PlayQuiz } from './playquiz-components';
+import { ListQuizzes } from './listquizzes-components.js';
 
 class Menu extends Component {
   render() {
