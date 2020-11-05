@@ -34,14 +34,7 @@ export class Home extends Component {
           <Button.Success onClick={() => history.push('/BrowseQuizzes')}>
             Browse Quizzes{' '}
           </Button.Success>
-          <Button.Success
-            onClick={() => {
-              history.push('/newQuiz');
-            }}
-          >
-            Ny quiz
-          </Button.Success>
-          <Button.Success onClick={() => history.push('/quiz/edit')}>Endre quiz</Button.Success>
+          &nbsp;&nbsp;&nbsp; 
           <Button.Success onClick={() => history.push('/quiz/new')}>New Quiz</Button.Success>
         </Card>
       </>
@@ -788,7 +781,7 @@ export class Quiz extends Component {
               </Button.Success>
             </Column>
             <Column right>
-              <Button.Primary onClick={this.editButton}>Edit</Button.Primary>
+            <Button.Success onClick={() => history.push('/editQuiz')}>Edit</Button.Success>
             </Column>
           </Row>
         </TileCard>
