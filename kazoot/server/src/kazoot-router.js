@@ -76,10 +76,11 @@ router.get('/questions', (request, response) => {
     .catch((error: Error) => response.status(500).send(error));
 });
 
-router.get('/questions/:id', (request, response) => {
-  const id = Number(request.params.id);
+router.get('/quizQuestions/:id', (request, response) => {
+  const quizId = Number(request.params.id);
+  console.log(quizId)
   quizService
-    .getQuestion(id)
+    .getQuestion(quizId)
     .then((task) => (task ? response.send(task) : response.status(404).send('Question not found')))
     .catch((error: Error) => response.status(500).send(error));
 });

@@ -7,7 +7,11 @@ export type QuestionType = {
   id: number,
   quizId: number,
   question: string,
-  answers: string[],
+  numCorrect: any,
+  answ0: string,
+  answ1: string,
+  answ2: string,
+  answ3: string,
 };
 
 export type AnswerType = {
@@ -58,7 +62,7 @@ class QuestionService {
 
   getQuestion(id: number) {
     console.log("her skal enkelte spm komme")
-    return axios.get<QuestionType>('/questions/' + id).then((response) => response.data);
+    return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
   
 

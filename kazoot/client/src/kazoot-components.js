@@ -816,6 +816,29 @@ export class playQuiz extends Component {
           {<br></br>}
           Category: {this.quiz.categoryId}
         </Card>
+        
+        <Card title="Questions">
+          {this.questions.map((a) => (
+            <Card key={a.id} title={a.question}>
+              <Column>
+                <Row>Question Id: {a.id}</Row>
+                <Row>quizId: {a.quizId}</Row>
+                <Row>
+                  {' '}
+                  <br></br>
+                </Row>
+                <ul>
+                  <li>{a.answ0}</li>
+                  <li>{a.answ1}</li>
+                  <li>{a.answ2}</li>
+                  <li>{a.answ3}</li>
+                </ul>
+              </Column>
+            </Card>
+          ))}
+        </Card>
+
+    
       </>
     );
   }
@@ -825,7 +848,6 @@ export class playQuiz extends Component {
     quizService.get(this.id).then((q) => (this.quiz = q));
     questionService.getQuestion(this.id).then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
-    console.log(this.questions);
   }
 }
 
