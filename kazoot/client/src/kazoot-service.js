@@ -7,11 +7,17 @@ export type QuestionType = {
   id: number,
   quizId: number,
   question: string,
+  numCorrect: any,
   answ0: string,
   answ1: string,
   answ2: string,
   answ3: string,
 };
+
+export type AnswerType = {
+  answerText: string,
+  correct: bool,
+}
 
 export type QuizType = {
   id: number,
@@ -54,9 +60,9 @@ class QuestionService {
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
-  getQuestion() {
+  getQuestion(id: number) {
     console.log("her skal enkelte spm komme")
-    return axios.get<QuestionType[]>('/questions').then((response) => response.data);
+    return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
   
 
@@ -73,8 +79,6 @@ class QuestionService {
     })
     .then((response) => response.data.id)
   }
-
-
 }
 
 /**
@@ -103,7 +107,7 @@ class QuizService {
     console.log('hey');
   }
 
-  get(id: number) {
+  getQuiz(id: number) {
     return axios.get<QuizType>('/quizzes/' + id).then((response) => response.data);
   }
 
