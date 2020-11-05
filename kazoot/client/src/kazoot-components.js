@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
-import {BrowseQuizzes, QuizTileGrid, Quiz} from './browsequizzes-components';
+import { BrowseQuizzes, QuizTileGrid, Quiz } from './browsequizzes-components';
 import {
   type QuizType,
   type CategoryType,
@@ -54,89 +54,6 @@ export class Home extends Component {
     questionService.getAllQuestions().then((c) => (this.Question = c));
   }
 }
-
-
-export class Questionside extends Component {
-  render() {
-    return (
-      <>
-        <Row>
-          <Column>Spørsmål: 1</Column>
-          <Column>
-            <Form.Input placeholder="spørsmål"></Form.Input>
-          </Column>
-          <Column>
-            <Button.Danger>Slett Spørsmål</Button.Danger>
-          </Column>
-        </Row>
-        <Row>
-          <Column>Riktig:</Column>
-          <Column>Svar:</Column>
-          <Column></Column>
-        </Row>
-        <Row>
-          <Column>
-            <Answerside />
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Answerside />
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Answerside />
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <Answerside />
-          </Column>
-        </Row>
-        <Row>
-          <Button.Success onClick={this.click}>Legg til svaralternativ</Button.Success>
-        </Row>
-      </>
-    );
-  }
-
-  click() {
-    console.log('kjørr');
-  }
-}
-
-export class Answerside extends Component {
-  answ0: string = '';
-
-  render() {
-    return (
-      <>
-        <Row>
-          <Column>
-            <Form.Checkbox></Form.Checkbox>
-          </Column>
-          <Column>
-            <Form.Input
-              placeholder="svar"
-              type="text"
-              value={this.answ0}
-              onChange={(event) => (this.answ0 = event.currentTarget.value)}
-            ></Form.Input>
-          </Column>
-          <Column>
-            <Button.Danger onClick={this.DelAnswer()}>⚽️</Button.Danger>
-          </Column>
-        </Row>
-      </>
-    );
-  }
-
-  DelAnswer() {
-    //kommando som sletter dette svaralternativet
-  }
-}
-
 
 export class playQuiz extends Component {
   render() {
@@ -295,9 +212,6 @@ export class EditQuiz extends Component {
   }
 }
 
-/*
- *
- */
 export class ListQuizzes extends Component {
   quizzes: QuizType[] = [];
   questions: QuestionType[] = [];
