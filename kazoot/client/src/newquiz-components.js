@@ -14,6 +14,24 @@ import {
 
 const history = createHashHistory();
 
+
+
+export class NewQuizQuestionList extends Component {
+  listOfQuestions: NewQuizQuestion = [];
+
+  render() {
+    return (
+      <>
+        {this.listOfQuestions.map((question) => {
+          <div>
+            {question.answers}
+          </div>
+        })}
+      </>
+    );
+  }
+}
+
 /**
  * Component which renders the New Quiz page.
  */
@@ -59,13 +77,24 @@ export class NewQuiz extends Component {
     },
   ];
 
-  // This could handle the state of the questions array based on
-  // what the component returns
-  renderQuestions() {
-    let jsx: [] = [];
-    jsx.push(<NewQuizQuestion title="Question component thingy"></NewQuizQuestion>);
-    return jsx;
-  }
+  listOfQuestions: NewQuizQuestion[] = [
+    (
+      <NewQuizQuestion title="Question 1"/>
+    )
+  ];
+
+
+  theButton: Button.Success = (
+    <Button.Success
+      onClick={() => {
+        console.log("prøver å legge til shit");
+        this.listOfQuestions.push(<NewQuizQuestion title="heisann"></NewQuizQuestion>);
+        console.log(`listofquestions: ${this.listOfQuestions}`);
+      }}
+    >
+      hei
+    </Button.Success>
+  );
 
   render() {
     return (
@@ -78,7 +107,9 @@ export class NewQuiz extends Component {
             nextId={this.nextId}
           ></NewQuizInfoCard>
 
-          {this.renderQuestions()}
+          {this.theButton}
+
+          <NewQuizQuestionList questionlist={this.listOfQuestions}/>
 
           {this.newquestion.map((q, index) => (
             <Card key={q.id} title={'Spørsmål ' + (index + 1)}>
