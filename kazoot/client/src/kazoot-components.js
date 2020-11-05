@@ -26,9 +26,9 @@ export class Home extends Component {
         <Card title="Welcome">This is Quiz App</Card>
         <Card title=""> 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button.Success onClick={() => history.push('/BrowseQuizzes') }>
+          <Button.Start onClick={() => history.push('/BrowseQuizzes') }>
             Browse Quizzes{' '}
-          </Button.Success>
+          </Button.Start>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button.Success onClick={() => history.push('/quiz/new')}>New Quiz</Button.Success>
         </Card>

@@ -230,6 +230,23 @@ class ButtonAnswer extends Component<{
     );
   }
 }
+
+class ButtonStart extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+    
+    <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
+    <button type="button" class="btn btn-success btn-lg btn-block">{this.props.children} </button>
+    </div>
+    );
+  }
+}
+
 /**
  * Renders a danger button using Bootstrap styles.
  */
@@ -329,6 +346,7 @@ export class Button {
   static OutlinePrimary = ButtonOutlinePrimary;
   static Primary = ButtonPrimary;
   static Answer = ButtonAnswer;
+  static Start = ButtonStart;
 }
 
 /**
