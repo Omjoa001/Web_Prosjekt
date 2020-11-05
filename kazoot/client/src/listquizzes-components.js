@@ -1,3 +1,19 @@
+// @flow
+
+import * as React from 'react';
+import { Component } from 'react-simplified';
+import { NavLink } from 'react-router-dom';
+import { createHashHistory } from 'history';
+import { Card, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { quizService, questionService, categoryService } from './kazoot-service';
+import {
+  type QuizType,
+  type CategoryType,
+  type QuestionType,
+  type AnswerType,
+} from './kazoot-service';
+
+const history = createHashHistory();
 
 export class ListQuizzes extends Component {
   quizzes: QuizType[] = [];
