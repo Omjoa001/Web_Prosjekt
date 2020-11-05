@@ -24,11 +24,12 @@ export class Home extends Component {
     return (
       <>
         <Card title="Welcome">This is Quiz App</Card>
-        <Card title="Route test">
-          <Button.Success onClick={() => history.push('/BrowseQuizzes')}>
+        <Card title=""> 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button.Success onClick={() => history.push('/BrowseQuizzes') }>
             Browse Quizzes{' '}
           </Button.Success>
-          &nbsp;&nbsp;&nbsp; 
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button.Success onClick={() => history.push('/quiz/new')}>New Quiz</Button.Success>
         </Card>
       </>
