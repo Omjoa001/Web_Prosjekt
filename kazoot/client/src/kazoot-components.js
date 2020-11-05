@@ -771,9 +771,9 @@ export class Quiz extends Component {
   }
 
   editButton() {
-    history.push('/editQuiz');
+    history.push('/editQuiz/' + this.props.id);
   }
-
+  
   render() {
     return (
       <>
@@ -800,12 +800,53 @@ export class Quiz extends Component {
 }
 
 export class playQuiz extends Component {
+  id: number = 0;
+  quizzes: QuizType = [];
+  questions: QuestionType[] = [];
+  categories: CategoryType[] = [];
+  quiz: QuizType = {};
+
   render() {
     return (
       <>
-        <Card title="Play Quiz"></Card>
+        <Card title="Play Quiz">{this.id}</Card>
+        <Card title={this.quiz.title}>
+          Description: {this.quiz.description}
+          {<br></br>}
+          Category: {this.quiz.categoryId}
+        </Card>
+        
+        <Card title="Questions">
+          {this.questions.map((a) => (
+            <Card key={a.id} title={a.question}>
+              <Column>
+                <Row>Question Id: {a.id}</Row>
+                <Row>quizId: {a.quizId}</Row>
+                <Row>
+                  {' '}
+                  <br></br>
+                </Row>
+                <ul>
+                  <li>{a.answ0}</li>
+                  <li>{a.answ1}</li>
+                  <li>{a.answ2}</li>
+                  <li>{a.answ3}</li>
+                </ul>
+              </Column>
+            </Card>
+          ))}
+        </Card>
+
+    
       </>
     );
+  }
+  mounted() {
+    this.id = this.props.match.params.id;
+    //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    quizService.get(this.id).then((q) => (this.quiz = q));
+    questionService.getQuestion(this.id).then((p) => (this.questions = p));
+    categoryService.getAllCategories().then((c) => (this.categories = c));
   }
 }
 
@@ -1081,6 +1122,7 @@ export class ListQuizzes extends Component {
             </Card>
           ))}
         </Card>
+
         <Card title="Questions">
           {this.questions.map((question) => (
             <Card key={question.id} title={question.question}>
@@ -1102,6 +1144,7 @@ export class ListQuizzes extends Component {
             </Card>
           ))}
         </Card>
+
         <Card title="Categories">
           {this.categories.map((category) => (
             <Card key={category.id} title={category.category}>
@@ -1117,6 +1160,7 @@ export class ListQuizzes extends Component {
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
+    quizService.get(1).then((q) => (this.quiz = q));
     questionService.getAllQuestions().then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
   }

@@ -78,13 +78,12 @@ router.get('/questions', (request, response) => {
     .catch((error: Error) => response.status(500).send(error));
 });
 
-
-// funker ikke 
-router.get('/questions/:id', (request, response) => {
-  const id = Number(request.params.id);
+router.get('/quizQuestions/:id', (request, response) => {
+  const quizId = Number(request.params.id);
+  console.log(quizId)
   quizService
-    .getQuestion(id)
-    .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
+    .getQuestion(quizId)
+    .then((task) => (task ? response.send(task) : response.status(404).send('Question not found')))
     .catch((error: Error) => response.status(500).send(error));
 });
 
