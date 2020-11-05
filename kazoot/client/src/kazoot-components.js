@@ -844,24 +844,23 @@ export class playQuiz extends Component {
   mounted() {
     this.id = this.props.match.params.id;
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-    quizService.get(this.id).then((q) => (this.quiz = q));
+    quizService.getQuiz(this.id).then((q) => (this.quiz = q));
     questionService.getQuestion(this.id).then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
+    console.log(this.questions)
   }
 }
 
 export class EditQuiz extends Component <{ match: { params: { id: number } } }> {
 
+  id: number = 0;
+  questions: QuestionType[] = [];
+  categories: CategoryType[] = [];
+  quiz: QuizType = {};
  
   nextId: number = 0;
 
-  quiz: QuizType = {
-    id: 0,
-    title: '',
-    description: '',
-    categoryId: 0,
-  };
-
+ 
   newquestion: Array<{
     id: 0,
     question: '',
@@ -895,10 +894,10 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
 
 
   render() {
-    if (questions[0] = undefined) return <div>loading</div>
+     //if (questions[0] = undefined) return <div>loading</div>
     return (
       <>
-        <Card title="Edit Quiz!" >
+        <Card title={"Edit Quiz " + this.quiz.id + "!!!" }>
           <Card>
             <Column>
               <Row>
@@ -969,7 +968,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -983,7 +982,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -997,7 +996,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -1011,7 +1010,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox disabled></Form.Checkbox>
+                <Form.Checkbox ></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -1053,16 +1052,12 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   }
 
   mounted() {
-    quizService
-      .getQuiz(this.props.match.params.id)
-      .then((quiz) => (this.quiz = quiz))
-      .catch((error: Error) => Alert.danger('Error getting quiz: ' + error.message));
-    
-    questionService
-      .getQuizQuestions(this.props.match.params.id)
-      .then((questions) => (this.questions = questions))
-      .catch((error: Error) => Alert.danger('Error getting quiz: ' + error.message)); // trenger kanskje ikke 
-  }
+
+    this.id = this.props.match.params.id;
+    quizService.getQuiz(this.id).then((q) => (this.quiz = q));
+    questionService.getQuestion(this.id).then((p) => (this.questions = p));
+
+    }
 
   saveQuiz(){
 
@@ -1073,20 +1068,19 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   }
 
   add() {
-    if (this.newquestion.length >= 10) {
-      console.log('stopppp');
-      Alert.danger('shii');
-    }
-    this.id = this.id + 1;
-    this.newquestion.push({
-      id: this.id,
+    
+
+    this.questions.id = (this.questions.id + 1);
+    this.questions.push({
       question: '',
+      quizId: this.quiz.id,
       answ0: '',
       answ1: '',
       answ2: '',
       answ3: '',
     });
   }
+
 
   button() {
     console.log('LOL');
@@ -1160,7 +1154,7 @@ export class ListQuizzes extends Component {
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
-    quizService.get(1).then((q) => (this.quiz = q));
+    //quizService.getQuiz(1).then((q) => (this.quiz = q));
     questionService.getAllQuestions().then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
   }
