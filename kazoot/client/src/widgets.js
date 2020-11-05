@@ -93,7 +93,7 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
       <div className="card">
         <div className="card-body">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10vh', marginBottom: '1vh' }}>
-          <h5 className="card-title">{this.props.title}</h5>
+          <h3 className="card-title">{this.props.title}</h3>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1vh', marginBottom: '10vh' }}>
           <div className="card-text">{this.props.children}</div>

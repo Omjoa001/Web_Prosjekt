@@ -25,7 +25,7 @@ export class PlayQuiz extends Component {
   render() {
     return (
       <>
-        <CenterCard title="Play Quiz">
+        <CenterCard title={this.quiz.title}>
           Description: {this.quiz.description} <br></br>ID: {this.id}
         </CenterCard>
 
@@ -33,7 +33,7 @@ export class PlayQuiz extends Component {
           {this.questions.map((a) => (
             <>
               <AnswerCard
-                title="Questions"
+                title={a.question}
                 answ0={a.answ0}
                 answ1={a.answ1}
                 answ2={a.answ2}
