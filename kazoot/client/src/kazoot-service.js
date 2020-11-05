@@ -37,7 +37,6 @@ export type Quiz = {
   description: string,
 }
 
-//maxId: number = 0;
  
 /**
  * Service to retrieve and manage questions (not entire quizzes).
@@ -47,7 +46,7 @@ class QuestionService {
    * WIP
    * Get question with given Question id.
    */
-  getQuiz(id: number) {
+  getQuestion(id: number) {
     return axios.get<QuestionType>('/questions/' + id).then((response) => response.data);
   }
 
@@ -69,7 +68,10 @@ class QuestionService {
     return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
   
-
+  /**
+   * 
+   * Create new questions
+   */
   createQuestion(quizId: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string) {
     console.log("create question")
     return axios
