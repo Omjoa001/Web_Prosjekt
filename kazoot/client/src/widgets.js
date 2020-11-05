@@ -103,6 +103,28 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
     );
   }
 }
+
+//Custom cards for PlayQuiz component.
+export class AnswerCard extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card">
+        <div className="card-body">
+          <div
+            
+            >
+            <div>
+              <h5 className="card-title">{this.props.title}</h5>
+            </div>
+            <div>
+              <div className="card-text">{this.props.children}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 /**
  * Renders a card with a smaller width than normal
  * TODO: Add variable width

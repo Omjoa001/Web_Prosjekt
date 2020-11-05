@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, CenterCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, CenterCard, AnswerCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import { BrowseQuizzes, QuizTileGrid, Quiz } from './browsequizzes-components';
 import {
@@ -27,19 +27,11 @@ export class PlayQuiz extends Component {
       <>
         <CenterCard title="Play Quiz">asddadsdafasdfdsafsdf {this.id}</CenterCard>
 
-          <Card title={this.quiz.title}>
-          Description: {this.quiz.description}
-          {<br></br>}
-          Category: {this.quiz.categoryId}
-        </Card>
-
-
-        <Card title="Questions">
+        <AnswerCard title="Questions">
           {this.questions.map((a) => (
             <Card key={a.id} title={a.question}>
               <Column>
                 <Row>Question Id: {a.id}</Row>
-                <Row>quizId: {a.quizId}</Row>
                 <Row>
                   {' '}
                   <br></br>
@@ -53,9 +45,13 @@ export class PlayQuiz extends Component {
               </Column>
             </Card>
           ))}
+        </AnswerCard>
+
+        <Card title={this.quiz.title}>
+          Description: {this.quiz.description}
+          {<br></br>}
+          Category: {this.quiz.categoryId}
         </Card>
-
-
       </>
     );
   }
