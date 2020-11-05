@@ -306,7 +306,7 @@ export class Quiz extends Component {
               </Button.Success>
             </Column>
             <Column right>
-            <Button.Primary onClick={() => history.push('/editQuiz')}>Edit</Button.Primary>
+            <Button.Primary onClick={() => history.push('/editQuiz/2')}>Edit</Button.Primary>
             </Column>
           </Row>
         </TileCard>
