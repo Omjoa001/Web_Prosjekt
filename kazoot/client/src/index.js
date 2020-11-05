@@ -3,8 +3,9 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
+import { Home } from './kazoot-components';
+import { EditQuiz } from './editquizzes-components';
 import { ListQuizzes} from './listquizzes-components.js';
-import { Home } from './kazoot-components'
 import { Alert, NavBar } from './widgets'
 import { HashRouter, Route } from 'react-router-dom';
 import { quizService } from './kazoot-service';
