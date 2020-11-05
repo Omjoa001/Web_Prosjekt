@@ -12,6 +12,8 @@ import {
   type AnswerType,
 } from './kazoot-service';
 
+const history = createHashHistory();
+
 
 /**
  * Component which renders the Browse Quizzes page.
@@ -304,7 +306,7 @@ export class Quiz extends Component {
               </Button.Success>
             </Column>
             <Column right>
-            <Button.Success onClick={() => history.push('/editQuiz')}>Edit</Button.Success>
+            <Button.Primary onClick={() => history.push('/editQuiz')}>Edit</Button.Primary>
             </Column>
           </Row>
         </TileCard>

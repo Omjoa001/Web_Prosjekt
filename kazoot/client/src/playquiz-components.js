@@ -1,17 +1,19 @@
 // @flow
-
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, CenterCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
+import { BrowseQuizzes, QuizTileGrid, Quiz } from './browsequizzes-components';
 import {
   type QuizType,
   type CategoryType,
   type QuestionType,
   type AnswerType,
 } from './kazoot-service';
+
+const history = createHashHistory();
 
 export class PlayQuiz extends Component {
   id: number = 0;
@@ -61,7 +63,7 @@ export class PlayQuiz extends Component {
     this.id = this.props.match.params.id;
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
-    questionService.getQuestion(this.id).then((p) => (this.questions = p));
+    questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
     console.log(this.questions)
   }

@@ -42,18 +42,6 @@ class QuizService {
     })
   }
 
-  /* GAMMEL
-  getMaxId(){
-    console.log('utenfor')
-    return new Promise<{}>((resolve, reject) => {
-      pool.query('SELECT MAX(id) FROM Quizzes', (error, results) => {
-        if (error) return reject(error);
-        resolve(results[0])
-        console.log('kjørr')
-      })
-    })
-  }*/
-
   /**
    * HENTER ALLE/EN, SLETTER OG LAGER QUIZZER
    */
@@ -77,7 +65,6 @@ class QuizService {
     });
   }
 
-
   //Ikke ferdig - CategorId er ikke en string!!
   createQuiz(title: string, description: string, categoryId: string) {
     console.log('create')
@@ -90,8 +77,6 @@ class QuizService {
       });
     });
   }
-
-  
 
 
   // ikke ferdig 
@@ -108,7 +93,6 @@ class QuizService {
     });
   }
 
-
   delete(id: number) {
     return new Promise<void>((resolve, reject) => {
       pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
@@ -123,16 +107,6 @@ class QuizService {
   getAllQuestions() {
     return new Promise<QuestionType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Questions', (error, results) => {
-        if (error) return reject(error);
-
-        resolve(results);
-      });
-    });
-  }
-
-  getQuestion(quizId: number) {
-    return new Promise<QuestionType[]>((resolve, reject) => {
-      pool.query('SELECT * FROM Questions WHERE quizId = ?', [quizId], (error, results) => {
         if (error) return reject(error);
 
         resolve(results);
@@ -160,39 +134,8 @@ class QuizService {
     });
   }
 
-
-   
-}
-
-class QuestionService {
-  // get all
- /* getall() {
-    return new Promise<Question[]>((resolve, reject) => {
-      pool.query('SELECT * FROM Questions', (error, results) => {
-        if (error) return reject(error);
-
-        resolve(results);
-      });
-    });
-  }*/
-
-}
-
-class CategoryService {
-  // get all
-  // getAllCategories() {
-  //   return new Promise<Category[]>((resolve, reject) => {
-  //     pool.query('SELECT * FROM Categories', (error, results) => {
-  //       if (error) return reject(error);
-
-  //       resolve(results);
-  //     });
-  //   });
-  // }
 }
 
 
  const quizService = new QuizService();
 export default quizService;
-//export const questionService = new QuestionService();
-//export const categoryService = new CategoryService();
