@@ -12,6 +12,8 @@ import {
   type AnswerType,
 } from './kazoot-service';
 
+const history = createHashHistory();
+
 export class EditQuiz extends Component <{ match: { params: { id: number } } }> {
 
   id: number = 0;

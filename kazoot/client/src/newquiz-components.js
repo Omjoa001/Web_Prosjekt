@@ -12,6 +12,8 @@ import {
   type AnswerType,
 } from './kazoot-service';
 
+const history = createHashHistory();
+
 /**
  * Component which renders the New Quiz page.
  */
