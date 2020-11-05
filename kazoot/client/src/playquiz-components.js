@@ -1,4 +1,5 @@
 // @flow
+
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
@@ -12,7 +13,7 @@ import {
   type AnswerType,
 } from './kazoot-service';
 
-export class playQuiz extends Component {
+export class PlayQuiz extends Component {
   id: number = 0;
   quizzes: QuizType = [];
   questions: QuestionType[] = [];
