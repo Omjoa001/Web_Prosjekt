@@ -14,8 +14,6 @@ import {
 
 const history = createHashHistory();
 
-
-
 export class NewQuizQuestionList extends Component {
   listOfQuestions: NewQuizQuestion = [];
 
@@ -23,9 +21,7 @@ export class NewQuizQuestionList extends Component {
     return (
       <>
         {this.listOfQuestions.map((question) => {
-          <div>
-            {question.answers}
-          </div>
+          <div>{question.answers}</div>;
         })}
       </>
     );
@@ -77,17 +73,17 @@ export class NewQuiz extends Component {
     },
   ];
 
-  listOfQuestions: NewQuizQuestion[] = [
-    (
-      <NewQuizQuestion title="Question 1"/>
-    )
+  listOfQuestions: [] = [
+    <>
+      <Card title="mofo" />
+      {/* <NewQuizQuestion title="Question 1" /> */}
+    </>,
   ];
-
 
   theButton: Button.Success = (
     <Button.Success
       onClick={() => {
-        console.log("prøver å legge til shit");
+        console.log('prøver å legge til shit');
         this.listOfQuestions.push(<NewQuizQuestion title="heisann"></NewQuizQuestion>);
         console.log(`listofquestions: ${this.listOfQuestions}`);
       }}
@@ -95,6 +91,15 @@ export class NewQuiz extends Component {
       hei
     </Button.Success>
   );
+
+  thelist = [
+    <>
+      <NewQuizQuestion />
+      <NewQuizQuestion />
+      <NewQuizQuestion />
+      <NewQuizQuestion />
+    </>,
+  ];
 
   render() {
     return (
@@ -109,7 +114,17 @@ export class NewQuiz extends Component {
 
           {this.theButton}
 
-          <NewQuizQuestionList questionlist={this.listOfQuestions}/>
+          {/* <NewQuizQuestionList questionlist={this.listOfQuestions} /> */}
+          {console.log(this.thelist)}
+
+          {this.thelist.map((q) => {
+            <div key={q.id}>
+              {q}
+            </div>
+          })}
+
+          <NewQuizQuestion />
+          <NewQuizQuestion />
 
           {this.newquestion.map((q, index) => (
             <Card key={q.id} title={'Spørsmål ' + (index + 1)}>
