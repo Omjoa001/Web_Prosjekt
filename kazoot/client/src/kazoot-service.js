@@ -7,7 +7,11 @@ export type QuestionType = {
   id: number,
   quizId: number,
   question: string,
-  answers: string[],
+  numCorrect: any,
+  answ0: string,
+  answ1: string,
+  answ2: string,
+  answ3: string,
 };
 
 export type AnswerType = {
@@ -56,9 +60,9 @@ class QuestionService {
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
-  getQuestion() {
+  getQuestion(id: number) {
     console.log("her skal enkelte spm komme")
-    return axios.get<QuestionType[]>('/questions').then((response) => response.data);
+    return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
   
 
@@ -105,7 +109,7 @@ class QuizService {
     console.log('hey');
   }
 
-  get(id: number) {
+  getQuiz(id: number) {
     return axios.get<QuizType>('/quizzes/' + id).then((response) => response.data);
   }
 
