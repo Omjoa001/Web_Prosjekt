@@ -25,21 +25,30 @@ export class PlayQuiz extends Component {
   render() {
     return (
       <>
-        <CenterCard title="Play Quiz">Description: {this.quiz.description} <br></br>ID: {this.id}</CenterCard>
+        <CenterCard title="Play Quiz">
+          Description: {this.quiz.description} <br></br>ID: {this.id}
+        </CenterCard>
 
         <div>
           {this.questions.map((a) => (
-            <AnswerCard title="Questions" answ0={a.answ0} answ1={a.answ1} answ2={a.answ2} answ3={a.answ3}>
-            <div key={a.id} title={a.question}>
-              
-               Question Id: {a.id}
-        
+            <>
+              <AnswerCard
+                title="Questions"
+                answ0={a.answ0}
+                answ1={a.answ1}
+                answ2={a.answ2}
+                answ3={a.answ3}
+              >
+                <div key={a.id} title={a.question}>
+                  Question Id: {a.id}
                   <br></br>
-
-            </div>
-               </AnswerCard>
+                </div>
+              </AnswerCard>
+              <br></br>
+              <br></br>
+            </>
           ))}
-     </div>
+        </div>
 
         <Card title={this.quiz.title}>
           Description: {this.quiz.description}
