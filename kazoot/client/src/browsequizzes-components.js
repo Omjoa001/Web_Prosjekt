@@ -12,6 +12,7 @@ import {
   type AnswerType,
 } from './kazoot-service';
 
+
 /**
  * Component which renders the Browse Quizzes page.
  */
@@ -286,7 +287,7 @@ export class Quiz extends Component {
   }
 
   editButton() {
-    history.push('/editQuiz');
+    history.push('/editQuiz/' + this.props.id);
   }
 
   render() {
@@ -303,7 +304,7 @@ export class Quiz extends Component {
               </Button.Success>
             </Column>
             <Column right>
-              <Button.Primary onClick={this.editButton}>Edit</Button.Primary>
+            <Button.Success onClick={() => history.push('/editQuiz')}>Edit</Button.Success>
             </Column>
           </Row>
         </TileCard>
