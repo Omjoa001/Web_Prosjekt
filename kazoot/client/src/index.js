@@ -3,10 +3,11 @@
 import ReactDOM from 'react-dom';
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import { Home, BrowseQuizzes, NewQuiz, EditQuiz, ListQuizzes, playQuiz } from './kazoot-components'
+import { Home, NewQuiz, EditQuiz, ListQuizzes, playQuiz } from './kazoot-components'
 import { Alert, NavBar } from './widgets'
 import { HashRouter, Route } from 'react-router-dom';
 import { quizService } from './kazoot-service';
+import { BrowseQuizzes } from './browsequizzes-components';
 
 class Menu extends Component {
   render() {
