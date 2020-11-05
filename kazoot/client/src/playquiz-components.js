@@ -63,7 +63,7 @@ export class PlayQuiz extends Component {
     this.id = this.props.match.params.id;
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
-    questionService.getQuestion(this.id).then((p) => (this.questions = p));
+    questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
     console.log(this.questions)
   }

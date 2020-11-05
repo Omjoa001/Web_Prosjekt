@@ -82,7 +82,7 @@ router.get('/quizQuestions/:id', (request, response) => {
   const quizId = Number(request.params.id);
   console.log(quizId)
   quizService
-    .getQuestion(quizId)
+    .getQuizQuestion(quizId)
     .then((task) => (task ? response.send(task) : response.status(404).send('Question not found')))
     .catch((error: Error) => response.status(500).send(error));
 });

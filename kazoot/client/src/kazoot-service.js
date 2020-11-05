@@ -47,7 +47,7 @@ class QuestionService {
    * WIP
    * Get question with given Question id.
    */
-  get(id: number) {
+  getQuiz(id: number) {
     return axios.get<QuestionType>('/questions/' + id).then((response) => response.data);
   }
 
@@ -60,7 +60,11 @@ class QuestionService {
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
-  getQuestion(id: number) {
+  /**
+   * 
+   * Get questions with given  quizId
+   */
+  getQuizQuestion(id: number) {
     console.log("her skal enkelte spm komme")
     return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
@@ -87,18 +91,12 @@ class QuestionService {
  */
 class QuizService {
   
+  /**
+   * Get next Id to give questions quizID
+   */
   getNextId(){
     return axios.get('/nextId').then((response) => response.data);
   }
-
-  /**
-   * Get Max Id 
-   */
-
-   // GAMMEL
-  /*getMaxId(){
-    return axios.get('/maxQuizId').then((response) => response.data);
-  }*/
   
   /**
    * Test that the class is imported correctly
@@ -107,6 +105,10 @@ class QuizService {
     console.log('hey');
   }
 
+  /**
+   * 
+   * GET Quiz with given Id
+   */
   getQuiz(id: number) {
     return axios.get<QuizType>('/quizzes/' + id).then((response) => response.data);
   }
@@ -130,24 +132,6 @@ class QuizService {
       })
       .then((response) => response.data.id);
   }
-
-
-
-  /**
-   * WIP
-   * Get all quiz IDs.
-   */
-  /*getAll() {
-    return axios.get<Quiz[]>('/quizzes').then((response) => response.data);
-  }
-
-  /**
-   * WIP
-   * Get questions in a specific quiz.
-   */
- /* get() {
-    return axios.get<Quiz>('/quizzes/:id').then((response) => response.data);
-  }*/
 
   /**
    * Dummy function to return Quiz object

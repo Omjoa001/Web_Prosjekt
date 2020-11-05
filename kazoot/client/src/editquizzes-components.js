@@ -215,11 +215,10 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   }
 
   mounted() {
-    questionService.get();
 
     this.id = this.props.match.params.id;
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
-    questionService.getQuestion(this.id).then((p) => (this.questions = p));
+    questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
 
     }
 
