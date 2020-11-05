@@ -16,12 +16,11 @@ const history = createHashHistory();
 
 export class EditQuiz extends Component <{ match: { params: { id: number } } }> {
 
+  //nextId: number = 0;
   id: number = 0;
-  questions: QuestionType[] = [];
+  questions: QuestionType[] = []
   categories: CategoryType[] = [];
   quiz: QuizType = {};
-
-  nextId: number = 0;
 
 
   newquestion: Array<{
@@ -52,7 +51,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     },
   ];
 
-  questions: QuestionType[] = []
 
 
 
@@ -72,7 +70,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               <Column>
                 <Form.Input
                   placeholder="Quiz title"
-                  type="text"
                   value={this.quiz.title}
                   onChange={(event) => (this.quiz.title = event.currentTarget.value)}
                 ></Form.Input>
@@ -96,7 +93,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               </Column>
             </Row>
             <Row>
-              <Column>Quiz-Id:</Column>
+              <Column width={3}>Quiz-Id:</Column>
               <Column>
                 <Form.Input value={this.quiz.id} disabled></Form.Input>
               </Column>
@@ -106,7 +103,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               <Column>
                 <Form.Textarea
                   placeholder="Quiz description"
-                  type="text"
                   value={this.quiz.description}
                   onChange={(event) => (this.quiz.description = event.currentTarget.value)}
                   row={10}
@@ -150,8 +146,8 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               <Column>
                 <Form.Input
                     placeholder='Answer 2'
-                    onChange={(event) => (q.answ1 = event.currentTarget.value)}
                     value={q.answ1}
+                    onChange={(event) => (q.answ1 = event.currentTarget.value)}
                 ></Form.Input>
               </Column>
               <Column>
@@ -198,7 +194,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
 
           <Card>
             <Row>
-              <Button.Success id="newquest" disabled={false} onClick={this.add}>
+              <Button.Success onClick={this.add}>
                 New question
               </Button.Success>
             </Row>
@@ -223,25 +219,40 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     }
 
   saveQuiz(){
+    quizService
+      .updateQuiz(this.title, this.description, this.categoryId)
+      .then((id) => history.push('/tasks/' + id))
+      
 
-  }
-
+    for (let i = 0; i < this.questions.length; i++) {
+      console.log(this.questions[i]);
+      questionService
+        .createQuestion(
+          this.quiz.id,
+          this.questions[i].question,
+          this.questions[i].answ0,
+          this.questions[i].answ1,
+          this.questions[i].answ2,
+          this.questions[i].answ3
+        )
   delQuestion(){
     this.questions.splice(this.index, 1)
   }
 
   add() {
-
-
-    this.questions.id = (this.questions.id + 1);
+    this.id = 10
     this.questions.push({
-      question: '',
+      id: this.id,
       quizId: this.quiz.id,
+      question: '',
+      numCorrect: 0,
       answ0: '',
       answ1: '',
       answ2: '',
       answ3: '',
     });
+    console.log(this.id)
+    this.id = (this.id + 1)
   }
 
 
