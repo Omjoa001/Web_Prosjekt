@@ -1,3 +1,9 @@
+import * as React from 'react';
+import { Component } from 'react-simplified';
+import { NavLink } from 'react-router-dom';
+import { createHashHistory } from 'history';
+import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { quizService, questionService, categoryService } from './kazoot-service';
 
 export class EditQuiz extends Component <{ match: { params: { id: number } } }> {
 
@@ -200,9 +206,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   }
 
   mounted() {
-<<<<<<< HEAD
     questionService.get();
-=======
 
     this.id = this.props.match.params.id;
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
@@ -216,7 +220,6 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
 
   delQuestion(){
     this.questions.splice(this.index, 1)
->>>>>>> cd4ad5c7789f28608eced622b29add0e13c822cd
   }
 
   add() {
