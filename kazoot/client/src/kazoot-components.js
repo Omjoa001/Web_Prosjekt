@@ -24,13 +24,6 @@ export class Home extends Component {
     return (
       <>
         <Card title="Welcome">This is Quiz App</Card>
-        <Card title="spørsmål">
-          {this.Question.map((spr) => (
-            <Row key={spr.id}>
-              <Column>{spr.title}</Column>
-            </Row>
-          ))}
-        </Card>
         <Card title="Route test">
           <Button.Success onClick={() => history.push('/BrowseQuizzes')}>
             Browse Quizzes{' '}
