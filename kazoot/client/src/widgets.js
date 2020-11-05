@@ -87,6 +87,22 @@ export class Card extends Component<{ title?: React.Node, children?: React.Node 
   }
 }
 
+export class CenterCard extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card">
+        <div className="card-body">
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10vh', marginBottom: '1vh' }}>
+          <h5 className="card-title">{this.props.title}</h5>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1vh', marginBottom: '10vh' }}>
+          <div className="card-text">{this.props.children}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 /**
  * Renders a card with a smaller width than normal
  * TODO: Add variable width
