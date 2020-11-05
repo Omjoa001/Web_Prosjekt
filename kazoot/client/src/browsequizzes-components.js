@@ -306,7 +306,7 @@ export class Quiz extends Component {
               </Button.Success>
             </Column>
             <Column right>
-            <Button.Primary onClick={() => history.push('/editQuiz/'+this.id)}>Edit</Button.Primary>
+            <Button.Primary onClick={() => history.push('/editQuiz/'+this.props.id)}>Edit</Button.Primary>
             </Column>
           </Row>
         </TileCard>
