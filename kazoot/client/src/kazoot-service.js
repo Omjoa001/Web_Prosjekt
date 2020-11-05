@@ -7,11 +7,13 @@ export type QuestionType = {
   id: number,
   quizId: number,
   question: string,
-  answ0: string,
-  answ1: string,
-  answ2: string,
-  answ3: string,
+  answers: string[],
 };
+
+export type AnswerType = {
+  answerText: string,
+  correct: bool,
+}
 
 export type QuizType = {
   id: number,
