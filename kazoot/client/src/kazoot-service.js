@@ -107,7 +107,7 @@ class QuizService {
     console.log('hey');
   }
 
-  get(id: number) {
+  getQuiz(id: number) {
     return axios.get<QuizType>('/quizzes/' + id).then((response) => response.data);
   }
 

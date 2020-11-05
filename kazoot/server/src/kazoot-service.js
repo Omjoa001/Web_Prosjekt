@@ -25,8 +25,6 @@ export type CategoryType = {
 }
 
 
-
-
 /*
 export type Category = {
   id: number,
@@ -60,7 +58,7 @@ class QuizService {
    * HENTER ALLE/EN, SLETTER OG LAGER QUIZZER
    */
 
-  get(id: number) {
+  getQuiz(id: number) {
     return new Promise<?QuizType>((resolve, reject) => {
       pool.query('SELECT * FROM Quizzes WHERE id = ?', [id], (error, results: QuizType[]) => {
         if (error) return reject(error);
@@ -142,7 +140,18 @@ class QuizService {
     });
   }
 
+  getQuizQuestions(quizId: number) {
+    return new Promise<QuestionType[]>((resolve, reject) => {
+      pool.query('SELECT * FROM Questions WHERE quizId=?', [quizId], (error, results) => {
+        if (error) return reject(error)
+
+        resolve(results)
+      })
+    })
+  }
+
  getAllCategories() {
+   console.log('halla')
     return new Promise<CategoryType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Categories', (error, results) => {
         if (error) return reject(error);
