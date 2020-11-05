@@ -219,23 +219,9 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     }
 
   saveQuiz(){
-    quizService
-      .updateQuiz(this.title, this.description, this.categoryId)
-      .then((id) => history.push('/tasks/' + id))
-      
-
-    for (let i = 0; i < this.questions.length; i++) {
-      console.log(this.questions[i]);
-      questionService
-        .createQuestion(
-          this.quiz.id,
-          this.questions[i].question,
-          this.questions[i].answ0,
-          this.questions[i].answ1,
-          this.questions[i].answ2,
-          this.questions[i].answ3
-        )
-  delQuestion(){
+      }
+  
+  delQuestion() {
     this.questions.splice(this.index, 1)
   }
 
