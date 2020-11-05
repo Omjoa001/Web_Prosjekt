@@ -79,8 +79,6 @@ class QuestionService {
     })
     .then((response) => response.data.id)
   }
-
-
 }
 
 /**

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, CenterCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import {
   type QuizType,
@@ -810,12 +810,14 @@ export class playQuiz extends Component {
   render() {
     return (
       <>
-        <Card title="Play Quiz">{this.id}</Card>
-        <Card title={this.quiz.title}>
+        <CenterCard title="Play Quiz">asddadsdafasdfdsafsdf {this.id}</CenterCard>
+
+          <Card title={this.quiz.title}>
           Description: {this.quiz.description}
           {<br></br>}
           Category: {this.quiz.categoryId}
         </Card>
+          
         
         <Card title="Questions">
           {this.questions.map((a) => (
@@ -994,7 +996,6 @@ export class EditQuiz extends Component {
   }
 
   button() {
-    console.log('LOL');
   }
 }
 
