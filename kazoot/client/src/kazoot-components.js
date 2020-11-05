@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, CenterCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
-import { BrowseQuizzes, QuizTileGrid, Quiz } from './browsequizzes-components';
+import { BrowseQuizzes } from './browsequizzes-components';
 import {
   type QuizType,
   type CategoryType,
