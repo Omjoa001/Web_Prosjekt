@@ -93,13 +93,45 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
       <div className="card">
         <div className="card-body">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10vh', marginBottom: '1vh' }}>
-          <h5 className="card-title">{this.props.title}</h5>
+          <h3 className="card-title">{this.props.title}</h3>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1vh', marginBottom: '10vh' }}>
           <div className="card-text">{this.props.children}</div>
           </div>
         </div>
       </div>
+    );
+  }
+}
+
+//Custom cards for PlayQuiz component.
+export class AnswerCard extends Component<{
+  title?: React.Node,
+  children?: React.Node,
+  answ0?: React.Node,
+  answ1?: React.Node,
+  answ2?:React.Node,
+  answ3?:React.Node}> {
+  render() {
+    return (
+      <center>
+        <div className="card" style={{ width: '26rem' }}>
+          <div className="card-body" align="center">
+            <h5 className="card-title">{this.props.title}</h5>
+            <hr />
+            <div className="card-text">
+              {this.props.children}
+              <Button.Answer>{this.props.answ0}</Button.Answer>
+              &nbsp;&nbsp;&nbsp;
+              <Button.Answer>{this.props.answ1}</Button.Answer>
+              &nbsp;&nbsp;&nbsp;
+              <Button.Answer>{this.props.answ2}</Button.Answer>
+              &nbsp;&nbsp;&nbsp;
+              <Button.Answer>{this.props.answ3}</Button.Answer>
+            </div>
+          </div>
+        </div>
+      </center>
     );
   }
 }
@@ -185,10 +217,24 @@ class ButtonSuccess extends Component<{
   }
 }
 
+
+class ButtonAnswer extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+    <button type="button" class="btn btn-primary btn-lg btn-block">{this.props.children}</button>
+    );
+  }
+}
 /**
  * Renders a danger button using Bootstrap styles.
  */
-class ButtonDanger extends Component<{
+
+ class ButtonDanger extends Component<{
   width?: number,
   onClick?: () => mixed,
   small?: boolean,
@@ -282,6 +328,7 @@ export class Button {
   static Light = ButtonLight;
   static OutlinePrimary = ButtonOutlinePrimary;
   static Primary = ButtonPrimary;
+  static Answer = ButtonAnswer;
 }
 
 /**

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, CenterCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, CenterCard, AnswerCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import { BrowseQuizzes, QuizTileGrid, Quiz } from './browsequizzes-components';
 import {
@@ -25,37 +25,36 @@ export class PlayQuiz extends Component {
   render() {
     return (
       <>
-        <CenterCard title="Play Quiz">asddadsdafasdfdsafsdf {this.id}</CenterCard>
+        <CenterCard title={this.quiz.title}>
+          Description: {this.quiz.description} <br></br>ID: {this.id}
+        </CenterCard>
 
-          <Card title={this.quiz.title}>
+        <div>
+          {this.questions.map((a) => (
+            <>
+              <AnswerCard
+                title={a.question}
+                answ0={a.answ0}
+                answ1={a.answ1}
+                answ2={a.answ2}
+                answ3={a.answ3}
+              >
+                <div key={a.id} title={a.question}>
+                  Question Id: {a.id}
+                  <br></br>
+                </div>
+              </AnswerCard>
+              <br></br>
+              <br></br>
+            </>
+          ))}
+        </div>
+
+        <Card title={this.quiz.title}>
           Description: {this.quiz.description}
           {<br></br>}
           Category: {this.quiz.categoryId}
         </Card>
-
-
-        <Card title="Questions">
-          {this.questions.map((a) => (
-            <Card key={a.id} title={a.question}>
-              <Column>
-                <Row>Question Id: {a.id}</Row>
-                <Row>quizId: {a.quizId}</Row>
-                <Row>
-                  {' '}
-                  <br></br>
-                </Row>
-                <ul>
-                  <li>{a.answ0}</li>
-                  <li>{a.answ1}</li>
-                  <li>{a.answ2}</li>
-                  <li>{a.answ3}</li>
-                </ul>
-              </Column>
-            </Card>
-          ))}
-        </Card>
-
-
       </>
     );
   }
@@ -68,3 +67,15 @@ export class PlayQuiz extends Component {
     console.log(this.questions)
   }
 }
+/*
+
+         <Button.Primary>{a.answ0}</Button.Primary>
+                &nbsp;&nbsp;&nbsp;
+                <Button.Primary>{a.answ1}</Button.Primary>
+                <br></br>
+                <Button.Primary>{a.answ2}</Button.Primary>
+                &nbsp;&nbsp;&nbsp;
+                <Button.Primary>{a.answ3}</Button.Primary>
+                
+                Midlertidig lager for buttons. Slett hvis du ser den, da ble den ikke brukt.
+                */
