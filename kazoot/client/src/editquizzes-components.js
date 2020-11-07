@@ -16,6 +16,14 @@ const history = createHashHistory();
 
 export class EditQuiz extends Component <{ match: { params: { id: number } } }> {
 
+
+  /**
+   * 
+   * todo:
+   * gjøre at man kan legge til nye spørsmål::
+   * gjøre at man kan slette spørsmål 
+   */
+
   //nextId: number = 0;
   id: number = 0;
   questions: QuestionType[] = []
@@ -205,6 +213,11 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 <Button.Success onClick={this.saveQuiz}>Save Quiz changes</Button.Success>
               </Column>
             </Row>
+            <Row>
+              <Button.Success onClick={this.logg}>
+                New question
+              </Button.Success>
+            </Row>
           </Card>
         </Card>
       </>
@@ -217,9 +230,14 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
     }
 
+  
+  logg() {
+    console.log(this.questions)
+  }
+
   saveQuiz(){
     quizService
-      .updateQuiz(this.id, this.title, this.description, this.categoryId, this.props.match.params.id)
+      .updateQuiz(this.id, this.title, this.description, this.categoryId, )
       .then((id) => history.push('/listQuizzes'));
 
     questionService
@@ -240,12 +258,12 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   }
   
   delQuestion() {
-    this.questions.splice(this.index, 1)
+    this.questions.splice(this.index, 1);
   }
 
-  add() {
+  add() {   
     
-    newquestion = {
+    this.newQuestion = {
       quizId: this.quiz.id,
       question: '',
       answ0: '',
@@ -253,7 +271,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
       answ2: '',
       answ3: '',
     }
-    this.questions.push(this.newquestion)
+    this.questions.push(this.newQuestion)
   }
 
 

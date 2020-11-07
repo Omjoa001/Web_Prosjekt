@@ -92,12 +92,13 @@ router.get('/categories', (request, response) => {
 router.put('/quizzes/:id', (request, response) => {
   const id = Number(request.params.id);
   const data = request.body;
-  if(data && typeof data.title == 'string' && data.description.length != 0){
-
+  if(data && typeof data.title == 'string' && data.title !== 0 && typeof data.description =='string' && typeof data.categoryId == "number" && typeof data.id == 'number'){
     quizService
-      .updateQuiz(title, description, categoryId, id)
+      .updateQuiz(data.title, data.description, data.categoryId, id)
       .then((quiz) => response.send(quiz))
       .catch((error: Error) => response.status(500).send(error));
+    } else {response.status(400).send('Missing QUIZ information');}
 });
+
 
 export default router;
