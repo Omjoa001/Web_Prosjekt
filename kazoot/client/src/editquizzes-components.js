@@ -22,7 +22,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   categories: CategoryType[] = [];
   quiz: QuizType = {};
 
-
+/*
   newquestion: Array<{
     id: 0,
     question: '',
@@ -50,6 +50,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     {
     },
   ];
+  */
 
 
 
@@ -211,34 +212,48 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   }
 
   mounted() {
-
     this.id = this.props.match.params.id;
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
     questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
-
     }
 
   saveQuiz(){
-      }
+    quizService
+      .updateQuiz(this.id, this.title, this.description, this.categoryId, this.props.match.params.id)
+      .then((id) => history.push('/listQuizzes'));
+
+    questionService
+      .delQuestions(this.quiz.id);
+
+    for (let i = 0; i < this.questions.length; i++) {
+      console.log(this.questions[i]);
+      questionService
+        .createQuestion(
+          this.quiz.id,
+          this.questions[i].question,
+          this.questions[i].answ0,
+          this.questions[i].answ1,
+          this.questions[i].answ2,
+          this.questions[i].answ3
+        )
+    }
+  }
   
   delQuestion() {
     this.questions.splice(this.index, 1)
   }
 
   add() {
-    this.id = 10
-    this.questions.push({
-      id: this.id,
+    
+    newquestion = {
       quizId: this.quiz.id,
       question: '',
-      numCorrect: 0,
       answ0: '',
       answ1: '',
       answ2: '',
       answ3: '',
-    });
-    console.log(this.id)
-    this.id = (this.id + 1)
+    }
+    this.questions.push(this.newquestion)
   }
 
 

@@ -54,12 +54,14 @@ router.post('/questions', (request, response) => {
     } else {response.status(400).send('Missing QUIZ information');}
 })
 
-// router.delete('/quizzes/:id', (request, response) => {
-//   quizService
-//     .delete(Number(request.params.id))
-//     .then((result) => response.send())
-//     .catch((error: Error) => response.status(500).send(error));
-// });
+router.delete('/questions/:id', (request, response) => {
+  const quizId = Number(request.params.id);
+  console.log(quizId)
+  quizService
+    .deleteQuestions(quizId)
+    .then((result) => response.send())
+    .catch((error: Error) => response.status(500).send(error));
+});
 
 // funker 
 router.get('/questions', (request, response) => {
@@ -86,5 +88,16 @@ router.get('/categories', (request, response) => {
       .then((rows) => response.send(rows))
       .catch((error: Error) => response.status(500).send(error));
 })
+
+router.put('/quizzes/:id', (request, response) => {
+  const id = Number(request.params.id);
+  const data = request.body;
+  if(data && typeof data.title == 'string' && data.description.length != 0){
+
+    quizService
+      .updateQuiz(title, description, categoryId, id)
+      .then((quiz) => response.send(quiz))
+      .catch((error: Error) => response.status(500).send(error));
+});
 
 export default router;

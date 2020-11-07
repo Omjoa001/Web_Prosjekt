@@ -93,9 +93,9 @@ class QuizService {
     });
   }
 
-  delete(id: number) {
+  deleteQuestions(quizId: number) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
+      pool.query('DELETE FROM Questions WHERE quizId=?', [quizId], (error, results) => {
         if (error) return reject(error);
         if (!results.affectedRows) reject(new Error('No row deleted'));
 
@@ -134,6 +134,19 @@ class QuizService {
     });
   }
 
+  updateQuiz(title: string, description: string, categoryId: number, id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'UPDATE Quiz SET title=?, description=?, categoryId =? WHERE id=?',
+        [title, description, categoryId, id],
+        (error, results) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
 }
 
 
