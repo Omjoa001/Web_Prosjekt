@@ -30,7 +30,7 @@ export class Home extends Component {
             Browse Quizzes{' '}
           </Button.Start>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button.Success onClick={() => history.push('/quiz/new')}>New Quiz</Button.Success>
+          <Button.Start onClick={() => history.push('/quiz/new')}>New Quiz</Button.Start>
         </Card>
       </>
     );
