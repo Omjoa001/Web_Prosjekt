@@ -14,6 +14,25 @@ import {
 
 const history = createHashHistory();
 
+/*BRAINSTORMING*/
+  // All question props:
+  //     title: string = '';
+  //     questionText: string = '';
+  //     correct: string[] = [];
+  //     incorrect: string[] = [];
+  //     numCorrect: number = 0;
+  //     answers: AnswerType[] = [];
+
+  // Absolutely necessary:
+  //     questionText: string = '';
+  //     correct: string[] = [];
+  //     incorrect: string[] = [];
+
+  // database call per question needs:
+  // ans0, ans1, ans2, ans3
+  // ...
+
+
 /**
  * Takes an array of questions and maps them in a JSX tag
  * TODO: Reconsider this. Does it make sense?
@@ -33,20 +52,6 @@ export class QuestionList extends Component {
 }
 
 const Parent = () => {
-  // All question props:
-  //     title: string = '';
-  //     questionText: string = '';
-  //     correct: string[] = [];
-  //     incorrect: string[] = [];
-  //     numCorrect: number = 0;
-  //     answers: AnswerType[] = [];
-  // Absolutely necessary:
-  //     questionText: string = '';
-  //     correct: string[] = [];
-  //     incorrect: string[] = [];
-  // database call per question needs:
-  // ans0, ans1, ans2, ans3
-  //
 };
 
 const Child = () => {};
@@ -132,6 +137,7 @@ export class Question extends Component {
 
 /**
  * Component to render information about the quiz being created in NewQuiz
+ * TODO: Add database call for categories, etc.
  */
 export class QuizInfoCard extends Component {
   title: string = '';
@@ -221,48 +227,5 @@ export class NewQuiz extends Component {
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-  }
-
-  add() {
-    if (this.newquestion.length >= 10) {
-      console.log('stopppp');
-      Alert.danger('shii');
-    }
-    this.id = this.id + 1;
-    this.newquestion.push({
-      id: this.id,
-      question: '',
-      answ0: '',
-      answ1: '',
-      answ2: '',
-      answ3: '',
-    });
-  }
-
-  createQuiz() {
-    // console.log(oo.value)
-    console.log(this.categoryId);
-    quizService
-      .createQuiz(this.title, this.description, this.categoryId)
-      .then((id) => history.push('/tasks/' + id))
-      .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
-
-    for (let i = 0; i < this.newquestion.length; i++) {
-      console.log(this.newquestion[i]);
-      questionService
-        .createQuestion(
-          this.nextId,
-          this.newquestion[i].question,
-          this.newquestion[i].answ0,
-          this.newquestion[i].answ1,
-          this.newquestion[i].answ2,
-          this.newquestion[i].answ3
-        )
-        .catch((error: Error) => Alert.danger('Error creating Question: ' + error.message));
-    }
-  }
-
-  delQuestion() {
-    this.newquestion.splice(this.index, 1);
   }
 }
