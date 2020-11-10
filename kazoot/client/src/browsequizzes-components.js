@@ -202,7 +202,6 @@ export class BrowseQuizzes extends Component {
                 onChange={this.editSearchTerm}
               ></Form.Input>
             </div>
-            <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
           </Row>
         </Card>
 
