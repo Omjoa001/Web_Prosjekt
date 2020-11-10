@@ -1,39 +1,12 @@
-# Client tests example
 
-## Setup database connections
+This QuizApp is running on "localserver:3000"
+In order to reach this QuizApp on the localserver:3000, it is necessary to complete the steps described below.
 
-You need to create two configuration files that will contain the database connection details. These
-files should not be uploaded to your git repository, and they have therefore been added to
-`.gitignore`. The connection details may vary, but example content of the two configuration files
-are as follows:
+It is necessary to be in the right folder/path while using the terminal. By right folder, it means where the code is downloaded. 
 
-`server/src/config.js`:
-
-```js
-// @flow
-
-process.env.MYSQL_HOST = 'mysql.stud.ntnu.no';
-process.env.MYSQL_USER = 'username_todo';
-process.env.MYSQL_PASSWORD = 'username_todo';
-process.env.MYSQL_DATABASE = 'username_todo_dev';
-```
-
-`server/test/config.js`:
-
-```js
-// @flow
-
-process.env.MYSQL_HOST = 'mysql.stud.ntnu.no';
-process.env.MYSQL_USER = 'username_todo';
-process.env.MYSQL_PASSWORD = 'username_todo';
-process.env.MYSQL_DATABASE = 'username_todo_test';
-```
-
-These environment variables will be used in the `server/src/mysql-pool.js` file.
+First, start the server by installing the dependecies by using a terminal. 
 
 ## Start server
-
-Install dependencies and start server:
 
 ```sh
 cd server
@@ -41,11 +14,8 @@ npm install
 npm start
 ```
 
-### Run server tests:
-
-```sh
-npm test
-```
+The second step is to install the dependencies and bundle the client files. 
+This step is also done by using a terminal.
 
 ## Bundle client files to be served through server
 
@@ -57,8 +27,7 @@ npm install
 npm start
 ```
 
-### Run client tests:
+After the two steps above are completed, use a webbrowser and type in localhost:300 in the URL. 
+The QuizApp, Kazoot, will now start running and is playable.
 
-```sh
-npm test
-```
+
