@@ -106,12 +106,20 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
 
 //Custom cards for PlayQuiz component.
 export class AnswerCard extends Component<{
-  title?: React.Node,
+  title?: string,
   children?: React.Node,
-  answ0?: React.Node,
-  answ1?: React.Node,
-  answ2?:React.Node,
-  answ3?:React.Node}> {
+  answ0?: string,
+  answ1?: string,
+  answ2?: string,
+  answ3?: string,
+  numCorrect?: number,
+  show?:boolean,
+}>{
+  selectStyle = { }
+  stil() {
+  this.selectStyle = { border: "3px solid black" }
+  }
+
   render() {
     return (
       <center>
@@ -121,13 +129,13 @@ export class AnswerCard extends Component<{
             <hr />
             <div className="card-text">
               {this.props.children}
-              <Button.Answer>{this.props.answ0}</Button.Answer>
+              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={1}>{this.props.answ0}</Button.Answer></div>
               &nbsp;&nbsp;&nbsp;
-              <Button.Answer>{this.props.answ1}</Button.Answer>
+              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={0}>{this.props.answ1}</Button.Answer></div>
               &nbsp;&nbsp;&nbsp;
-              <Button.Answer>{this.props.answ2}</Button.Answer>
+              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={0}>{this.props.answ2}</Button.Answer></div>
               &nbsp;&nbsp;&nbsp;
-              <Button.Answer>{this.props.answ3}</Button.Answer>
+              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={1}>{this.props.answ3}</Button.Answer></div>
             </div>
           </div>
         </div>
@@ -221,13 +229,17 @@ class ButtonSuccess extends Component<{
 
 class ButtonAnswer extends Component<{
   width?: number,
-  onClick?: () => mixed,
-  small?: boolean,
-  children?: React.Node,
+  onClick?:() => Mixed,
+  small?:Boolean,
+  children?:React.Node,
+  correct?:Boolean,
+  show?:boolean,
 }> {
-  render() {
+render() {
+  let value = this.props.correct ? "success" : "danger"
+  let ButtonClass = this.props.show ? "btn btn-" + value + " btn-lg btn-block" : "btn btn-outline-primary btn-lg btn-block"
     return (
-    <button type="button" class="btn btn-primary btn-lg btn-block">{this.props.children}</button>
+      <button type="button" class={ButtonClass}>{this.props.children}</button>
     );
   }
 }

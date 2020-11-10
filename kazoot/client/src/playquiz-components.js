@@ -21,9 +21,10 @@ export class PlayQuiz extends Component {
   questions: QuestionType[] = [];
   categories: CategoryType[] = [];
   quiz: QuizType = {};
-
+  show:boolean = false;
   render() {
     return (
+
       <>
         <CenterCard title={this.quiz.title}>
           Description: {this.quiz.description} <br></br>ID: {this.id}
@@ -31,24 +32,34 @@ export class PlayQuiz extends Component {
 
         <div>
           {this.questions.map((a) => (
-            <>
+            <div key={a.id}>
               <AnswerCard
                 title={a.question}
                 answ0={a.answ0}
                 answ1={a.answ1}
                 answ2={a.answ2}
                 answ3={a.answ3}
+                show={this.show}
               >
-                <div key={a.id} title={a.question}>
+                {console.log(this.show)}
+                <div title={a.question}>
                   Question Id: {a.id}
                   <br></br>
                 </div>
               </AnswerCard>
               <br></br>
               <br></br>
-            </>
+            </div>
           ))}
         </div>
+
+        <center>
+          <Button.OutlinePrimary onClick={() => {
+          this.show = true
+          }}>
+            SUBMIT
+          </Button.OutlinePrimary>
+        </center>
 
         <Card title={this.quiz.title}>
           Description: {this.quiz.description}
@@ -68,7 +79,6 @@ export class PlayQuiz extends Component {
   }
 }
 /*
-
          <Button.Primary>{a.answ0}</Button.Primary>
                 &nbsp;&nbsp;&nbsp;
                 <Button.Primary>{a.answ1}</Button.Primary>
