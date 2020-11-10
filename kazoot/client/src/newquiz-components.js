@@ -196,6 +196,13 @@ export class NewQuiz extends Component {
 
   questions: QuestionType[] = [];
 
+  // questionState: [] = [
+  //   answers: answerType[] = [],
+  //   questionText: string = '',
+  // ]
+
+
+
   render() {
     return (
       <>
