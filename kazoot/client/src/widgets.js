@@ -206,17 +206,18 @@ class ButtonSuccess extends Component<{
 }> {
   render() {
     return (
-      <button
-        type="button"
+      <button type="button"
         className={'btn btn-success' + (this.props.small ? ' btn-sm py-0' : '')}
-        onClick={this.props.onClick}
-      >
+        onClick={this.props.onClick}>
         {this.props.children}
       </button>
     );
   }
 }
 
+/**
+ * Renders a blue block-button using Bootstrap styles.
+ */
 
 class ButtonAnswer extends Component<{
   width?: number,
@@ -230,6 +231,30 @@ class ButtonAnswer extends Component<{
     );
   }
 }
+
+/**
+ * Renders a success block-button using Bootstrap styles.
+ */
+
+class ButtonStart extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+    
+    <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
+    <button 
+    type="button" class="btn btn-success btn-lg btn-block"
+    onClick={this.props.onClick}>
+     {this.props.children} </button>
+    </div>
+    );
+  }
+}
+
 /**
  * Renders a danger button using Bootstrap styles.
  */
@@ -329,6 +354,7 @@ export class Button {
   static OutlinePrimary = ButtonOutlinePrimary;
   static Primary = ButtonPrimary;
   static Answer = ButtonAnswer;
+  static Start = ButtonStart;
 }
 
 /**
