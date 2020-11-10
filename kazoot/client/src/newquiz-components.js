@@ -33,23 +33,6 @@ const history = createHashHistory();
   // ...
 
 
-/**
- * Takes an array of questions and maps them in a JSX tag
- * TODO: Reconsider this. Does it make sense?
- */
-export class QuestionList extends Component {
-  listOfQuestions: Question = [];
-
-  render() {
-    return (
-      <>
-        {this.listOfQuestions.map((question) => {
-          <div>{question.answers}</div>;
-        })}
-      </>
-    );
-  }
-}
 
 const Parent = () => {
 };
@@ -60,32 +43,51 @@ const Child = () => {};
  * Renders a single question
  */
 export class Question extends Component {
-  properties: [] = [];
-
-  title: string = '';
   questionText: string = '';
   correct: string[] = [];
   incorrect: string[] = [];
+
+  title: string = 'New Question';
   numCorrect: number = 0;
-  answers: AnswerType[] = [];
+  answers: AnswerType[] = [
+    {answerText: '', correct: false},
+    {answerText: '', correct: false},
+    {answerText: '', correct: false},
+    {answerText: '', correct: false},
+  ];
 
   mounted() {
-    console.log(this.properties);
+    this.questionText = 'Placeholder question'
   }
 
-  // * Generates each answer with checkbox etc.
-  // * The output varies based on how many answers there are for
-  // * a given question:
+  renderQuestionText() {
+    return (
+        <Form.Input
+          placeholder="Question"
+          value={this.questionText}
+          onChange={(event) => {
+            this.questionText = event.currentTarget.value;
+          }}
+        ></Form.Input>
+    )
 
+  }
+
+  /**
+   * Generates each answer with checkbox etc.
+   * The output varies based on how many answers there are for
+   * a given question:
+   */
   renderAnswers() {
     let jsx: [] = [];
 
     let i = 0;
-    this.properties.answers.forEach((answer) => {
+    this.answers.forEach((answer) => {
       jsx.push(
         <Row>
           <Column width={2}>
             <Form.Checkbox
+              checked={answer.correct}
               onChange={(event) => {
                 answer.correct = event.target.checked;
                 console.log(`answer.correct set to ${answer.correct}`);
@@ -115,18 +117,10 @@ export class Question extends Component {
   render() {
     return (
       <>
-        <Card title={this.properties.title}>
+        <Card title={this.title}>
           <Row>
             <Column width={2}>Correct: {}</Column>
-            <Column>
-              <Form.Input
-                placeholder="Question"
-                value={this.properties.questionText}
-                onChange={(event) => {
-                  this.properties.questionText = event.currentTarget.value;
-                }}
-              ></Form.Input>
-            </Column>
+            <Column> {this.renderQuestionText()} </Column>
           </Row>
           {this.renderAnswers()}
         </Card>
@@ -221,6 +215,8 @@ export class NewQuiz extends Component {
           categoryId={this.categoryId}
           nextId={this.nextId}
         ></QuizInfoCard>
+
+        <Question></Question>
       </>
     );
   }
