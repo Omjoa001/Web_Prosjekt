@@ -16,12 +16,14 @@ import { ListQuizzes } from './listquizzes-components.js';
 class Menu extends Component {
   render() {
     return (
-      <NavBar brand="Kazoot">
+      <nav class="navbar sticky-top bg-dark">
+      <NavBar brand="Kazoot"> 
         <NavBar.Link to="/BrowseQuizzes">Browse Quizzes</NavBar.Link>
         <NavBar.Link to="/quiz/new">New quiz</NavBar.Link>
         <NavBar.Link to={"/editQuiz/" + 2}>TESTING: Endre quiz</NavBar.Link>
         <NavBar.Link to="/listQuizzes">TESTING: Kviss</NavBar.Link>
       </NavBar>
+      </nav>
     );
   }
 }
