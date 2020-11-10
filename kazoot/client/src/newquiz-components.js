@@ -15,28 +15,31 @@ import {
 const history = createHashHistory();
 
 /*BRAINSTORMING*/
-  // All question props:
-  //     title: string = '';
-  //     questionText: string = '';
-  //     correct: string[] = [];
-  //     incorrect: string[] = [];
-  //     numCorrect: number = 0;
-  //     answers: AnswerType[] = [];
+// All question props:
+//     title: string = '';
+//     questionText: string = '';
+//     correct: string[] = [];
+//     incorrect: string[] = [];
+//     numCorrect: number = 0;
+//     answers: AnswerType[] = [];
 
-  // Absolutely necessary:
-  //     questionText: string = '';
-  //     correct: string[] = [];
-  //     incorrect: string[] = [];
+// Absolutely necessary:
+//     questionText: string = '';
+//     correct: string[] = [];
+//     incorrect: string[] = [];
 
-  // database call per question needs:
-  // ans0, ans1, ans2, ans3
-  // ...
+// database call per question needs:
+// ans0, ans1, ans2, ans3
+// ...
 
+/**
+ * Experimental function for testing state passing etc
+ */
+const Parent = () => {};
 
-
-const Parent = () => {
-};
-
+/**
+ * Experimental function for testing state passing etc
+ */
 const Child = () => {};
 
 /**
@@ -50,27 +53,26 @@ export class Question extends Component {
   title: string = 'New Question';
   numCorrect: number = 0;
   answers: AnswerType[] = [
-    {answerText: '', correct: false},
-    {answerText: '', correct: false},
-    {answerText: '', correct: false},
-    {answerText: '', correct: false},
+    { answerText: '', correct: false },
+    { answerText: '', correct: false },
+    { answerText: '', correct: false },
+    { answerText: '', correct: false },
   ];
 
   mounted() {
-    this.questionText = 'Placeholder question'
+    this.questionText = 'Placeholder question';
   }
 
   renderQuestionText() {
     return (
-        <Form.Input
-          placeholder="Question"
-          value={this.questionText}
-          onChange={(event) => {
-            this.questionText = event.currentTarget.value;
-          }}
-        ></Form.Input>
-    )
-
+      <Form.Input
+        placeholder="Question"
+        value={this.questionText}
+        onChange={(event) => {
+          this.questionText = event.currentTarget.value;
+        }}
+      ></Form.Input>
+    );
   }
 
   /**
@@ -141,55 +143,53 @@ export class QuizInfoCard extends Component {
 
   render() {
     return (
-      <Card title="New Quiz!">
-        <Card>
-          <Row>
-            <Column width={3}>Quiz-title:</Column>
-            <Column>
-              <Form.Input
-                placeholder="Quiz title"
-                type="text"
-                value={this.props.title}
-                onChange={(event) => (this.props.title = event.currentTarget.value)}
-              ></Form.Input>
-            </Column>
-          </Row>
-          <Row>
-            <Column width={3}>Quiz-Category:</Column>
-            <Column>
-              <select
-                name="Category"
-                value={this.props.categoryId}
-                onChange={(event) => (this.props.categoryId = event.currentTarget.value)}
-              >
-                <option value="0">Velg en kategori</option>
-                <option value="1">Matte</option>
-                <option value="2">Fotball</option>
-                <option value="3">Geografi</option>
-                <option value="4">It</option>
-                <option value="5">History</option>
-              </select>
-            </Column>
-          </Row>
-          <Row>
-            <Column>Quiz-Id:</Column>
-            <Column>
-              <Form.Input value={this.props.nextId} disabled></Form.Input>
-            </Column>
-          </Row>
-          <Row>
-            <Column width={3}>Quiz-description:</Column>
-            <Column>
-              <Form.Textarea
-                placeholder="Quiz description"
-                type="text"
-                value={this.props.description}
-                onChange={(event) => (this.props.description = event.currentTarget.value)}
-                row={10}
-              ></Form.Textarea>
-            </Column>
-          </Row>
-        </Card>
+      <Card>
+        <Row>
+          <Column width={3}>Quiz-title:</Column>
+          <Column>
+            <Form.Input
+              placeholder="Quiz title"
+              type="text"
+              value={this.props.title}
+              onChange={(event) => (this.props.title = event.currentTarget.value)}
+            ></Form.Input>
+          </Column>
+        </Row>
+        <Row>
+          <Column width={3}>Quiz-Category:</Column>
+          <Column>
+            <select
+              name="Category"
+              value={this.props.categoryId}
+              onChange={(event) => (this.props.categoryId = event.currentTarget.value)}
+            >
+              <option value="0">Velg en kategori</option>
+              <option value="1">Matte</option>
+              <option value="2">Fotball</option>
+              <option value="3">Geografi</option>
+              <option value="4">It</option>
+              <option value="5">History</option>
+            </select>
+          </Column>
+        </Row>
+        <Row>
+          <Column>Quiz-Id:</Column>
+          <Column>
+            <Form.Input value={this.props.nextId} disabled></Form.Input>
+          </Column>
+        </Row>
+        <Row>
+          <Column width={3}>Quiz-description:</Column>
+          <Column>
+            <Form.Textarea
+              placeholder="Quiz description"
+              type="text"
+              value={this.props.description}
+              onChange={(event) => (this.props.description = event.currentTarget.value)}
+              row={10}
+            ></Form.Textarea>
+          </Column>
+        </Row>
       </Card>
     );
   }
@@ -209,12 +209,14 @@ export class NewQuiz extends Component {
   render() {
     return (
       <>
-        <QuizInfoCard
-          title={this.title}
-          description={this.description}
-          categoryId={this.categoryId}
-          nextId={this.nextId}
-        ></QuizInfoCard>
+        <Card title="New Quiz!">
+          <QuizInfoCard
+            title={this.title}
+            description={this.description}
+            categoryId={this.categoryId}
+            nextId={this.nextId}
+          ></QuizInfoCard>
+        </Card>
 
         <Question></Question>
       </>
