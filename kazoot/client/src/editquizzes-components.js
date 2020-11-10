@@ -17,51 +17,11 @@ const history = createHashHistory();
 export class EditQuiz extends Component <{ match: { params: { id: number } } }> {
 
 
-  /**
-   * 
-   * todo:
-   * gjøre at man kan legge til nye spørsmål::
-   * gjøre at man kan slette spørsmål 
-   */
 
-  //nextId: number = 0;
   id: number = 0;
   questions: QuestionType[] = []
   categories: CategoryType[] = [];
   quiz: QuizType = {};
-
-/*
-  newquestion: Array<{
-    id: 0,
-    question: '',
-    answ0: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-    answ1: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-    answ2: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-    answ3: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-  }> = [
-    {
-    },
-  ];
-  */
-
-  
-
 
 
   render() {
