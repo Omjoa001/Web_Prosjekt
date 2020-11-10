@@ -378,7 +378,7 @@ export class NavBar extends Component<{ brand?: React.Node, children?: React.Nod
 
   render() {
     return (
-      <nav className="navbar navbar-expand-sm bg-light navbar-light">
+      <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
         {
           <NavLink className="navbar-brand" activeClassName="active" exact to="/">
             {this.props.brand}
