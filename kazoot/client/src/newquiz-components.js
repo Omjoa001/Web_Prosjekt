@@ -14,8 +14,12 @@ import {
 
 const history = createHashHistory();
 
-export class NewQuizQuestionList extends Component {
-  listOfQuestions: NewQuizQuestion = [];
+/**
+ * Takes an array of questions and maps them in a JSX tag
+ * TODO: Reconsider this. Does it make sense?
+ */
+export class QuestionList extends Component {
+  listOfQuestions: Question = [];
 
   render() {
     return (
@@ -28,253 +32,31 @@ export class NewQuizQuestionList extends Component {
   }
 }
 
+const Parent = () => {
+  // All question props:
+  //     title: string = '';
+  //     questionText: string = '';
+  //     correct: string[] = [];
+  //     incorrect: string[] = [];
+  //     numCorrect: number = 0;
+  //     answers: AnswerType[] = [];
+  // Absolutely necessary:
+  //     questionText: string = '';
+  //     correct: string[] = [];
+  //     incorrect: string[] = [];
+  // database call per question needs:
+  // ans0, ans1, ans2, ans3
+  //
+};
+
+const Child = () => {};
+
 /**
- * Component which renders the New Quiz page.
+ * Renders a single question
  */
-export class NewQuiz extends Component {
-  title: string = '';
-  description: string = '';
-  categoryId: number = 0;
-  nextId: number = 0;
+export class Question extends Component {
+  properties: [] = [];
 
-  questions: QuestionType[] = [];
-
-  // placeholderQuestion: QuestionType = {
-  //   id,
-  // };
-
-  newquestion: Array<{
-    id: number,
-    question: string,
-  }> = [
-    {
-      id: 0,
-      question: '',
-      answ0: {
-        id: 0,
-        ans: '',
-        bool: false,
-      },
-      answ1: {
-        id: 0,
-        ans: '',
-        bool: false,
-      },
-      answ2: {
-        id: 0,
-        ans: '',
-        bool: false,
-      },
-      answ3: {
-        id: 0,
-        ans: '',
-        bool: false,
-      },
-    },
-  ];
-
-  listOfQuestions: [] = [
-    <>
-      <Card title="mofo" />
-      {/* <NewQuizQuestion title="Question 1" /> */}
-    </>,
-  ];
-
-  theButton: Button.Success = (
-    <Button.Success
-      onClick={() => {
-        console.log('prøver å legge til shit');
-        this.listOfQuestions.push(<NewQuizQuestion title="heisann"></NewQuizQuestion>);
-        console.log(`listofquestions: ${this.listOfQuestions}`);
-      }}
-    >
-      hei
-    </Button.Success>
-  );
-
-  thelist = [
-    <>
-      <NewQuizQuestion />
-      <NewQuizQuestion />
-      <NewQuizQuestion />
-      <NewQuizQuestion />
-    </>,
-  ];
-
-  render() {
-    return (
-      <>
-        <>
-          <NewQuizInfoCard
-            title={this.title}
-            description={this.description}
-            categoryId={this.categoryId}
-            nextId={this.nextId}
-          ></NewQuizInfoCard>
-
-          {this.theButton}
-
-          {/* <NewQuizQuestionList questionlist={this.listOfQuestions} /> */}
-          {console.log(this.thelist)}
-
-          {this.thelist.map((q) => {
-            <div key={q.id}>
-              {q}
-            </div>
-          })}
-
-          <NewQuizQuestion />
-          <NewQuizQuestion />
-
-          {this.newquestion.map((q, index) => (
-            <Card key={q.id} title={'Spørsmål ' + (index + 1)}>
-              <Row>
-                <Column width={2}>Riktig: {q.id}</Column>
-                <Column>
-                  <Form.Input
-                    placeholder="Question"
-                    value={q.question}
-                    onChange={(event) => (q.question = event.currentTarget.value)}
-                  ></Form.Input>
-                </Column>
-                <Column>{/*<Button.Danger onClick={() => {}}>X</Button.Danger>*/}</Column>
-              </Row>
-              <Row>
-                <Column width={2}>
-                  <Form.Checkbox></Form.Checkbox>
-                </Column>
-                <Column>
-                  <Form.Input
-                    placeholder="Answer 1"
-                    value={q.answ0}
-                    onChange={(event) => (q.answ0 = event.currentTarget.value)}
-                  ></Form.Input>
-                </Column>
-                <Column>{/*<Button.Danger>X</Button.Danger>*/}</Column>
-              </Row>
-              <Row>
-                <Column width={2}>
-                  <Form.Checkbox></Form.Checkbox>
-                </Column>
-                <Column>
-                  <Form.Input
-                    placeholder="Answer 2"
-                    onChange={(event) => (q.answ1 = event.currentTarget.value)}
-                    value={q.answ1}
-                  ></Form.Input>
-                </Column>
-                <Column>{/*<Button.Danger>X</Button.Danger>*/}</Column>
-              </Row>
-              <Row>
-                <Column width={2}>
-                  <Form.Checkbox></Form.Checkbox>
-                </Column>
-                <Column>
-                  <Form.Input
-                    placeholder="Answer 3"
-                    value={q.answ2}
-                    onChange={(event) => (q.answ2 = event.currentTarget.value)}
-                  ></Form.Input>
-                </Column>
-                <Column>{/*<Button.Danger>X</Button.Danger>*/}</Column>
-              </Row>
-              <Row>
-                <Column width={2}>
-                  <Form.Checkbox></Form.Checkbox>
-                </Column>
-                <Column>
-                  <Form.Input
-                    placeholder="Answer 4"
-                    value={q.answ3}
-                    onChange={(event) => (q.answ3 = event.currentTarget.value)}
-                  ></Form.Input>
-                </Column>
-                <Column>{/*<Button.Danger>X</Button.Danger>*/}</Column>
-              </Row>
-              <Row>
-                <Column>
-                  <Button.Success
-                    onClick={() => {
-                      console.log('funker ikke bro');
-                    }}
-                  >
-                    Legg til et svaralternativ?? nei!
-                  </Button.Success>
-                </Column>
-                <Column>
-                  <Button.Danger onClick={this.delQuestion}>Delete question</Button.Danger>
-                </Column>
-              </Row>
-            </Card>
-          ))}
-        </>
-
-        <Card>
-          <Row>
-            <Button.Success id="newquest" disabled={false} onClick={this.add}>
-              New question
-            </Button.Success>
-          </Row>
-          <Row>
-            <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-            <Column>
-              <Button.Success onClick={this.createQuiz}>Save</Button.Success>
-            </Column>
-          </Row>
-        </Card>
-      </>
-    );
-  }
-
-  mounted() {
-    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-  }
-
-  add() {
-    if (this.newquestion.length >= 10) {
-      console.log('stopppp');
-      Alert.danger('shii');
-    }
-    this.id = this.id + 1;
-    this.newquestion.push({
-      id: this.id,
-      question: '',
-      answ0: '',
-      answ1: '',
-      answ2: '',
-      answ3: '',
-    });
-  }
-
-  createQuiz() {
-    // console.log(oo.value)
-    console.log(this.categoryId);
-    quizService
-      .createQuiz(this.title, this.description, this.categoryId)
-      .then((id) => history.push('/tasks/' + id))
-      .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
-
-    for (let i = 0; i < this.newquestion.length; i++) {
-      console.log(this.newquestion[i]);
-      questionService
-        .createQuestion(
-          this.nextId,
-          this.newquestion[i].question,
-          this.newquestion[i].answ0,
-          this.newquestion[i].answ1,
-          this.newquestion[i].answ2,
-          this.newquestion[i].answ3
-        )
-        .catch((error: Error) => Alert.danger('Error creating Question: ' + error.message));
-    }
-  }
-
-  delQuestion() {
-    this.newquestion.splice(this.index, 1);
-  }
-}
-
-export class NewQuizQuestion extends Component {
   title: string = '';
   questionText: string = '';
   correct: string[] = [];
@@ -283,28 +65,18 @@ export class NewQuizQuestion extends Component {
   answers: AnswerType[] = [];
 
   mounted() {
-    this.title = this.props.title;
-
-    for (let i = 0; i < 4; i++) {
-      this.answers.push({
-        answerText: '',
-        correct: false,
-      });
-    }
-
-    console.log(`answers: ${this.answers}`);
+    console.log(this.properties);
   }
 
-  /**
-   * Generates each answer with checkbox etc.
-   * The output varies based on how many answers there are for
-   * a given question:
-   */
+  // * Generates each answer with checkbox etc.
+  // * The output varies based on how many answers there are for
+  // * a given question:
+
   renderAnswers() {
     let jsx: [] = [];
 
     let i = 0;
-    this.answers.forEach((answer) => {
+    this.properties.answers.forEach((answer) => {
       jsx.push(
         <Row>
           <Column width={2}>
@@ -338,15 +110,15 @@ export class NewQuizQuestion extends Component {
   render() {
     return (
       <>
-        <Card title={this.title}>
+        <Card title={this.properties.title}>
           <Row>
             <Column width={2}>Correct: {}</Column>
             <Column>
               <Form.Input
                 placeholder="Question"
-                value={this.questionText}
+                value={this.properties.questionText}
                 onChange={(event) => {
-                  this.questionText = event.currentTarget.value;
+                  this.properties.questionText = event.currentTarget.value;
                 }}
               ></Form.Input>
             </Column>
@@ -361,7 +133,7 @@ export class NewQuizQuestion extends Component {
 /**
  * Component to render information about the quiz being created in NewQuiz
  */
-export class NewQuizInfoCard extends Component {
+export class QuizInfoCard extends Component {
   title: string = '';
   description: string = '';
   categoryId: number = 0;
@@ -420,5 +192,77 @@ export class NewQuizInfoCard extends Component {
         </Card>
       </Card>
     );
+  }
+}
+
+/**
+ * Component which renders the New Quiz page.
+ */
+export class NewQuiz extends Component {
+  title: string = '';
+  description: string = '';
+  categoryId: number = 0;
+  nextId: number = 0;
+
+  questions: QuestionType[] = [];
+
+  render() {
+    return (
+      <>
+        <QuizInfoCard
+          title={this.title}
+          description={this.description}
+          categoryId={this.categoryId}
+          nextId={this.nextId}
+        ></QuizInfoCard>
+      </>
+    );
+  }
+
+  mounted() {
+    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+  }
+
+  add() {
+    if (this.newquestion.length >= 10) {
+      console.log('stopppp');
+      Alert.danger('shii');
+    }
+    this.id = this.id + 1;
+    this.newquestion.push({
+      id: this.id,
+      question: '',
+      answ0: '',
+      answ1: '',
+      answ2: '',
+      answ3: '',
+    });
+  }
+
+  createQuiz() {
+    // console.log(oo.value)
+    console.log(this.categoryId);
+    quizService
+      .createQuiz(this.title, this.description, this.categoryId)
+      .then((id) => history.push('/tasks/' + id))
+      .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
+
+    for (let i = 0; i < this.newquestion.length; i++) {
+      console.log(this.newquestion[i]);
+      questionService
+        .createQuestion(
+          this.nextId,
+          this.newquestion[i].question,
+          this.newquestion[i].answ0,
+          this.newquestion[i].answ1,
+          this.newquestion[i].answ2,
+          this.newquestion[i].answ3
+        )
+        .catch((error: Error) => Alert.danger('Error creating Question: ' + error.message));
+    }
+  }
+
+  delQuestion() {
+    this.newquestion.splice(this.index, 1);
   }
 }
