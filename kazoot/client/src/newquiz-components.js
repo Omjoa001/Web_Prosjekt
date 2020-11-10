@@ -33,16 +33,6 @@ const history = createHashHistory();
 // ...
 
 /**
- * Experimental function for testing state passing etc
- */
-const Parent = () => {};
-
-/**
- * Experimental function for testing state passing etc
- */
-const Child = () => {};
-
-/**
  * Renders a single question
  */
 export class Question extends Component {
@@ -218,7 +208,7 @@ export class NewQuiz extends Component {
           ></QuizInfoCard>
         </Card>
 
-        <Question></Question>
+        <Question />
       </>
     );
   }
