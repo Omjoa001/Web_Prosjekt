@@ -36,7 +36,7 @@ router.post('/quizzes', (request, response) => {
   console.log('post')
   const data = request.body;
   if (data && typeof data.title == 'string' && data.title.length != 0 &&
-  typeof data.description == 'string' && typeof data.categoryId == 'string') {
+  typeof data.description == 'string' && typeof data.categoryId == 'number') {
   quizService
     .createQuiz(data.title, data.description, data.categoryId)
     .then((id) => response.send({ id: id }))
@@ -51,19 +51,18 @@ router.post('/questions', (request, response) => {
       .createQuestions(data.quizId, data.question, data.answ0, data.answ1, data.answ2, data.answ3)
       .then((id) => response.send({ id: id }))
       .catch((error: Error) => response.status(500).send(error));
-    } else {response.status(400).send('Missing QUIZ information');}
+    } else {response.status(400).send('Missing Question information');}
 })
 
 router.delete('/questions/:id', (request, response) => {
   const quizId = Number(request.params.id);
-  console.log(quizId)
   quizService
     .deleteQuestions(quizId)
     .then((result) => response.send())
     .catch((error: Error) => response.status(500).send(error));
 });
 
-// funker 
+
 router.get('/questions', (request, response) => {
   quizService
     .getAllQuestions()
@@ -89,10 +88,11 @@ router.get('/categories', (request, response) => {
       .catch((error: Error) => response.status(500).send(error));
 })
 
-router.put('/quizzes/:id', (request, response) => {
+router.put('/quiz/:id', (request, response) => {
   const id = Number(request.params.id);
+
   const data = request.body;
-  if(data && typeof data.title == 'string' && data.title !== 0 && typeof data.description =='string' && typeof data.categoryId == "number" && typeof data.id == 'number'){
+  if(data && typeof data.title == 'string' && data.title.length != 0 && typeof data.description =='string' && typeof data.categoryId == 'string' ){
     quizService
       .updateQuiz(data.title, data.description, data.categoryId, id)
       .then((quiz) => response.send(quiz))
@@ -100,5 +100,12 @@ router.put('/quizzes/:id', (request, response) => {
     } else {response.status(400).send('Missing QUIZ information');}
 });
 
+router.delete('/quiz/:id', (request, response) => {
+  const id = Number(request.params.id);
+  quizService
+  .deleteQuiz(id)
+  .then((result) => response.send())
+  .catch((error: Error) => response.status(500).send(error));
+})
 
 export default router;

@@ -86,10 +86,8 @@ class QuestionService {
     .then((response) => response.data.id)
   }
 
-  delQuestions(id: number){
-    return axios 
-      .delete<{}, {id: number }>('/questions/' + id, {id: id})
-      .then((reponse) => response.data)
+  deleteQuestions(id: number){
+    return axios.delete<void>('/questions/' + id).then((response) => response.data);
   }
 }
 
@@ -153,18 +151,23 @@ class QuizService {
   }
 
 
-  updateQuiz(title: string, description: string, categoryId: number, id: number){
+  updateQuiz(id: number, title: string, description: string, categoryId: number){
+    console.log(categoryId)
     return axios
-      .put<{}, {id: number}>('/quizzes' + id, {
+      .put<{}, {id: number, categoryId: number}>('/quiz/' + id, {
+        id: id,
         title: title,
         description: description,
         categoryId: categoryId,
-        id: id,
       })
       .then((response) => response.data.id);
   }
-}
 
+  deleteQuiz(id: number) {
+    return axios.delete<void>('/quiz/' + id).then((response) => response.data);
+  }
+}
+ 
 
 /**
  * WIP

@@ -66,7 +66,7 @@ class QuizService {
   }
 
   //Ikke ferdig - CategorId er ikke en string!!
-  createQuiz(title: string, description: string, categoryId: string) {
+  createQuiz(title: string, description: string, categoryId: number) {
     console.log('create')
     return new Promise<number>((resolve, reject) => {
       pool.query('INSERT INTO Quizzes SET title=?, description=?, categoryId=?', [title, description, categoryId], (error, results) => {
@@ -81,14 +81,12 @@ class QuizService {
 
   // ikke ferdig 
   createQuestions(quizId: number, question: string, answ0: string , answ1: string, answ2: string, answ3: string) {
-    console.log("utenfor create question - router")
     return new Promise<number>((resolve, reject) => {
       pool.query('INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?', [quizId, question, answ0, answ1, answ2, answ3], (error, results) => {
         if (error) return reject(error);
         if (!results.insertId) return reject(new Error('No row inserted'));
 
         resolve(Number(results.insertId));
-        console.log('inni create qustion - reuter')
       });
     });
   }
@@ -103,6 +101,7 @@ class QuizService {
       });
     });
   }
+
 
   getAllQuestions() {
     return new Promise<QuestionType[]>((resolve, reject) => {
@@ -137,7 +136,7 @@ class QuizService {
   updateQuiz(title: string, description: string, categoryId: number, id: number) {
     return new Promise<void>((resolve, reject) => {
       pool.query(
-        'UPDATE Quiz SET title=?, description=?, categoryId =? WHERE id=?',
+        'UPDATE Quizzes SET title=?, description=?, categoryId=? WHERE id=?',
         [title, description, categoryId, id],
         (error, results) => {
           if (error) return reject(error);
@@ -146,6 +145,18 @@ class QuizService {
         }
       );
     });
+  }
+
+
+  deleteQuiz(id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
+        if (error) return reject(error);
+        if (!results.affectedRows) reject(new Error('No row deleted'));
+
+        resolve();
+      });
+    })
   }
 }
 
