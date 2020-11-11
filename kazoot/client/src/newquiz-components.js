@@ -36,6 +36,15 @@ const history = createHashHistory();
  * Component which renders the New Quiz page.
  */
 export class NewQuiz extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      questionText: '',
+      answers: [],
+    };
+  }
+
   title: string = '';
   description: string = '';
   categoryId: number = 0;
@@ -43,18 +52,23 @@ export class NewQuiz extends Component {
 
   questions: QuestionType[] = [];
 
-  // questionState: [] = [
-  //   answers: answerType[] = [],
-  //   questionText: string = '',
-  // ]
+  updated() {
+    console.log(`updated: ${this.state.questionText}`);
+    console.log(`updated: ${this.state.answers}`);
+  }
 
-  questionText: string = '';
-  answers: AnswerType[] = [];
+  // questionText: string = '';
+  // answers: AnswerType[] = [];
 
-  message: string = '';
+  mounted() {
+    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    // this.questionText = '';
+    // this.answers = [];
+  }
 
-  sendData = (childData) => {
-    this.setState({ message: childData });
+  sendData = (qtext, ans) => {
+    this.setState({ questionText: qtext });
+    this.setState({ answers: ans });
   };
 
   render() {
@@ -69,13 +83,18 @@ export class NewQuiz extends Component {
           ></QuizInfoCard>
         </Card>
 
-        <Question parentCallback={this.sendData} />
+        <Card title="troubleshooting">
+          <div>{this.state.questionText}</div>
+          <div>{this.state.answers.answerText}</div>
+        </Card>
+
+        <Question
+          parentCallback={(questionText, answers) => {
+            this.sendData(questionText, answers);
+          }}
+        />
       </>
     );
-  }
-
-  mounted() {
-    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
   }
 }
 
@@ -147,26 +166,10 @@ export class QuizInfoCard extends Component {
  * Renders a single question
  */
 export class Question extends Component {
+  // These are defined properly in mounted
+  title: string = '';
   questionText: string = '';
-  correct: string[] = [];
-  incorrect: string[] = [];
-
-  title: string = 'New Question';
-  numCorrect: number = 0;
-  answers: AnswerType[] = [
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-  ];
-
-  mounted() {
-    this.questionText = 'Placeholder question';
-  }
-
-  sendData = (childData) => {
-    this.props.parentCallback(childData);
-  };
+  answers: AnswerType[] = [];
 
   renderQuestionText() {
     return (
@@ -218,9 +221,21 @@ export class Question extends Component {
     return jsx;
   }
 
-  // theSendDataButton() {
-  //   <Button.Success onClick={this.sendData('Hello from child')}>Send Data</Button.Success>;
-  // }
+  mounted() {
+    this.title = 'New Question';
+    this.questionText = '';
+    this.answers = [
+      { answerText: 'hei', correct: false },
+      { answerText: 'på', correct: false },
+      { answerText: 'deg', correct: false },
+      { answerText: '!', correct: false },
+    ];
+  }
+
+  handleOnClick() {
+    // console.log(this.answers);
+    this.props.parentCallback(this.questionText, this.answers);
+  }
 
   /**
    * TODO: Add number of correct answers to the first column
@@ -234,8 +249,8 @@ export class Question extends Component {
             <Column> {this.renderQuestionText()} </Column>
           </Row>
           {this.renderAnswers()}
-          {/* {this.theSendDataButton()} */}
         </Card>
+        <Button.Success onClick={this.handleOnClick}>hei</Button.Success>
       </>
     );
   }
