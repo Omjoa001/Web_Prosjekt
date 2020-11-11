@@ -87,6 +87,7 @@ export class Question extends Component {
             ></Form.Checkbox>
           </Column>
           <Column>
+          <br></br>
             <Form.Input
               placeholder={`answer ${i}`}
               value={answer.answerText}
@@ -111,7 +112,7 @@ export class Question extends Component {
       <>
         <Card title={this.title}>
           <Row>
-            <Column width={2}>Correct: {}</Column>
+            <Column width={2}>Tick the correct answer:  {}</Column>
             <Column> {this.renderQuestionText()} </Column>
           </Row>
           {this.renderAnswers()}
@@ -143,6 +144,7 @@ export class QuizInfoCard extends Component {
               value={this.props.title}
               onChange={(event) => (this.props.title = event.currentTarget.value)}
             ></Form.Input>
+            <br></br>
           </Column>
         </Row>
         <Row>
@@ -166,6 +168,7 @@ export class QuizInfoCard extends Component {
           <Column>Quiz-Id:</Column>
           <Column>
             <Form.Input value={this.props.nextId} disabled></Form.Input>
+            <br></br>
           </Column>
         </Row>
         <Row>

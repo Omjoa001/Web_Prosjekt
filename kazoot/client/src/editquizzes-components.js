@@ -77,6 +77,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 </Form.Input>
               </Column>
             </Row>
+            <br></br>
             <Row>
               <Column width={3}>Quiz-Category:</Column>
               <Column>
@@ -100,6 +101,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 <Form.Input value={this.quiz.id} disabled></Form.Input>
               </Column>
             </Row>
+            <br></br>
             <Row>
               <Column width={3}>Quiz-description:</Column>
               <Column>
@@ -117,20 +119,21 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
           {this.questions.map((q, index) => (
             <Card key={q.id} title={'Spørsmål ' + (index + 1)}>
               <Row>
-                <Column width={2}>Riktig: {q.id}</Column>
+                <Column width={2}>Tick the correct answer: </Column>
                 <Column>
                   <Form.Input
                     placeholder="Question"
                     value={q.question}
                     onChange={(event) => (q.question = event.currentTarget.value)}
                 ></Form.Input>
+                <br></br>
               </Column>
               <Column>
               </Column>
             </Row>
             <Row>
               <Column width={2}>
-                <Form.Checkbox ></Form.Checkbox>
+                <Form.Checkbox></Form.Checkbox>
               </Column>
               <Column>
                 <Form.Input
@@ -138,6 +141,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                   value={q.answ0}
                   onChange={(event) => (q.answ0 = event.currentTarget.value)}
                 ></Form.Input>
+                <br></br>
               </Column>
               <Column>
               </Column>
@@ -152,6 +156,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                     onChange={(event) => (q.answ1 = event.currentTarget.value)}
                     value={q.answ1}
                 ></Form.Input>
+                <br></br>
               </Column>
               <Column>
                </Column>
@@ -166,6 +171,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                     value={q.answ2}
                     onChange={(event) => (q.answ2 = event.currentTarget.value)}
                 ></Form.Input>
+                <br></br>
               </Column>
               <Column>
               </Column>
@@ -180,6 +186,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                   value={q.answ3}
                   onChange={(event) => (q.answ3 = event.currentTarget.value)}
                 ></Form.Input>
+                <br></br>
               </Column>
               <Column>
               </Column>
