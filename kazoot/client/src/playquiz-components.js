@@ -24,7 +24,6 @@ export class PlayQuiz extends Component {
   show:boolean = false;
   render() {
     return (
-
       <>
         <CenterCard title={this.quiz.title}>
           Description: {this.quiz.description} <br></br>ID: {this.id}
@@ -54,18 +53,17 @@ export class PlayQuiz extends Component {
         </div>
 
         <center>
-          <Button.OutlinePrimary onClick={() => {
-          this.show = true
-          }}>
+          <Button.OutlinePrimary
+            onClick={() => {
+              this.show = true;
+            }}
+          >
             SUBMIT
           </Button.OutlinePrimary>
         </center>
-
-        <Card title={this.quiz.title}>
-          Description: {this.quiz.description}
-          {<br></br>}
-          Category: {this.quiz.categoryId}
-        </Card>
+        <br></br>
+        <br></br>
+        <br></br>
       </>
     );
   }
