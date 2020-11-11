@@ -33,91 +33,49 @@ const history = createHashHistory();
 // ...
 
 /**
- * Renders a single question
+ * Component which renders the New Quiz page.
  */
-export class Question extends Component {
+export class NewQuiz extends Component {
+  title: string = '';
+  description: string = '';
+  categoryId: number = 0;
+  nextId: number = 0;
+
+  questions: QuestionType[] = [];
+
+  // questionState: [] = [
+  //   answers: answerType[] = [],
+  //   questionText: string = '',
+  // ]
+
   questionText: string = '';
-  correct: string[] = [];
-  incorrect: string[] = [];
+  answers: AnswerType[] = [];
 
-  title: string = 'New Question';
-  numCorrect: number = 0;
-  answers: AnswerType[] = [
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-  ];
+  message: string = '';
 
-  mounted() {
-    this.questionText = 'Placeholder question';
-  }
+  sendData = (childData) => {
+    this.setState({ message: childData });
+  };
 
-  renderQuestionText() {
-    return (
-      <Form.Input
-        placeholder="Question"
-        value={this.questionText}
-        onChange={(event) => {
-          this.questionText = event.currentTarget.value;
-        }}
-      ></Form.Input>
-    );
-  }
-
-  /**
-   * Generates each answer with checkbox etc.
-   * The output varies based on how many answers there are for
-   * a given question:
-   */
-  renderAnswers() {
-    let jsx: [] = [];
-
-    let i = 0;
-    this.answers.forEach((answer) => {
-      jsx.push(
-        <Row>
-          <Column width={2}>
-            <Form.Checkbox
-              checked={answer.correct}
-              onChange={(event) => {
-                answer.correct = event.target.checked;
-                console.log(`answer.correct set to ${answer.correct}`);
-              }}
-            ></Form.Checkbox>
-          </Column>
-          <Column>
-            <Form.Input
-              placeholder={`answer ${i}`}
-              value={answer.answerText}
-              onChange={(event) => {
-                answer.answerText = event.currentTarget.value;
-              }}
-            ></Form.Input>
-          </Column>
-        </Row>
-      );
-      i++;
-    });
-
-    return jsx;
-  }
-
-  /**
-   * Add number of correct answers to the first column
-   */
   render() {
     return (
       <>
-        <Card title={this.title}>
-          <Row>
-            <Column width={2}>Correct: {}</Column>
-            <Column> {this.renderQuestionText()} </Column>
-          </Row>
-          {this.renderAnswers()}
+        <Card title="New Quiz!">
+          <QuizInfoCard
+            title={this.title}
+            description={this.description}
+            categoryId={this.categoryId}
+            nextId={this.nextId}
+          ></QuizInfoCard>
         </Card>
+
+        <Question parentCallback={this.sendData} />
       </>
     );
+  }
+
+  mounted() {
+    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
   }
 }
 
@@ -186,41 +144,99 @@ export class QuizInfoCard extends Component {
 }
 
 /**
- * Component which renders the New Quiz page.
+ * Renders a single question
  */
-export class NewQuiz extends Component {
-  title: string = '';
-  description: string = '';
-  categoryId: number = 0;
-  nextId: number = 0;
+export class Question extends Component {
+  questionText: string = '';
+  correct: string[] = [];
+  incorrect: string[] = [];
 
-  questions: QuestionType[] = [];
+  title: string = 'New Question';
+  numCorrect: number = 0;
+  answers: AnswerType[] = [
+    { answerText: '', correct: false },
+    { answerText: '', correct: false },
+    { answerText: '', correct: false },
+    { answerText: '', correct: false },
+  ];
 
-  // questionState: [] = [
-  //   answers: answerType[] = [],
-  //   questionText: string = '',
-  // ]
+  mounted() {
+    this.questionText = 'Placeholder question';
+  }
 
+  sendData = (childData) => {
+    this.props.parentCallback(childData);
+  };
 
-
-  render() {
+  renderQuestionText() {
     return (
-      <>
-        <Card title="New Quiz!">
-          <QuizInfoCard
-            title={this.title}
-            description={this.description}
-            categoryId={this.categoryId}
-            nextId={this.nextId}
-          ></QuizInfoCard>
-        </Card>
-
-        <Question />
-      </>
+      <Form.Input
+        placeholder="Question"
+        value={this.questionText}
+        onChange={(event) => {
+          this.questionText = event.currentTarget.value;
+        }}
+      ></Form.Input>
     );
   }
 
-  mounted() {
-    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+  /**
+   * Generates each answer with checkbox etc.
+   * The output varies based on how many answers there are for
+   * a given question:
+   */
+  renderAnswers() {
+    let jsx: [] = [];
+
+    let i = 0;
+    this.answers.forEach((answer) => {
+      jsx.push(
+        <Row>
+          <Column width={2}>
+            <Form.Checkbox
+              checked={answer.correct}
+              onChange={(event) => {
+                answer.correct = event.target.checked;
+                console.log(`answer.correct set to ${answer.correct}`);
+              }}
+            ></Form.Checkbox>
+          </Column>
+          <Column>
+            <Form.Input
+              placeholder={`answer ${i}`}
+              value={answer.answerText}
+              onChange={(event) => {
+                answer.answerText = event.currentTarget.value;
+              }}
+            ></Form.Input>
+          </Column>
+        </Row>
+      );
+      i++;
+    });
+
+    return jsx;
+  }
+
+  // theSendDataButton() {
+  //   <Button.Success onClick={this.sendData('Hello from child')}>Send Data</Button.Success>;
+  // }
+
+  /**
+   * TODO: Add number of correct answers to the first column
+   */
+  render() {
+    return (
+      <>
+        <Card title={this.title}>
+          <Row>
+            <Column width={2}>Correct: {}</Column>
+            <Column> {this.renderQuestionText()} </Column>
+          </Row>
+          {this.renderAnswers()}
+          {/* {this.theSendDataButton()} */}
+        </Card>
+      </>
+    );
   }
 }
