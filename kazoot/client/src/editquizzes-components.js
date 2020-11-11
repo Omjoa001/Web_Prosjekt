@@ -187,9 +187,11 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
             </Row>
             <Row>
               <Column>
-                <Button.Success onClick={() => {console.log("funker ikke bro")}}>Legg til et svaralternativ?? nei!</Button.Success>
+              <br></br>
+                <Button.Success onClick={() => {console.log("funker ikke bro")}}>Legg til et svaralternativ</Button.Success>
               </Column>
               <Column>
+              <br></br>
                 <Button.Danger onClick={this.delQuestion}>Delete question</Button.Danger>
               </Column>
             </Row>
@@ -202,11 +204,10 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                 New question
               </Button.Success>
             </Row>
+            <br></br>
             <Row>
-              <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
-              <Column>
-                <Button.Success onClick={this.saveQuiz}>Save Quiz changes</Button.Success>
-              </Column>
+              <Button.Save onClick={this.saveQuiz}>Save quiz changes</Button.Save>
+             <Button.Back onClick={() => history.push('/')}>Back to home</Button.Back>
             </Row>
           </Card>
         </Card>

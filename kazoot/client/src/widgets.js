@@ -203,6 +203,8 @@ export class Column extends Component<{ width?: number, right?: boolean, childre
   }
 }
 
+
+
 /**
  * Renders a success button using Bootstrap styles.
  */
@@ -222,6 +224,49 @@ class ButtonSuccess extends Component<{
     );
   }
 }
+
+/**
+ * Renders a green outline-block-button using Bootstrap styles.
+ */
+class ButtonSave extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <button 
+      type="button" class="btn btn-outline-success btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+     
+    );
+  }
+}
+
+/**
+ * Renders a green outline-block-button using Bootstrap styles.
+ */
+class ButtonBack extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <button 
+      type="button" class="btn btn-outline-danger btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+     
+    );
+  }
+}
+
 
 /**
  * Renders a blue block-button using Bootstrap styles.
@@ -367,6 +412,8 @@ export class Button {
   static Primary = ButtonPrimary;
   static Answer = ButtonAnswer;
   static Start = ButtonStart;
+  static Save = ButtonSave;
+  static Back = ButtonBack;
 }
 
 /**
