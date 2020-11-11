@@ -60,11 +60,10 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
      //if (questions[0] = undefined) return <div>loading</div>
     return (
       <>
-        <Card title={"Edit Quiz " + this.quiz.id + "!!!" }>
+        <Card title={"Edit Quiz " + this.quiz.id}>
           <Card>
             <Column>
               <Row>
-                {this.quiz.id}
               </Row>
             </Column>
             <Row>
@@ -74,8 +73,8 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                   placeholder="Quiz title"
                   type="text"
                   value={this.quiz.title}
-                  onChange={(event) => (this.quiz.title = event.currentTarget.value)}
-                ></Form.Input>
+                  onChange={(event) => (this.quiz.title = event.currentTarget.value)}>
+                </Form.Input>
               </Column>
             </Row>
             <Row>
