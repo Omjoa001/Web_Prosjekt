@@ -56,7 +56,7 @@ export class PlayQuiz extends Component {
           <Button.Submit onClick={() => {
           this.show = true
           }}>
-            SUBMIT
+            SUBMIT ANSWERS
           </Button.Submit>
         </center>
         <br></br>

@@ -308,10 +308,12 @@ class ButtonSubmit extends Component<{
   render() {
     return (
 
+      <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
       <button 
       type="button" class="btn btn-outline-primary btn-large btn-block"
       onClick={this.props.onClick}>
        {this.props.children} </button>
+       </div>
      
     );
   }
