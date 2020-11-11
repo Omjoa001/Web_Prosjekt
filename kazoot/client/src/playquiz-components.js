@@ -54,11 +54,11 @@ export class PlayQuiz extends Component {
         </div>
 
         <center>
-          <Button.OutlinePrimary onClick={() => {
+          <Button.Submit onClick={() => {
           this.show = true
           }}>
             SUBMIT
-          </Button.OutlinePrimary>
+          </Button.Submit>
         </center>
 
         <Card title={this.quiz.title}>
