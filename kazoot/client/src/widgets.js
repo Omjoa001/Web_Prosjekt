@@ -172,6 +172,23 @@ export class AnswerCard extends Component<{
     );
   }
 }
+
+export class Alternativ extends Component<{
+  width?: number,
+  onClick?: () => Mixed,
+  small?: Boolean,
+  children?: React.Node,
+  correct?: boolean,
+  show?: boolean,
+}> {
+  render() {
+    let value = this.props.correct ? "success" : "danger"
+    let ButtonClass = this.props.show ? "btn btn-" + value + " btn-lg btn-block" : "btn btn-outline-primary btn-lg btn-block"
+    return (
+      <button type="button" class={ButtonClass}>{this.props.children}</button>
+    );
+  }
+}
 /**
  * Renders a card with a smaller width than normal
  * TODO: Add variable width

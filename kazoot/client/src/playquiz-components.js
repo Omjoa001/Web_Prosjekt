@@ -22,6 +22,41 @@ export class PlayQuiz extends Component {
   categories: CategoryType[] = [];
   quiz: QuizType = {};
   show:boolean = false;
+  shuffledQuestions: QuestionType[] = []
+
+  randomizeOrder(array: QuestionType[]) {
+    let i = array.length - 1;
+    for (i; i > 0; i--) {
+
+      let answOrder = []
+      answOrder.push(array[i].answ0, array[i].answ1, array[i].answ2, array[i].answ3)
+      this.randomizeAnswerArr(answOrder)
+
+    let tempQuestionObject = {
+      answ0: answOrder[0],
+      answ1: answOrder[1],
+      answ2: answOrder[2],
+      answ3: answOrder[3],
+      id: array[i].id,
+      numCorrect: array[i].numCorrect,
+      question: array[i].question,
+      quizId: array[i].quizId,
+    }
+      this.shuffledQuestions.push(tempQuestionObject)
+    } 
+  }
+
+  randomizeAnswerArr(array) {
+  let i = array.length - 1;
+      for (i; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      return array
+  }
+
   render() {
     return (
       <>
@@ -30,7 +65,7 @@ export class PlayQuiz extends Component {
         </CenterCard>
 
         <div>
-          {this.questions.map((a) => (
+          {this.shuffledQuestions.map((a) => (
             <div key={a.id}>
               <AnswerCard
                 title={a.question}
@@ -40,6 +75,9 @@ export class PlayQuiz extends Component {
                 answ3={a.answ3}
                 show={this.show}
               >
+                {/*Possible solution instead of Button.Answer in Answercard component:
+                <Alternativ svar={} korrekt={}></Alternativ>*/}
+
                 {console.log(this.show)}
                 <div title={a.question}>
                   Question Id: {a.id}
@@ -70,10 +108,18 @@ export class PlayQuiz extends Component {
   mounted() {
     this.id = this.props.match.params.id;
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-    quizService.getQuiz(this.id).then((q) => (this.quiz = q));
-    questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
-    categoryService.getAllCategories().then((c) => (this.categories = c));
-    console.log(this.questions)
+        quizService.getQuiz(this.id)
+          .then((q) => (this.quiz = q))
+      questionService.getQuizQuestion(this.id)
+        .then((p) => this.questions = p)
+        .then(()=> {
+          this.randomizeOrder(this.questions)
+        })
+        .then(() => {
+          console.log(this.shuffledQuestions)
+        })
+      categoryService.getAllCategories().then((c) => (this.categories = c))
+      
   }
 }
 /*
