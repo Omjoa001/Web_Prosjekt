@@ -113,13 +113,26 @@ export class AnswerCard extends Component<{
   answ2?: string,
   answ3?: string,
   numCorrect?: number,
-  show?:boolean,
-}>{
-  selectStyle = { }
-  stil() {
-  this.selectStyle = { border: "3px solid black" }
-  }
+  show?: boolean,
+}> {
 
+  selectStyle0 = {};
+  selectStyle1 = {};
+  selectStyle2 = {};
+  selectStyle3 = {};
+
+  stil(num: number) {
+  if (num == 1) {
+    this.selectStyle0 = { border: '3px solid black' };
+  } else if (num == 2) {
+    this.selectStyle1 = { border: '3px solid black' };
+  } else if (num == 3) {
+    this.selectStyle2 = { border: '3px solid black' };
+  } else if (num == 4) {
+    this.selectStyle3 = { border: '3px solid black' };
+  } 
+  }
+  
   render() {
     return (
       <center>
@@ -129,13 +142,29 @@ export class AnswerCard extends Component<{
             <hr />
             <div className="card-text">
               {this.props.children}
-              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={1}>{this.props.answ0}</Button.Answer></div>
+              <div style={this.selectStyle0} onClick={this.stil.bind(this, 1)}>
+                <Button.Answer show={this.props.show} correct={1}>
+                  {this.props.answ0}
+                </Button.Answer>
+              </div>
               &nbsp;&nbsp;&nbsp;
-              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={0}>{this.props.answ1}</Button.Answer></div>
+              <div style={this.selectStyle1} onClick={this.stil.bind(this, 2)}>
+                <Button.Answer show={this.props.show} correct={0}>
+                  {this.props.answ1}
+                </Button.Answer>
+              </div>
               &nbsp;&nbsp;&nbsp;
-              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={0}>{this.props.answ2}</Button.Answer></div>
+              <div style={this.selectStyle2} onClick={this.stil.bind(this, 3)}>
+                <Button.Answer show={this.props.show} correct={0}>
+                  {this.props.answ2}
+                </Button.Answer>
+              </div>
               &nbsp;&nbsp;&nbsp;
-              <div style={this.selectStyle} onClick={this.stil}><Button.Answer show={this.props.show} correct={1}>{this.props.answ3}</Button.Answer></div>
+              <div style={this.selectStyle3} onClick={this.stil.bind(this, 4)}>
+                <Button.Answer show={this.props.show} correct={1}>
+                  {this.props.answ3}
+                </Button.Answer>
+              </div>
             </div>
           </div>
         </div>
@@ -203,6 +232,8 @@ export class Column extends Component<{ width?: number, right?: boolean, childre
   }
 }
 
+
+
 /**
  * Renders a success button using Bootstrap styles.
  */
@@ -222,6 +253,73 @@ class ButtonSuccess extends Component<{
     );
   }
 }
+
+/**
+ * Renders a green outline-block-button using Bootstrap styles.
+ */
+class ButtonSave extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <button 
+      type="button" class="btn btn-outline-success btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+     
+    );
+  }
+}
+
+/**
+ * Renders a red outline-block-button using Bootstrap styles.
+ */
+class ButtonBack extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <button 
+      type="button" class="btn btn-outline-danger btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+     
+    );
+  }
+}
+
+/**
+ * Renders a blue outline-block-button using Bootstrap styles.
+ */
+class ButtonSubmit extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
+      <button 
+      type="button" class="btn btn-outline-primary btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+       </div>
+     
+    );
+  }
+}
+
+
 
 /**
  * Renders a blue block-button using Bootstrap styles.
@@ -367,6 +465,9 @@ export class Button {
   static Primary = ButtonPrimary;
   static Answer = ButtonAnswer;
   static Start = ButtonStart;
+  static Save = ButtonSave;
+  static Back = ButtonBack;
+  static Submit = ButtonSubmit;
 }
 
 /**

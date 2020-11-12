@@ -24,12 +24,12 @@ export class PlayQuiz extends Component {
   show:boolean = false;
   render() {
     return (
-
       <>
-        <CenterCard title={this.quiz.title}>
-          Description: {this.quiz.description} <br></br>ID: {this.id}
+    
+        <CenterCard 
+        title={this.quiz.title}>{this.quiz.description} 
         </CenterCard>
-
+        
         <div>
           {this.questions.map((a) => (
             <div key={a.id}>
@@ -43,8 +43,6 @@ export class PlayQuiz extends Component {
               >
                 {console.log(this.show)}
                 <div title={a.question}>
-                  Question Id: {a.id}
-                  <br></br>
                 </div>
               </AnswerCard>
               <br></br>
@@ -54,18 +52,15 @@ export class PlayQuiz extends Component {
         </div>
 
         <center>
-          <Button.OutlinePrimary onClick={() => {
+          <Button.Submit onClick={() => {
           this.show = true
           }}>
-            SUBMIT
-          </Button.OutlinePrimary>
+            SUBMIT ANSWERS
+          </Button.Submit>
         </center>
-
-        <Card title={this.quiz.title}>
-          Description: {this.quiz.description}
-          {<br></br>}
-          Category: {this.quiz.categoryId}
-        </Card>
+        <br></br>
+        <br></br>
+        <br></br>
       </>
     );
   }
@@ -78,14 +73,3 @@ export class PlayQuiz extends Component {
     console.log(this.questions)
   }
 }
-/*
-         <Button.Primary>{a.answ0}</Button.Primary>
-                &nbsp;&nbsp;&nbsp;
-                <Button.Primary>{a.answ1}</Button.Primary>
-                <br></br>
-                <Button.Primary>{a.answ2}</Button.Primary>
-                &nbsp;&nbsp;&nbsp;
-                <Button.Primary>{a.answ3}</Button.Primary>
-                
-                Midlertidig lager for buttons. Slett hvis du ser den, da ble den ikke brukt.
-                */
