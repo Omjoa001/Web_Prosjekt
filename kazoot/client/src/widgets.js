@@ -262,7 +262,7 @@ class ButtonSave extends Component<{
 }
 
 /**
- * Renders a green outline-block-button using Bootstrap styles.
+ * Renders a red outline-block-button using Bootstrap styles.
  */
 class ButtonBack extends Component<{
   width?: number,
@@ -281,6 +281,30 @@ class ButtonBack extends Component<{
     );
   }
 }
+
+/**
+ * Renders a blue outline-block-button using Bootstrap styles.
+ */
+class ButtonSubmit extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
+      <button 
+      type="button" class="btn btn-outline-primary btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+       </div>
+     
+    );
+  }
+}
+
 
 
 /**
@@ -431,6 +455,7 @@ export class Button {
   static Start = ButtonStart;
   static Save = ButtonSave;
   static Back = ButtonBack;
+  static Submit = ButtonSubmit;
 }
 
 /**
