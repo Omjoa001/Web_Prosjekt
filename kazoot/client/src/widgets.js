@@ -123,13 +123,13 @@ export class AnswerCard extends Component<{
 
   stil(num: number) {
   if (num == 1) {
-    this.selectStyle0 = { border: '3px solid black' };
+    this.selectStyle0 =  {border: '5px solid cornflowerBlue' };
   } else if (num == 2) {
-    this.selectStyle1 = { border: '3px solid black' };
+    this.selectStyle1 = { border: '5px solid cornflowerBlue' };
   } else if (num == 3) {
-    this.selectStyle2 = { border: '3px solid black' };
+    this.selectStyle2 = { border: '5px solid cornflowerBlue' };
   } else if (num == 4) {
-    this.selectStyle3 = { border: '3px solid black' };
+    this.selectStyle3 = { border: '5px solid cornflowerBlue' };
   } 
   }
   
