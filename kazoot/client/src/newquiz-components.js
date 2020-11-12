@@ -14,6 +14,14 @@ import {
 
 const history = createHashHistory();
 
+// TODO: maybe rename
+type StateQuestionType = {
+  id: number,
+  quizId: number,
+  questionText: string,
+  answers: AnswerType[],
+};
+
 /*BRAINSTORMING*/
 // All question props:
 //     title: string = '';
@@ -36,19 +44,41 @@ const history = createHashHistory();
  * Component which renders the New Quiz page.
  */
 export class NewQuiz extends Component {
+  // Flow
+  state: {
+    questions: StateQuestionType[],
+  };
+
   constructor(props) {
     super(props);
 
-    // currently designed for 1 question
+    // This is designed for multiple questions
     this.state = {
-      questionText: 'what time is it?',
-      answers: [
-        { answerText: 'five', correct: true },
-        { answerText: 'two', correct: true },
-        { answerText: 'fortytwo', correct: true },
-        { answerText: 'fifty', correct: true },
+      questions: [
+        {
+          id: 1,
+          quizId: 1,
+          questionText: 'default question',
+          answers: [
+            { answerText: 'ans0', correct: false },
+            { answerText: 'ans1', correct: true },
+            { answerText: 'ans2', correct: false },
+            { answerText: 'ans3', correct: true },
+          ],
+        },
       ],
     };
+
+    // the following is designed for 1 question
+    // this.state = {
+    //   questionText: 'what time is it?',
+    //   answers: [
+    //     { answerText: 'five', correct: true },
+    //     { answerText: 'two', correct: true },
+    //     { answerText: 'fortytwo', correct: true },
+    //     { answerText: 'fifty', correct: true },
+    //   ],
+    // };
   }
 
   title: string = '';
@@ -56,12 +86,8 @@ export class NewQuiz extends Component {
   categoryId: number = 0;
   nextId: number = 0;
 
-  // not used yet. Might have to be redefined
-  questions: QuestionType[] = [];
-
   updated() {
-    console.log(`updated: ${this.state.questionText}`);
-    this.state.answers.map((ans) => {console.log(ans.answerText)});
+    console.log(`updated: refactor not finished`);
   }
 
   mounted() {
@@ -71,6 +97,7 @@ export class NewQuiz extends Component {
   }
 
   // Callback function to be passed to Question component
+  // TODO: Make it work on an array of question objects.
   sendData = (qtext, ans) => {
     this.setState({ questionText: qtext });
     this.setState({ answers: ans });
@@ -88,12 +115,22 @@ export class NewQuiz extends Component {
           ></QuizInfoCard>
         </Card>
 
-        <Card title="troubleshooting">
-          <div>question: {this.state.questionText}</div>
-          <div>ans0: {this.state.answers[0].answerText}</div>
-          <div>ans1: {this.state.answers[1].answerText}</div>
-          <div>ans2: {this.state.answers[2].answerText}</div>
-          <div>ans3: {this.state.answers[3].answerText}</div>
+        <Card title="NewQuiz's state">
+          {/* proper render */}
+          {this.state.questions.map((question) => {
+            return (
+              <div>
+                <div>id: {question.id}</div>
+                <div>quizId: {question.quizId}</div>
+                <div>questionText: {question.questionText}</div>
+                <div>
+                  {question.answers.map((ans) => {
+                    return <div>answertext: {ans.answerText} | correct: {ans.correct ? "true" : "false"}</div>;
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </Card>
 
         <Question
