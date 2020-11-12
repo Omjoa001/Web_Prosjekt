@@ -97,6 +97,8 @@ export class BrowseQuizzes extends Component {
 
   // Dummy array of categories
   // TODO: Replace with database call
+//  categories = [];
+  test = []
   categories: [] = [
     { id: 1, name: 'Sport', checked: false },
     { id: 2, name: 'Math', checked: false },
@@ -114,18 +116,16 @@ export class BrowseQuizzes extends Component {
     this.categories.forEach((category) => {
       jsx.push(
         <Column>
-          <Form.Checkbox onChange={(event) => 
-            {category.checked = event.target.checked }
-            }/> 
+          <Form.Checkbox
+            onChange={(event) => {
+              category.checked = event.target.checked;
+            }}
+          />
           &nbsp;&nbsp;&nbsp;
           {category.name}
         </Column>
       );
     });
-    {
-      console.log(`rendercats: ${this.categories}`);
-    }
-
     // jsx = (
     //   <div style={{ margin: '25px' }}>
     //     <Row>{jsx}</Row>
@@ -151,8 +151,6 @@ export class BrowseQuizzes extends Component {
         });
       }
     });
-
-    console.log(`catFilter: ${catFilter}`);
 
     if (catFilter.length == 0) {
       return this.quizzes;
@@ -193,7 +191,6 @@ export class BrowseQuizzes extends Component {
         <Card title="Search">
           <Row>
             <div style={{ width: '50%' }}>
-              {'  '}
               <Form.Input
                 type="text"
                 placeholder="🔎 Search for the title or description of a quiz"
@@ -209,6 +206,12 @@ export class BrowseQuizzes extends Component {
         </Card>
       </>
     );
+  }
+  mounted() {
+    categoryService.getAllCategories().then((c) => (this.test = c));
+   this.categories.map((cat) => {
+      cat.checked = false;
+    });
   }
 }
 
@@ -267,6 +270,9 @@ export class QuizTileGrid extends Component {
     }
     return jsx;
   }
+  mounted() {
+  quizService.getQuiz(this.id).then((q) => (this.quizzarr = q));
+  }
 }
 
 /**
@@ -289,7 +295,6 @@ export class Quiz extends Component {
   editButton() {
     history.push('/editQuiz/' + this.props.id);
   }
-
   render() {
     return (
       <>
@@ -299,7 +304,6 @@ export class Quiz extends Component {
           <Row>
             <Column left>
               <Button.Success onClick={this.playButton}>
-                {/*<NavBar.Link to='/playQuiz'>Play</NavBar.Link>*/}
                 Play
               </Button.Success>
             </Column>
@@ -311,6 +315,4 @@ export class Quiz extends Component {
       </>
     );
   }
-
-  mounted() {}
 }
