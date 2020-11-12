@@ -39,9 +39,15 @@ export class NewQuiz extends Component {
   constructor(props) {
     super(props);
 
+    // currently designed for 1 question
     this.state = {
-      questionText: '',
-      answers: [],
+      questionText: 'what time is it?',
+      answers: [
+        { answerText: 'five', correct: true },
+        { answerText: 'two', correct: true },
+        { answerText: 'fortytwo', correct: true },
+        { answerText: 'fifty', correct: true },
+      ],
     };
   }
 
@@ -50,15 +56,13 @@ export class NewQuiz extends Component {
   categoryId: number = 0;
   nextId: number = 0;
 
+  // not used yet. Might have to be redefined
   questions: QuestionType[] = [];
 
   updated() {
     console.log(`updated: ${this.state.questionText}`);
-    console.log(`updated: ${this.state.answers}`);
+    this.state.answers.map((ans) => {console.log(ans.answerText)});
   }
-
-  // questionText: string = '';
-  // answers: AnswerType[] = [];
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
@@ -66,6 +70,7 @@ export class NewQuiz extends Component {
     // this.answers = [];
   }
 
+  // Callback function to be passed to Question component
   sendData = (qtext, ans) => {
     this.setState({ questionText: qtext });
     this.setState({ answers: ans });
@@ -84,8 +89,11 @@ export class NewQuiz extends Component {
         </Card>
 
         <Card title="troubleshooting">
-          <div>{this.state.questionText}</div>
-          <div>{this.state.answers.answerText}</div>
+          <div>question: {this.state.questionText}</div>
+          <div>ans0: {this.state.answers[0].answerText}</div>
+          <div>ans1: {this.state.answers[1].answerText}</div>
+          <div>ans2: {this.state.answers[2].answerText}</div>
+          <div>ans3: {this.state.answers[3].answerText}</div>
         </Card>
 
         <Question
@@ -166,7 +174,7 @@ export class QuizInfoCard extends Component {
  * Renders a single question
  */
 export class Question extends Component {
-  // These are defined properly in mounted
+  // These are redefined in mounted fwiw
   title: string = '';
   questionText: string = '';
   answers: AnswerType[] = [];
@@ -229,6 +237,7 @@ export class Question extends Component {
       { answerText: 'på', correct: false },
       { answerText: 'deg', correct: false },
       { answerText: '!', correct: false },
+      { answerText: 'fem', correct: false },
     ];
   }
 
