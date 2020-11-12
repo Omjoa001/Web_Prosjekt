@@ -55,8 +55,7 @@ export class PlayQuiz extends Component {
         array[j] = temp;
       }
       return array
-  }
-
+  } 
   render() {
     return (
       <>
@@ -75,10 +74,6 @@ export class PlayQuiz extends Component {
                 answ3={a.answ3}
                 show={this.show}
               >
-                {/*Possible solution instead of Button.Answer in Answercard component:
-                <Alternativ svar={} korrekt={}></Alternativ>*/}
-
-                {console.log(this.show)}
                 <div title={a.question}>
                   Question Id: {a.id}
                   <br></br>

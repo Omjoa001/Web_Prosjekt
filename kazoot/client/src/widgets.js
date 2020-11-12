@@ -116,23 +116,16 @@ export class AnswerCard extends Component<{
   show?: boolean,
 }> {
 
-  selectStyle0 = {};
-  selectStyle1 = {};
-  selectStyle2 = {};
-  selectStyle3 = {};
+  selectStyle = [{}, {}, {}, {}]
 
   stil(num: number) {
-  if (num == 1) {
-    this.selectStyle0 = { border: '3px solid black' };
-  } else if (num == 2) {
-    this.selectStyle1 = { border: '3px solid black' };
-  } else if (num == 3) {
-    this.selectStyle2 = { border: '3px solid black' };
-  } else if (num == 4) {
-    this.selectStyle3 = { border: '3px solid black' };
-  } 
+    for (let i = 1; i <= this.selectStyle.length; i++) {
+      if (num == i) {
+        this.selectStyle[i - 1] = { border: '3px solid black' }
+      }
+    }
   }
-  
+
   render() {
     return (
       <center>
@@ -142,29 +135,21 @@ export class AnswerCard extends Component<{
             <hr />
             <div className="card-text">
               {this.props.children}
-              <div style={this.selectStyle0} onClick={this.stil.bind(this, 1)}>
-                <Button.Answer show={this.props.show} correct={1}>
-                  {this.props.answ0}
-                </Button.Answer>
-              </div>
+              <Button.Answer style={this.selectStyle[0]} onClick={this.stil.bind(this, 1)} show={this.props.show} correct={1}>
+                {this.props.answ0}
+              </Button.Answer>
               &nbsp;&nbsp;&nbsp;
-              <div style={this.selectStyle1} onClick={this.stil.bind(this, 2)}>
-                <Button.Answer show={this.props.show} correct={0}>
-                  {this.props.answ1}
-                </Button.Answer>
-              </div>
-              &nbsp;&nbsp;&nbsp;
-              <div style={this.selectStyle2} onClick={this.stil.bind(this, 3)}>
-                <Button.Answer show={this.props.show} correct={0}>
-                  {this.props.answ2}
-                </Button.Answer>
-              </div>
-              &nbsp;&nbsp;&nbsp;
-              <div style={this.selectStyle3} onClick={this.stil.bind(this, 4)}>
-                <Button.Answer show={this.props.show} correct={1}>
-                  {this.props.answ3}
-                </Button.Answer>
-              </div>
+               <Button.Answer style={this.selectStyle[1]} onClick={this.stil.bind(this, 2)} show={this.props.show} correct={0}>
+                {this.props.answ1}
+              </Button.Answer>
+                 &nbsp;&nbsp;&nbsp;
+                <Button.Answer style={this.selectStyle[2]} onClick={this.stil.bind(this, 3)} show={this.props.show} correct={1}>
+                {this.props.answ2}
+              </Button.Answer>
+                &nbsp;&nbsp;&nbsp;
+                <Button.Answer style={this.selectStyle[3]} onClick={this.stil.bind(this, 4)} show={this.props.show} correct={0}>
+                {this.props.answ3}
+              </Button.Answer>
             </div>
           </div>
         </div>
@@ -173,22 +158,6 @@ export class AnswerCard extends Component<{
   }
 }
 
-export class Alternativ extends Component<{
-  width?: number,
-  onClick?: () => Mixed,
-  small?: Boolean,
-  children?: React.Node,
-  correct?: boolean,
-  show?: boolean,
-}> {
-  render() {
-    let value = this.props.correct ? "success" : "danger"
-    let ButtonClass = this.props.show ? "btn btn-" + value + " btn-lg btn-block" : "btn btn-outline-primary btn-lg btn-block"
-    return (
-      <button type="button" class={ButtonClass}>{this.props.children}</button>
-    );
-  }
-}
 /**
  * Renders a card with a smaller width than normal
  * TODO: Add variable width
@@ -325,12 +294,14 @@ class ButtonAnswer extends Component<{
   children?:React.Node,
   correct?:Boolean,
   show?:boolean,
+  style: {border: string},
+  onClick: () => mixed,
 }> {
 render() {
   let value = this.props.correct ? "success" : "danger"
   let ButtonClass = this.props.show ? "btn btn-" + value + " btn-lg btn-block" : "btn btn-outline-primary btn-lg btn-block"
     return (
-      <button type="button" class={ButtonClass}>{this.props.children}</button>
+      <button type="button" style={this.props.style} onClick={this.props.onClick} class={ButtonClass}>{this.props.children}</button>
     );
   }
 }
