@@ -184,15 +184,8 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               </Column>
               <Column>
               </Column>
-            </Row>
-            <Row>
-              <Column>
-                <Button.Success onClick={() => {console.log("funker ikke bro")}}>Legg til et svaralternativ?? nei!</Button.Success>
-              </Column>
-              <Column>
-                <Button.Danger onClick={this.delQuestion}>Delete question</Button.Danger>
-              </Column>
-            </Row>
+            </Row>  
+            <Button.Danger onClick={this.delQuestion}>Delete question</Button.Danger>
           </Card>
           ))}
 
