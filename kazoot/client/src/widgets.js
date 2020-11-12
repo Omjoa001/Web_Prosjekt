@@ -108,10 +108,10 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
 export class AnswerCard extends Component<{
   title?: string,
   children?: React.Node,
-  answ0?: string,
-  answ1?: string,
-  answ2?: string,
-  answ3?: string,
+  answ0?: Array<mixed>,
+  answ1?: Array<mixed>,
+  answ2?: Array<mixed>,
+  answ3?: Array<mixed>,
   numCorrect?: number,
   show?: boolean,
 }> {
@@ -121,7 +121,7 @@ export class AnswerCard extends Component<{
   stil(num: number) {
     for (let i = 1; i <= this.selectStyle.length; i++) {
       if (num == i) {
-        this.selectStyle[i - 1] = { border: '3px solid black' }
+        this.selectStyle[i - 1] = { border: '3px solid navy' }
       }
     }
   }
@@ -135,20 +135,20 @@ export class AnswerCard extends Component<{
             <hr />
             <div className="card-text">
               {this.props.children}
-              <Button.Answer style={this.selectStyle[0]} onClick={this.stil.bind(this, 1)} show={this.props.show} correct={1}>
-                {this.props.answ0}
+              <Button.Answer style={this.selectStyle[0]} onClick={this.stil.bind(this, 1)} show={this.props.show} correct={this.props.answ0[1]}>
+                {this.props.answ0[0]}
               </Button.Answer>
               &nbsp;&nbsp;&nbsp;
-               <Button.Answer style={this.selectStyle[1]} onClick={this.stil.bind(this, 2)} show={this.props.show} correct={0}>
-                {this.props.answ1}
+               <Button.Answer style={this.selectStyle[1]} onClick={this.stil.bind(this, 2)} show={this.props.show} correct={this.props.answ1[1]}>
+                {this.props.answ1[0]}
               </Button.Answer>
                  &nbsp;&nbsp;&nbsp;
-                <Button.Answer style={this.selectStyle[2]} onClick={this.stil.bind(this, 3)} show={this.props.show} correct={1}>
-                {this.props.answ2}
+                <Button.Answer style={this.selectStyle[2]} onClick={this.stil.bind(this, 3)} show={this.props.show} correct={this.props.answ2[1]}>
+                {this.props.answ2[0]}
               </Button.Answer>
                 &nbsp;&nbsp;&nbsp;
-                <Button.Answer style={this.selectStyle[3]} onClick={this.stil.bind(this, 4)} show={this.props.show} correct={0}>
-                {this.props.answ3}
+                <Button.Answer style={this.selectStyle[3]} onClick={this.stil.bind(this, 4)} show={this.props.show} correct={this.props.answ3[1]}>
+                {this.props.answ3[0]}
               </Button.Answer>
             </div>
           </div>

@@ -29,7 +29,10 @@ export class PlayQuiz extends Component {
     for (i; i > 0; i--) {
 
       let answOrder = []
-      answOrder.push(array[i].answ0, array[i].answ1, array[i].answ2, array[i].answ3)
+      answOrder.push([array[i].answ0, 0], [array[i].answ1, 0], [array[i].answ2, 0], [array[i].answ3, 0])
+      for (let x = 0; x < array[i].numCorrect; x++) {
+          answOrder[x].splice(1,1,1)
+      }
       this.randomizeAnswerArr(answOrder)
 
     let tempQuestionObject = {
@@ -46,7 +49,7 @@ export class PlayQuiz extends Component {
     } 
   }
 
-  randomizeAnswerArr(array) {
+  randomizeAnswerArr(array: []) {
   let i = array.length - 1;
       for (i; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -75,7 +78,7 @@ export class PlayQuiz extends Component {
                 show={this.show}
               >
                 <div title={a.question}>
-                  Question Id: {a.id}
+                  Number of correct answers: {a.numCorrect}
                   <br></br>
                 </div>
               </AnswerCard>
@@ -103,15 +106,12 @@ export class PlayQuiz extends Component {
   mounted() {
     this.id = this.props.match.params.id;
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-        quizService.getQuiz(this.id)
+      quizService.getQuiz(this.id)
           .then((q) => (this.quiz = q))
       questionService.getQuizQuestion(this.id)
         .then((p) => this.questions = p)
         .then(()=> {
           this.randomizeOrder(this.questions)
-        })
-        .then(() => {
-          console.log(this.shuffledQuestions)
         })
       categoryService.getAllCategories().then((c) => (this.categories = c))
       
