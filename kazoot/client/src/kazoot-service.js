@@ -14,6 +14,13 @@ export type QuestionType = {
   answ3: string,
 };
 
+export type SendQuestionType = {
+  id: number,
+  quizId: number,
+  questionText: string,
+  answers: AnswerType[],
+}
+
 export type AnswerType = {
   answerText: string,
   correct: bool,
