@@ -125,7 +125,6 @@ class QuizService {
   }
 
  getAllCategories() {
-   console.log('halla')
     return new Promise<CategoryType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Categories', (error, results) => {
         if (error) return reject(error);

@@ -202,6 +202,7 @@ export class QuizInfoCard extends Component {
               value={this.props.title}
               onChange={(event) => (this.props.title = event.currentTarget.value)}
             ></Form.Input>
+            <br></br>
           </Column>
         </Row>
         <Row>
@@ -225,6 +226,7 @@ export class QuizInfoCard extends Component {
           <Column>Quiz-Id:</Column>
           <Column>
             <Form.Input value={this.props.nextId} disabled></Form.Input>
+            <br></br>
           </Column>
         </Row>
         <Row>

@@ -114,11 +114,10 @@ export class BrowseQuizzes extends Component {
     this.categories.forEach((category) => {
       jsx.push(
         <Column>
-          <Form.Checkbox
-            onChange={(event) => {
-              category.checked = event.target.checked;
-            }}
-          />
+          <Form.Checkbox onChange={(event) => 
+            {category.checked = event.target.checked }
+            }/> 
+          &nbsp;&nbsp;&nbsp;
           {category.name}
         </Column>
       );
@@ -202,7 +201,6 @@ export class BrowseQuizzes extends Component {
                 onChange={this.editSearchTerm}
               ></Form.Input>
             </div>
-            <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
           </Row>
         </Card>
 
@@ -306,7 +304,7 @@ export class Quiz extends Component {
               </Button.Success>
             </Column>
             <Column right>
-            <Button.Primary onClick={() => history.push('/editQuiz')}>Edit</Button.Primary>
+            <Button.Primary onClick={() => history.push('/editQuiz/'+this.id)}>Edit</Button.Primary>
             </Column>
           </Row>
         </TileCard>

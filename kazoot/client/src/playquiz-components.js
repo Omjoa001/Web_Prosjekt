@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, CenterCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, CenterCard, AnswerCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import { BrowseQuizzes, QuizTileGrid, Quiz } from './browsequizzes-components';
 import {
@@ -21,50 +21,98 @@ export class PlayQuiz extends Component {
   questions: QuestionType[] = [];
   categories: CategoryType[] = [];
   quiz: QuizType = {};
+  show:boolean = false;
+  shuffledQuestions: QuestionType[] = []
 
+  randomizeOrder(array: QuestionType[]) {
+    let i = array.length - 1;
+    for (i; i > 0; i--) {
+
+      let answOrder = []
+      answOrder.push([array[i].answ0, 0], [array[i].answ1, 0], [array[i].answ2, 0], [array[i].answ3, 0])
+      for (let x = 0; x < array[i].numCorrect; x++) {
+          answOrder[x].splice(1,1,1)
+      }
+      this.randomizeAnswerArr(answOrder)
+
+    let tempQuestionObject = {
+      answ0: answOrder[0],
+      answ1: answOrder[1],
+      answ2: answOrder[2],
+      answ3: answOrder[3],
+      id: array[i].id,
+      numCorrect: array[i].numCorrect,
+      question: array[i].question,
+      quizId: array[i].quizId,
+    }
+      this.shuffledQuestions.push(tempQuestionObject)
+    } 
+  }
+
+  randomizeAnswerArr(array: []) {
+  let i = array.length - 1;
+      for (i; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      return array
+  } 
   render() {
     return (
       <>
-        <CenterCard title="Play Quiz">asddadsdafasdfdsafsdf {this.id}</CenterCard>
-
-          <Card title={this.quiz.title}>
-          Description: {this.quiz.description}
-          {<br></br>}
-          Category: {this.quiz.categoryId}
-        </Card>
-
-
-        <Card title="Questions">
-          {this.questions.map((a) => (
-            <Card key={a.id} title={a.question}>
-              <Column>
-                <Row>Question Id: {a.id}</Row>
-                <Row>quizId: {a.quizId}</Row>
-                <Row>
-                  {' '}
+    
+        <CenterCard 
+        title={this.quiz.title}>{this.quiz.description} 
+        </CenterCard>
+        
+        <div>
+          {this.shuffledQuestions.map((a) => (
+            <div key={a.id}>
+              <AnswerCard
+                title={a.question}
+                answ0={a.answ0}
+                answ1={a.answ1}
+                answ2={a.answ2}
+                answ3={a.answ3}
+                show={this.show}
+              >
+                <div title={a.question}>
+                  Number of correct answers: {a.numCorrect}
                   <br></br>
-                </Row>
-                <ul>
-                  <li>{a.answ0}</li>
-                  <li>{a.answ1}</li>
-                  <li>{a.answ2}</li>
-                  <li>{a.answ3}</li>
-                </ul>
-              </Column>
-            </Card>
+                </div>
+              </AnswerCard>
+              <br></br>
+              <br></br>
+            </div>
           ))}
-        </Card>
+        </div>
 
-
+        <center>
+          <Button.Submit onClick={() => {
+          this.show = true
+          }}>
+            SUBMIT ANSWERS
+          </Button.Submit>
+        </center>
+        <br></br>
+        <br></br>
+        <br></br>
       </>
     );
   }
   mounted() {
     this.id = this.props.match.params.id;
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-    quizService.getQuiz(this.id).then((q) => (this.quiz = q));
-    questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
-    categoryService.getAllCategories().then((c) => (this.categories = c));
-    console.log(this.questions)
+      quizService.getQuiz(this.id)
+          .then((q) => (this.quiz = q))
+      questionService.getQuizQuestion(this.id)
+        .then((p) => this.questions = p)
+        .then(()=> {
+          this.randomizeOrder(this.questions)
+        })
+      categoryService.getAllCategories().then((c) => (this.categories = c))
+      
   }
 }
