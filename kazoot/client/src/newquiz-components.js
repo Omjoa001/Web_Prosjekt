@@ -44,7 +44,7 @@ type StateQuestionType = {
  * Component which renders the New Quiz page.
  */
 export class NewQuiz extends Component {
-  // Flow
+  // This makes flow happy
   state: {
     questions: StateQuestionType[],
   };
