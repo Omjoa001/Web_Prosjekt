@@ -53,6 +53,7 @@ export class NewQuiz extends Component {
     super(props);
 
     // This is designed for multiple questions
+    // TODO: Maybe use a map, in order to update the correct question when adding multiple questions
     this.state = {
       questions: [
         {
@@ -68,17 +69,6 @@ export class NewQuiz extends Component {
         },
       ],
     };
-
-    // the following is designed for 1 question
-    // this.state = {
-    //   questionText: 'what time is it?',
-    //   answers: [
-    //     { answerText: 'five', correct: true },
-    //     { answerText: 'two', correct: true },
-    //     { answerText: 'fortytwo', correct: true },
-    //     { answerText: 'fifty', correct: true },
-    //   ],
-    // };
   }
 
   title: string = '';
@@ -86,6 +76,7 @@ export class NewQuiz extends Component {
   categoryId: number = 0;
   nextId: number = 0;
 
+  // TODO: remove this?
   updated() {
     console.log(`updated: refactor not finished`);
   }
@@ -98,9 +89,14 @@ export class NewQuiz extends Component {
 
   // Callback function to be passed to Question component
   // TODO: Make it work on an array of question objects.
-  sendData = (qtext, ans) => {
-    this.setState({ questionText: qtext });
-    this.setState({ answers: ans });
+  sendData = (id, quizId, questionText, answers) => {
+    let newarray = this.state.questions;
+    console.log(`sendData: ${newarray[0].questionText}`);
+    newarray[0].questionText = questionText;
+    newarray[0].quizId = quizId;
+    newarray[0].id = id;
+    newarray[0].answers = answers;
+    this.setState({ questions: newarray });
   };
 
   render() {
@@ -134,8 +130,8 @@ export class NewQuiz extends Component {
         </Card>
 
         <Question
-          parentCallback={(questionText, answers) => {
-            this.sendData(questionText, answers);
+          parentCallback={(id, quizId, questionText, answers) => {
+            this.sendData(id, quizId, questionText, answers);
           }}
         />
       </>
@@ -267,6 +263,8 @@ export class Question extends Component {
   }
 
   mounted() {
+    this.id = 2;
+    this.quizId = 2;
     this.title = 'New Question';
     this.questionText = '';
     this.answers = [
@@ -280,7 +278,7 @@ export class Question extends Component {
 
   handleOnClick() {
     // console.log(this.answers);
-    this.props.parentCallback(this.questionText, this.answers);
+    this.props.parentCallback(this.id, this.quizId, this.questionText, this.answers);
   }
 
   /**
