@@ -59,12 +59,12 @@ export class NewQuiz extends Component {
         {
           id: 1,
           quizId: 1,
-          questionText: 'default question',
+          questionText: '',
           answers: [
-            { answerText: 'ans0', correct: false },
-            { answerText: 'ans1', correct: true },
-            { answerText: 'ans2', correct: false },
-            { answerText: 'ans3', correct: true },
+            { answerText: '', correct: false },
+            { answerText: '', correct: false },
+            { answerText: '', correct: false },
+            { answerText: '', correct: false },
           ],
         },
       ],
@@ -89,6 +89,8 @@ export class NewQuiz extends Component {
 
   // Callback function to be passed to Question component
   // TODO: Make it work on an array of question objects.
+  // TODO: Replace 0 with actual ID
+  // TODO: Convert list to map if necessary
   sendData = (id, quizId, questionText, answers) => {
     let newarray = this.state.questions;
     console.log(`sendData: ${newarray[0].questionText}`);
@@ -98,6 +100,44 @@ export class NewQuiz extends Component {
     newarray[0].answers = answers;
     this.setState({ questions: newarray });
   };
+
+  /**
+   * Renders each question in the state
+   */
+  renderQuestions() {
+    // Array of JSX elements to return
+    let jsx: [] = [];
+
+    // TODO: this one could probably receive an object
+    this.state.questions.map((q) => {
+      jsx.push(
+        <Question
+          id={q.id}
+          quizId={q.quizId}
+          title={q.title}
+          questionText={q.questionText}
+          answers={q.answers}
+          parentCallback={(id, quizId, questionText, answers) => {
+            this.sendData(id, quizId, questionText, answers);
+          }}
+        />
+      );
+    });
+
+    return jsx;
+  }
+
+  addQuestion() {
+    return (
+      <Button.Success
+        onClick={() => {
+          console.log(`clicked addQuestion`);
+        }}
+      >
+        Add New Question
+      </Button.Success>
+    );
+  }
 
   render() {
     return (
@@ -121,7 +161,11 @@ export class NewQuiz extends Component {
                 <div>questionText: {question.questionText}</div>
                 <div>
                   {question.answers.map((ans) => {
-                    return <div>answertext: {ans.answerText} | correct: {ans.correct ? "true" : "false"}</div>;
+                    return (
+                      <div>
+                        answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
+                      </div>
+                    );
                   })}
                 </div>
               </div>
@@ -129,11 +173,8 @@ export class NewQuiz extends Component {
           })}
         </Card>
 
-        <Question
-          parentCallback={(id, quizId, questionText, answers) => {
-            this.sendData(id, quizId, questionText, answers);
-          }}
-        />
+        {this.addQuestion()}
+        {this.renderQuestions()}
       </>
     );
   }
@@ -212,6 +253,7 @@ export class Question extends Component {
   questionText: string = '';
   answers: AnswerType[] = [];
 
+  /*Separate from render to reduce clutter*/
   renderQuestionText() {
     return (
       <Form.Input
@@ -263,17 +305,11 @@ export class Question extends Component {
   }
 
   mounted() {
-    this.id = 2;
-    this.quizId = 2;
-    this.title = 'New Question';
-    this.questionText = '';
-    this.answers = [
-      { answerText: 'hei', correct: false },
-      { answerText: 'på', correct: false },
-      { answerText: 'deg', correct: false },
-      { answerText: '!', correct: false },
-      { answerText: 'fem', correct: false },
-    ];
+    this.id = this.props.id;
+    this.quizId = this.props.quizId;
+    this.title = this.props.title;
+    this.questionText = this.props.questionText;
+    this.answers = this.props.answers;
   }
 
   handleOnClick() {
