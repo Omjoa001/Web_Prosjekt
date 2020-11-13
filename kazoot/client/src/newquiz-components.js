@@ -14,6 +14,14 @@ import {
 
 const history = createHashHistory();
 
+// TODO: maybe rename
+type StateQuestionType = {
+  id: number,
+  quizId: number,
+  questionText: string,
+  answers: AnswerType[],
+};
+
 /*BRAINSTORMING*/
 // All question props:
 //     title: string = '';
@@ -33,90 +41,140 @@ const history = createHashHistory();
 // ...
 
 /**
- * Renders a single question
+ * Component which renders the New Quiz page.
  */
-export class Question extends Component {
-  questionText: string = '';
-  correct: string[] = [];
-  incorrect: string[] = [];
+export class NewQuiz extends Component {
+  // Flow
+  state: {
+    questions: StateQuestionType[],
+  };
 
-  title: string = 'New Question';
-  numCorrect: number = 0;
-  answers: AnswerType[] = [
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-    { answerText: '', correct: false },
-  ];
+  constructor(props) {
+    super(props);
+
+    // This is designed for multiple questions
+    // TODO: Maybe use a map, in order to update the correct question when adding multiple questions
+    this.state = {
+      questions: [
+        {
+          id: 1,
+          quizId: 1,
+          questionText: '',
+          answers: [
+            { answerText: '', correct: false },
+            { answerText: '', correct: false },
+            { answerText: '', correct: false },
+            { answerText: '', correct: false },
+          ],
+        },
+      ],
+    };
+  }
+
+  title: string = '';
+  description: string = '';
+  categoryId: number = 0;
+  nextId: number = 0;
+
+  // TODO: remove this?
+  updated() {
+    console.log(`updated: refactor not finished`);
+  }
 
   mounted() {
-    this.questionText = 'Placeholder question';
+    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    // this.questionText = '';
+    // this.answers = [];
   }
 
-  renderQuestionText() {
-    return (
-      <Form.Input
-        placeholder="Question"
-        value={this.questionText}
-        onChange={(event) => {
-          this.questionText = event.currentTarget.value;
-        }}
-      ></Form.Input>
-    );
-  }
+  // Callback function to be passed to Question component
+  // TODO: Make it work on an array of question objects.
+  // TODO: Replace 0 with actual ID
+  // TODO: Convert list to map if necessary
+  sendData = (id, quizId, questionText, answers) => {
+    let newarray = this.state.questions;
+    console.log(`sendData: ${newarray[0].questionText}`);
+    newarray[0].questionText = questionText;
+    newarray[0].quizId = quizId;
+    newarray[0].id = id;
+    newarray[0].answers = answers;
+    this.setState({ questions: newarray });
+  };
 
   /**
-   * Generates each answer with checkbox etc.
-   * The output varies based on how many answers there are for
-   * a given question:
+   * Renders each question in the state
    */
-  renderAnswers() {
+  renderQuestions() {
+    // Array of JSX elements to return
     let jsx: [] = [];
 
-    let i = 0;
-    this.answers.forEach((answer) => {
+    // TODO: this one could probably receive an object
+    this.state.questions.map((q) => {
       jsx.push(
-        <Row>
-          <Column width={2}>
-            <Form.Checkbox
-              checked={answer.correct}
-              onChange={(event) => {
-                answer.correct = event.target.checked;
-                console.log(`answer.correct set to ${answer.correct}`);
-              }}
-            ></Form.Checkbox>
-          </Column>
-          <Column>
-          <br></br>
-            <Form.Input
-              placeholder={`answer ${i}`}
-              value={answer.answerText}
-              onChange={(event) => {
-                answer.answerText = event.currentTarget.value;
-              }}
-            ></Form.Input>
-          </Column>
-        </Row>
+        <Question
+          id={q.id}
+          quizId={q.quizId}
+          title={q.title}
+          questionText={q.questionText}
+          answers={q.answers}
+          parentCallback={(id, quizId, questionText, answers) => {
+            this.sendData(id, quizId, questionText, answers);
+          }}
+        />
       );
-      i++;
     });
 
     return jsx;
   }
 
-  /**
-   * Add number of correct answers to the first column
-   */
+  addQuestion() {
+    return (
+      <Button.Success
+        onClick={() => {
+          console.log(`clicked addQuestion`);
+        }}
+      >
+        Add New Question
+      </Button.Success>
+    );
+  }
+
   render() {
     return (
       <>
-        <Card title={this.title}>
-          <Row>
-            <Column width={2}>Tick the correct answer:  {}</Column>
-            <Column> {this.renderQuestionText()} </Column>
-          </Row>
-          {this.renderAnswers()}
+        <Card title="New Quiz!">
+          <QuizInfoCard
+            title={this.title}
+            description={this.description}
+            categoryId={this.categoryId}
+            nextId={this.nextId}
+          ></QuizInfoCard>
         </Card>
+
+        <Card title="NewQuiz's state">
+          {/* proper render */}
+          {this.state.questions.map((question) => {
+            return (
+              <div>
+                <div>id: {question.id}</div>
+                <div>quizId: {question.quizId}</div>
+                <div>questionText: {question.questionText}</div>
+                <div>
+                  {question.answers.map((ans) => {
+                    return (
+                      <div>
+                        answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </Card>
+
+        {this.addQuestion()}
+        {this.renderQuestions()}
       </>
     );
   }
@@ -189,34 +247,93 @@ export class QuizInfoCard extends Component {
 }
 
 /**
- * Component which renders the New Quiz page.
+ * Renders a single question
  */
-export class NewQuiz extends Component {
+export class Question extends Component {
+  // These are redefined in mounted fwiw
   title: string = '';
-  description: string = '';
-  categoryId: number = 0;
-  nextId: number = 0;
+  questionText: string = '';
+  answers: AnswerType[] = [];
 
-  questions: QuestionType[] = [];
-
-  render() {
+  /*Separate from render to reduce clutter*/
+  renderQuestionText() {
     return (
-      <>
-        <Card title="New Quiz!">
-          <QuizInfoCard
-            title={this.title}
-            description={this.description}
-            categoryId={this.categoryId}
-            nextId={this.nextId}
-          ></QuizInfoCard>
-        </Card>
-
-        <Question />
-      </>
+      <Form.Input
+        placeholder="Question"
+        value={this.questionText}
+        onChange={(event) => {
+          this.questionText = event.currentTarget.value;
+        }}
+      ></Form.Input>
     );
   }
 
+  /**
+   * Generates each answer with checkbox etc.
+   * The output varies based on how many answers there are for
+   * a given question:
+   */
+  renderAnswers() {
+    let jsx: [] = [];
+
+    let i = 0;
+    this.answers.forEach((answer) => {
+      jsx.push(
+        <Row>
+          <Column width={2}>
+            <Form.Checkbox
+              checked={answer.correct}
+              onChange={(event) => {
+                answer.correct = event.target.checked;
+                console.log(`answer.correct set to ${answer.correct}`);
+              }}
+            ></Form.Checkbox>
+          </Column>
+          <Column>
+            <Form.Input
+              placeholder={`answer ${i}`}
+              value={answer.answerText}
+              onChange={(event) => {
+                answer.answerText = event.currentTarget.value;
+              }}
+            ></Form.Input>
+          </Column>
+        </Row>
+      );
+      i++;
+    });
+
+    return jsx;
+  }
+
   mounted() {
-    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    this.id = this.props.id;
+    this.quizId = this.props.quizId;
+    this.title = this.props.title;
+    this.questionText = this.props.questionText;
+    this.answers = this.props.answers;
+  }
+
+  handleOnClick() {
+    // console.log(this.answers);
+    this.props.parentCallback(this.id, this.quizId, this.questionText, this.answers);
+  }
+
+  /**
+   * TODO: Add number of correct answers to the first column
+   */
+  render() {
+    return (
+      <>
+        <Card title={this.title}>
+          <Row>
+            <Column width={2}>Correct: {}</Column>
+            <Column> {this.renderQuestionText()} </Column>
+          </Row>
+          {this.renderAnswers()}
+        </Card>
+        <Button.Success onClick={this.handleOnClick}>hei</Button.Success>
+      </>
+    );
   }
 }
