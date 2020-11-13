@@ -95,7 +95,7 @@ export class NewQuiz extends Component {
     let newarray = this.state.questions;
     console.log(`sendData: ${newarray[0].questionText}`);
     newarray[0].questionText = questionText;
-    newarray[0].quizId = quizId;
+    newarray[0].quizId = nextId;
     newarray[0].id = id;
     newarray[0].answers = answers;
     this.setState({ questions: newarray });
@@ -127,11 +127,18 @@ export class NewQuiz extends Component {
     return jsx;
   }
 
+  getNewId() {
+    return this.state.questions.length;
+  }
+
   addQuestion() {
     return (
       <Button.Success
         onClick={() => {
           console.log(`clicked addQuestion`);
+          let newQuestion: StateQuestionType;
+          newQuestion.id = getNewId();
+          newQuestion.quizId = nextId;
         }}
       >
         Add New Question
@@ -309,7 +316,7 @@ export class Question extends Component {
   mounted() {
     this.id = this.props.id;
     this.quizId = this.props.quizId;
-    this.title = this.props.title;
+    this.title = 'New Question';
     this.questionText = this.props.questionText;
     this.answers = this.props.answers;
   }
@@ -326,13 +333,13 @@ export class Question extends Component {
     return (
       <>
         <Card title={this.title}>
+        <Button.Success onClick={this.handleOnClick}>Update State</Button.Success>
           <Row>
             <Column width={2}>Correct: {}</Column>
             <Column> {this.renderQuestionText()} </Column>
           </Row>
           {this.renderAnswers()}
         </Card>
-        <Button.Success onClick={this.handleOnClick}>hei</Button.Success>
       </>
     );
   }
