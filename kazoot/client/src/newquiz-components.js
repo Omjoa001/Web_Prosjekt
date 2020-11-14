@@ -123,6 +123,7 @@ export class NewQuiz extends Component {
   }
 
   // TODO: This doesn't work if we switch to a map...
+  // TODO: Find or make a database call to get a new id
   getNewId() {
     return this.state.questions.length + 1;
   }
