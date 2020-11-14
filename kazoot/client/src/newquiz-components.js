@@ -44,6 +44,33 @@ type StateQuestionType = {
  * Component which renders the New Quiz page.
  */
 export class NewQuiz extends Component {
+
+  logMapElements(value, key, map) {
+    console.log(`m[${key}] = ${value.quizId}`);
+    console.log(`m[${key}] = ${value.questionText}`);
+    value.answers.forEach(ans => console.log(`m[${key}] = ${ans.answerText}`));
+  }
+
+  fun() {
+    let map = new Map();
+    let id = 1;
+    map.set(id, {
+      id: 1,
+      quizId: 69,
+      questionText: 'le mao',
+      answers: [
+        { answerText: 'woo', correct: false },
+        { answerText: 'wee', correct: false },
+        { answerText: 'wii', correct: false },
+        { answerText: 'wyy', correct: false },
+      ],
+    });
+
+
+    map.forEach(this.logMapElements);
+
+  }
+
   // This makes flow happy
   state: {
     questions: StateQuestionType[],
@@ -79,6 +106,7 @@ export class NewQuiz extends Component {
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    this.fun();
   }
 
   // Callback function to be passed to Question component
