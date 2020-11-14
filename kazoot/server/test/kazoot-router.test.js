@@ -3,7 +3,7 @@
 import axios from 'axios';
 import pool from '../src/mysql-pool';
 import app from '../src/app';
-import quizService, { type Question } from '../src/kazoot-service';
+import quizService , { type Question } from '../src/kazoot-service';
 
 const testTasks: Task[] = [
   { id: 1, title: 'Les leksjon', done: false },
@@ -62,12 +62,12 @@ afterAll((done) => {
   webServer.close(() => pool.end(() => done()));
 });
 
-describe('Fetch tasks (GET)', () => {
-  test('Fetch all tasks (200 OK)', (done) => {
-    axios.get<Task[]>('/quizzer').then((response) => {
+describe('Fetch Quizzes (GET)', () => {
+  test('Fetch all Quizzes (200 OK)', (done) => {
+    axios.get<Quizzes[]>('/quizzer').then((response) => {
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(testTasks);
-      done();
+      done();     
     });
   });
 
