@@ -44,11 +44,10 @@ type StateQuestionType = {
  * Component which renders the New Quiz page.
  */
 export class NewQuiz extends Component {
-
   logMapElements(value, key, map) {
     console.log(`m[${key}] = ${value.quizId}`);
     console.log(`m[${key}] = ${value.questionText}`);
-    value.answers.forEach(ans => console.log(`m[${key}] = ${ans.answerText}`));
+    value.answers.forEach((ans) => console.log(`m[${key}] = ${ans.answerText}`));
   }
 
   fun() {
@@ -66,10 +65,10 @@ export class NewQuiz extends Component {
       ],
     });
 
-
     map.forEach(this.logMapElements);
-
   }
+
+  // TODO: maybe rename question id to index or something to diff it from db id
 
   // This makes flow happy
   state: {
@@ -150,7 +149,6 @@ export class NewQuiz extends Component {
     return jsx;
   }
 
-  // TODO: This doesn't work if we switch to a map...
   // TODO: Find or make a database call to get a new id
   getNewId() {
     return this.state.questions.length + 1;
@@ -177,25 +175,40 @@ export class NewQuiz extends Component {
     return newQuestion;
   }
 
+  /**
+   * Replaces the questions array in state with a new one containing a new question object
+   * Warning: Manipulates state
+   */
   addNewQuestionToState() {
     let newQuestion = this.newQuestionObject();
     let tempArray = this.state.questions;
     tempArray.push(newQuestion);
-    this.setState((questions: tempArray));
+    this.setState({ questions: tempArray });
   }
 
-  // TODO: This is kinda stupid. This can be integrated in render
-  addQuestion() {
-    return (
-      <Button.Success
-        onClick={() => {
-          console.log(`clicked addQuestion`);
-          this.addNewQuestionToState();
-        }}
-      >
-        Add New Question
-      </Button.Success>
-    );
+  /**
+   * Removes a question from the questions array
+   * @param id - ID of question to remove
+   * Warning: Manipulates state
+   */
+  removeQuestionFromState(id: number) {
+    let index = this.findIndexOfQuestion(id);
+    if (index != -1) {
+      this.state.questions.splice(index, 1);
+    }
+  }
+
+  /**
+   * Finds the index of a question with a given ID
+   */
+  findIndexOfQuestion(id: number) {
+    for (let i = 0; i < this.state.questions.length; i++) {
+      if (this.state.questions[i].id == id) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 
   render() {
@@ -209,6 +222,16 @@ export class NewQuiz extends Component {
             nextId={this.nextId}
           ></QuizInfoCard>
         </Card>
+
+        <Column></Column>
+        <Button.Success
+          onClick={() => {
+            console.log(`clicked addQuestion`);
+            this.addNewQuestionToState();
+          }}
+        >
+          Add New Question
+        </Button.Success>
 
         <Card title="NewQuiz's state">
           {/* proper render */}
@@ -232,7 +255,6 @@ export class NewQuiz extends Component {
           })}
         </Card>
 
-        {this.addQuestion()}
         {this.renderQuestions()}
       </>
     );
