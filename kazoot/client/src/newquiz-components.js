@@ -49,6 +49,7 @@ export class NewQuiz extends Component {
     questions: StateQuestionType[],
   };
 
+  // Necessary for manipulating NewQuiz' state in the Question components
   constructor(props) {
     super(props);
 
@@ -76,30 +77,24 @@ export class NewQuiz extends Component {
   categoryId: number = 0;
   nextId: number = 0;
 
-  // TODO: remove this?
-  updated() {
-    console.log(`updated: refactor not finished`);
-  }
-
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-    // this.questionText = '';
-    // this.answers = [];
   }
 
   // Callback function to be passed to Question component
   // TODO: Make it work on an array of question objects.
   // TODO: Replace 0 with actual ID
   // TODO: Convert list to map if necessary
-  sendData = (id, quizId, questionText, answers) => {
+  sendData(id, quizId, questionText, answers) {
     let newarray = this.state.questions;
-    console.log(`sendData: ${newarray[0].questionText}`);
-    newarray[0].questionText = questionText;
-    newarray[0].quizId = nextId;
-    newarray[0].id = id;
-    newarray[0].answers = answers;
+    let index = this.state.questions.length - 1;
+    console.log(`sendData: ${newarray[index].questionText}`);
+    newarray[index].questionText = questionText;
+    newarray[index].quizId = this.nextId;
+    newarray[index].id = id;
+    newarray[index].answers = answers;
     this.setState({ questions: newarray });
-  };
+  }
 
   /**
    * Renders each question in the state
@@ -127,18 +122,46 @@ export class NewQuiz extends Component {
     return jsx;
   }
 
+  // TODO: This doesn't work if we switch to a map...
   getNewId() {
-    return this.state.questions.length;
+    return this.state.questions.length + 1;
   }
 
+  /**
+   * Returns an empty question object
+   */
+  newQuestionObject() {
+    console.log(`newQuestionObject() called`);
+    let newQuestion: StateQuestionType = {};
+    newQuestion.id = this.getNewId();
+    newQuestion.quizId = this.nextId;
+    newQuestion.questionText = '';
+    newQuestion.answers = [
+      { answerText: '', correct: false },
+      { answerText: '', correct: false },
+      { answerText: '', correct: false },
+      { answerText: '', correct: false },
+    ];
+
+    console.log(`the new object: ${newQuestion}`);
+
+    return newQuestion;
+  }
+
+  addNewQuestionToState() {
+    let newQuestion = this.newQuestionObject();
+    let tempArray = this.state.questions;
+    tempArray.push(newQuestion);
+    this.setState((questions: tempArray));
+  }
+
+  // TODO: This is kinda stupid. This can be integrated in render
   addQuestion() {
     return (
       <Button.Success
         onClick={() => {
           console.log(`clicked addQuestion`);
-          let newQuestion: StateQuestionType;
-          newQuestion.id = getNewId();
-          newQuestion.quizId = nextId;
+          this.addNewQuestionToState();
         }}
       >
         Add New Question
@@ -265,13 +288,15 @@ export class Question extends Component {
   /*Separate from render to reduce clutter*/
   renderQuestionText() {
     return (
-      <Form.Input
-        placeholder="Question"
-        value={this.questionText}
-        onChange={(event) => {
-          this.questionText = event.currentTarget.value;
-        }}
-      ></Form.Input>
+      <>
+        <Form.Input
+          placeholder="Question text"
+          value={this.questionText}
+          onChange={(event) => {
+            this.questionText = event.currentTarget.value;
+          }}
+        ></Form.Input>
+      </>
     );
   }
 
@@ -333,9 +358,9 @@ export class Question extends Component {
     return (
       <>
         <Card title={this.title}>
-        <Button.Success onClick={this.handleOnClick}>Update State</Button.Success>
+          <Button.Success onClick={this.handleOnClick}>Update State</Button.Success>
           <Row>
-            <Column width={2}>Correct: {}</Column>
+            <Column width={2}>Question: {}</Column>
             <Column> {this.renderQuestionText()} </Column>
           </Row>
           {this.renderAnswers()}
