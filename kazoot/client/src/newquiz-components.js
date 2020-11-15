@@ -24,6 +24,10 @@ type StateQuestionType = {
 
 /**
  * Component which renders the New Quiz page.
+ * This component stores an array of question objects in its state.
+ * These question objects are used to create question components,
+ * which render the information stored in them.
+ * These question components receive callbacks to update the parent's state as props.
  *
  * TODO: maybe rename question id to index or something to diff it from db id
  */
