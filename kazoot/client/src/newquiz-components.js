@@ -191,6 +191,10 @@ export class NewQuiz extends Component {
     this.state.questions.forEach((question) => {
       let correct: string[] = [];
       let incorrect: string[] = [];
+      let answ0: string = '';
+      let answ1: string = '';
+      let answ2: string = '';
+      let answ3: string = '';
 
       question.answers.forEach((answer) => {
         if (answer.correct) correct.push(answer.answerText);
@@ -200,19 +204,29 @@ export class NewQuiz extends Component {
       let numCorrect: number = correct.length;
       let allAnswers: string[] = correct.concat(incorrect);
 
-      let answ0: string = allAnswers[0];
-      let answ1: string = allAnswers[1];
-      let answ2: string = allAnswers[2];
-      let answ3: string = allAnswers[3];
+      console.log(`correct: ${correct}`);
+      console.log(`incorrect: ${incorrect}`);
+      console.log(`allAnswers: ${allAnswers}`);
+
+      answ0 = allAnswers[0];
+      answ1 = allAnswers[1];
+      answ2 = allAnswers[2];
+      answ3 = allAnswers[3];
+
+      console.log(`answ0: ${answ0}`);
+      console.log(`answ1: ${answ1}`);
+      console.log(`answ2: ${answ2}`);
+      console.log(`answ3: ${answ3}`);
+      console.log(`numcorrect: ${numcorrect}`);
 
       questionService.createQuestion(
         question.quizId,
         question.questionText,
-        question.answ0,
-        question.answ1,
-        question.answ2,
-        question.answ3,
-        question.numCorrect
+        answ0,
+        answ1,
+        answ2,
+        answ3,
+        numCorrect
       );
     });
   }

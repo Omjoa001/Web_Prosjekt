@@ -19,12 +19,12 @@ export type SendQuestionType = {
   quizId: number,
   questionText: string,
   answers: AnswerType[],
-}
+};
 
 export type AnswerType = {
   answerText: string,
-  correct: bool,
-}
+  correct: boolean,
+};
 
 export type QuizType = {
   id: number,
@@ -36,15 +36,14 @@ export type QuizType = {
 export type CategoryType = {
   id: number,
   category: string,
-}
+};
 
 export type Quiz = {
   id: number,
   title: string,
   description: string,
-}
+};
 
- 
 /**
  * Service to retrieve and manage questions (not entire quizzes).
  */
@@ -62,36 +61,44 @@ class QuestionService {
    * Get all questions.
    */
   getAllQuestions() {
-    console.log("alle spm: 42")
+    console.log('alle spm: 42');
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
   /**
-   * 
+   *
    * Get questions with given  quizId
    */
   getQuizQuestion(id: number) {
-    console.log("her skal enkelte spm komme")
+    console.log('her skal enkelte spm komme');
     return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
-  
+
   /**
-   * 
+   *
    * Create new questions
    */
-  createQuestion(quizId: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string, numCorrect: number) {
-    console.log("create question")
+  createQuestion(
+    quizId: number,
+    question: string,
+    answ0: string,
+    answ1: string,
+    answ2: string,
+    answ3: string,
+    numCorrect: number
+  ) {
+    console.log('create question');
     return axios
-    .post<{}, {id: number}>('/questions', {
-      quizId: quizId,
-      question: question,
-      answ0: answ0,
-      answ1: answ1,
-      answ2: answ2,
-      answ3: answ3,
-      numCorrect: numCorrect,
-    })
-    .then((response) => response.data.id)
+      .post<{}, { id: number }>('/questions', {
+        quizId: quizId,
+        question: question,
+        answ0: answ0,
+        answ1: answ1,
+        answ2: answ2,
+        answ3: answ3,
+        numCorrect: numCorrect,
+      })
+      .then((response) => response.data.id);
   }
 }
 
@@ -100,14 +107,13 @@ class QuestionService {
  * Class to manage quizzes.
  */
 class QuizService {
-  
   /**
    * Get next Id to give questions quizID
    */
-  getNextId(){
+  getNextId() {
     return axios.get('/nextId').then((response) => response.data);
   }
-  
+
   /**
    * Test that the class is imported correctly
    * TODO: Remove?
@@ -117,7 +123,7 @@ class QuizService {
   }
 
   /**
-   * 
+   *
    * GET Quiz with given Id
    */
   getQuiz(id: number) {
@@ -134,9 +140,9 @@ class QuizService {
 
   // create new quiz
   createQuiz(title: string, description: string, categoryId: number) {
-    console.log('service1')  
+    console.log('service1');
     return axios
-        .post<{}, {id: number}>('/quizzes', {
+      .post<{}, { id: number }>('/quizzes', {
         title: title,
         description: description,
         categoryId: categoryId,
@@ -161,11 +167,11 @@ class QuizService {
  * Service to manage categories
  */
 class CategoryService {
-
   getAllCategories() {
-    console.log("kazoot-service")
+    console.log('kazoot-service');
     return axios.get<CategoryType[]>('/categories').then((response) => response.data);
-  }  /**
+  }
+  /**
    * WIP
    * Function to get all categories
    */
