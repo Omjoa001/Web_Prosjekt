@@ -96,18 +96,20 @@ export class NewQuiz extends Component {
 
   /**
    * Renders each question.
+   * TODO: Removequestion doesn't need to be a callback. Render the remove button from newquiz.
    */
   renderQuestions() {
     // Array of JSX elements to return
     let jsx: [] = [];
 
     // TODO: this one could probably receive an object
+    let i = 1;
     this.state.questions.map((q) => {
       jsx.push(
         <Question
           id={q.id}
           quizId={q.quizId}
-          title={q.title}
+          title={`Question ${i}`}
           questionText={q.questionText}
           answers={q.answers}
           sendData={(id, quizId, questionText, answers) => {
@@ -118,6 +120,7 @@ export class NewQuiz extends Component {
           }}
         />
       );
+      i++;
     });
 
     return jsx;
@@ -372,7 +375,7 @@ export class Question extends Component {
   mounted() {
     this.id = this.props.id;
     this.quizId = this.props.quizId;
-    this.title = 'New Question';
+    this.title = this.props.title;
     this.questionText = this.props.questionText;
     this.answers = this.props.answers;
   }
@@ -387,9 +390,6 @@ export class Question extends Component {
     this.props.removeQuestion(this.id);
   }
 
-  /**
-   * TODO: Add number of correct answers to the first column
-   */
   render() {
     return (
       <>
