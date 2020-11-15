@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, TileCard, QuestionCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import {
   type QuizType,
@@ -22,55 +22,17 @@ type StateQuestionType = {
   answers: AnswerType[],
 };
 
-/*BRAINSTORMING*/
-// All question props:
-//     title: string = '';
-//     questionText: string = '';
-//     correct: string[] = [];
-//     incorrect: string[] = [];
-//     numCorrect: number = 0;
-//     answers: AnswerType[] = [];
-
-// Absolutely necessary:
-//     questionText: string = '';
-//     correct: string[] = [];
-//     incorrect: string[] = [];
-
-// database call per question needs:
-// ans0, ans1, ans2, ans3
-// ...
-
 /**
  * Component which renders the New Quiz page.
+ * This component stores an array of question objects in its state.
+ * These question objects are used to create question components,
+ * which render the information stored in them.
+ * These question components receive callbacks to update the parent's state as props.
+ *
+ * TODO: maybe rename question id to index or something to diff it from db id
  */
 export class NewQuiz extends Component {
-  logMapElements(value, key, map) {
-    console.log(`m[${key}] = ${value.quizId}`);
-    console.log(`m[${key}] = ${value.questionText}`);
-    value.answers.forEach((ans) => console.log(`m[${key}] = ${ans.answerText}`));
-  }
-
-  fun() {
-    let map = new Map();
-    let id = 1;
-    map.set(id, {
-      id: 1,
-      quizId: 69,
-      questionText: 'le mao',
-      answers: [
-        { answerText: 'woo', correct: false },
-        { answerText: 'wee', correct: false },
-        { answerText: 'wii', correct: false },
-        { answerText: 'wyy', correct: false },
-      ],
-    });
-
-    map.forEach(this.logMapElements);
-  }
-
-  // TODO: maybe rename question id to index or something to diff it from db id
-
-  // This makes flow happy
+  // This should make flow happy
   state: {
     questions: StateQuestionType[],
   };
@@ -79,24 +41,8 @@ export class NewQuiz extends Component {
   constructor(props) {
     super(props);
 
-    // This is designed for multiple questions
-    // TODO: Maybe use a map, in order to update the correct question when adding multiple questions
     this.state = {
-      questions: []
-      // vvv Remove?
-      // questions: [
-      //   {
-      //     id: 1,
-      //     quizId: 1,
-      //     questionText: 'default',
-      //     answers: [
-      //       { answerText: '', correct: false },
-      //       { answerText: '', correct: false },
-      //       { answerText: '', correct: false },
-      //       { answerText: '', correct: false },
-      //     ],
-      //   },
-      // ],
+      questions: [],
     };
   }
 
@@ -104,15 +50,17 @@ export class NewQuiz extends Component {
   description: string = '';
   categoryId: number = 0;
   nextId: number = 0;
-  nextQuestionId: number = 1;	// Only used for indexing
+  nextQuestionId: number = 1; // Only used for indexing
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
   }
 
   /**
-   *
-   * TODO: Make it work on an array of question objects.
+   * This is passed as a callback function to a question component.
+   * When called in the question comp, it sends all of its information
+   * back to the NewQuiz comp and changes NewQuiz' state.
+   * NewQuiz needs this information to make database calls to create a new quiz.
    */
   sendData(id, quizId, questionText, answers) {
     let newarray = this.state.questions;
@@ -124,24 +72,45 @@ export class NewQuiz extends Component {
       newarray[index].answers = answers;
       this.setState({ questions: newarray });
     } else {
-      console.log('error');
+      console.log(`sendData: Question with id ${id} not found`);
     }
   }
 
   /**
-   * Renders each question in the state
+   * Removes a question from the questions array.
+   * This is passed as a callback function to each question component, so that
+   * the remove question button can be rendered by the question component.
+   * @param id - ID of question to remove
+   * Warning: Manipulates state
+   */
+  removeQuestion(id: number) {
+    let index = this.findIndexOfQuestion(id);
+    let newQuestions = this.state.questions;
+    if (index != -1) {
+      newQuestions.splice(index, 1);
+    } else {
+      console.log(`removeQuestion: Could not remove question with id ${id}`);
+    }
+
+    this.setState({ questions: newQuestions });
+  }
+
+  /**
+   * Renders each question.
+   * TODO: Removequestion doesn't need to be a callback. Render the remove button from newquiz.
    */
   renderQuestions() {
     // Array of JSX elements to return
     let jsx: [] = [];
 
     // TODO: this one could probably receive an object
+    let i = 1;
     this.state.questions.map((q) => {
       jsx.push(
         <Question
           id={q.id}
           quizId={q.quizId}
-          title={q.title}
+          title={`Question ${i}`}
           questionText={q.questionText}
           answers={q.answers}
           sendData={(id, quizId, questionText, answers) => {
@@ -152,6 +121,7 @@ export class NewQuiz extends Component {
           }}
         />
       );
+      i++;
     });
 
     return jsx;
@@ -199,24 +169,6 @@ export class NewQuiz extends Component {
   }
 
   /**
-   * Removes a question from the questions array
-   * @param id - ID of question to remove
-   * Warning: Manipulates state
-   */
-  removeQuestion(id: number) {
-    let index = this.findIndexOfQuestion(id);
-    let newQuestions = this.state.questions;
-    if (index != -1) {
-      newQuestions.splice(index, 1);
-    } else {
-      console.log(`Could not remove question with id ${id}`);
-    }
-
-    this.setState({questions: newQuestions});
-    console.log(`removeQuestion state questions: ${this.state.questions}`);
-  }
-
-  /**
    * Finds the index of a question with a given ID
    */
   findIndexOfQuestion(id: number) {
@@ -229,19 +181,139 @@ export class NewQuiz extends Component {
     return -1;
   }
 
+  /**
+   * WIP
+   * Create a new quiz.
+   */
+  createQuiz() {
+    quizService.createQuiz(this.title, this.description, this.categoryId);
+
+    this.state.questions.forEach((question) => {
+      let correct: string[] = [];
+      let incorrect: string[] = [];
+      let answ0: string = '';
+      let answ1: string = '';
+      let answ2: string = '';
+      let answ3: string = '';
+
+      question.answers.forEach((answer) => {
+        if (answer.correct) correct.push(answer.answerText);
+        else incorrect.push(answer.answerText);
+      });
+
+      let numCorrect: number = correct.length;
+      let allAnswers: string[] = correct.concat(incorrect);
+
+      console.log(`correct: ${correct}`);
+      console.log(`incorrect: ${incorrect}`);
+      console.log(`allAnswers: ${allAnswers}`);
+
+      answ0 = allAnswers[0];
+      answ1 = allAnswers[1];
+      answ2 = allAnswers[2];
+      answ3 = allAnswers[3];
+
+      console.log(`answ0: ${answ0}`);
+      console.log(`answ1: ${answ1}`);
+      console.log(`answ2: ${answ2}`);
+      console.log(`answ3: ${answ3}`);
+      console.log(`numcorrect: ${numcorrect}`);
+
+      questionService.createQuestion(
+        question.quizId,
+        question.questionText,
+        answ0,
+        answ1,
+        answ2,
+        answ3,
+        numCorrect
+      );
+    });
+  }
+
+  /**
+   * Displays editable information about the quiz.
+   */
+  renderQuizInfo() {
+    let jsx: [] = [];
+
+    jsx.push(
+      <Card>
+        <Row>
+          <Column width={3}>Quiz-title:</Column>
+          <Column>
+            <Form.Input
+              placeholder="Quiz title"
+              type="text"
+              value={this.title}
+              onChange={(event) => (this.title = event.currentTarget.value)}
+            ></Form.Input>
+          </Column>
+        </Row>
+        <br></br>
+        <Row>
+          <Column width={3}>Quiz-Category:</Column>
+          <Column>
+            <select
+              name="Category"
+              value={this.categoryId}
+              onChange={(event) => (this.categoryId = event.currentTarget.value)}
+            >
+              <option value="0">Velg en kategori</option>
+              <option value="1">Matte</option>
+              <option value="2">Fotball</option>
+              <option value="3">Geografi</option>
+              <option value="4">It</option>
+              <option value="5">History</option>
+            </select>
+          </Column>
+        </Row>
+        <br></br>
+        <Row>
+          <Column width={3}>Quiz-Id:</Column>
+          <Column>
+            <Form.Input value={this.nextId} disabled></Form.Input>
+          </Column>
+        </Row>
+        <br></br>
+        <Row>
+          <Column width={3}>Quiz-description:</Column>
+          <Column>
+            <Form.Textarea
+              placeholder="Quiz description"
+              type="text"
+              value={this.description}
+              onChange={(event) => (this.description = event.currentTarget.value)}
+              row={10}
+            ></Form.Textarea>
+          </Column>
+        </Row>
+      </Card>
+    );
+
+    return jsx;
+  }
+
   render() {
     return (
       <>
-        <Card title="New Quiz!">
-          <QuizInfoCard
-            title={this.title}
-            description={this.description}
-            categoryId={this.categoryId}
-            nextId={this.nextId}
-          ></QuizInfoCard>
-        </Card>
+        <Card title="Creating a new quiz!">{this.renderQuizInfo()}</Card>
 
-        <Button.Success onClick={() => {this.forceUpdate()}}>Update state</Button.Success>
+        <Button.Success
+          onClick={() => {
+            this.forceUpdate();
+          }}
+        >
+          Update state
+        </Button.Success>
+
+        <Button.Success
+          onClick={() => {
+            this.createQuiz();
+          }}
+        >
+          Create Quiz
+        </Button.Success>
 
         <Button.Success
           onClick={() => {
@@ -252,24 +324,33 @@ export class NewQuiz extends Component {
           Add New Question
         </Button.Success>
 
+        {/* troubleshooting info */}
+        {/* TODO: remove */}
         <Card title="NewQuiz's state">
-          {/* proper render */}
+          <div>
+            <div>quiz title: {this.title}</div>
+            <div>category: {this.categoryId}</div>
+            <div>quiz id: {this.nextId}</div>
+            <div>quiz desc: {this.description}</div>
+          </div>
           {this.state.questions.map((question) => {
             return (
-              <div>
-                <div>id: {question.id}</div>
-                <div>quizId: {question.quizId}</div>
-                <div>questionText: {question.questionText}</div>
+              <>
                 <div>
-                  {question.answers.map((ans) => {
-                    return (
-                      <div>
-                        answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
-                      </div>
-                    );
-                  })}
+                  <div>id: {question.id}</div>
+                  <div>quizId: {question.quizId}</div>
+                  <div>questionText: {question.questionText}</div>
+                  <div>
+                    {question.answers.map((ans) => {
+                      return (
+                        <div>
+                          answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              </>
             );
           })}
         </Card>
@@ -281,76 +362,9 @@ export class NewQuiz extends Component {
 }
 
 /**
- * Component to render information about the quiz being created in NewQuiz
- * TODO: Add database call for categories, etc.
- */
-export class QuizInfoCard extends Component {
-  title: string = '';
-  description: string = '';
-  categoryId: number = 0;
-  nextId: number = 0;
-
-  render() {
-    return (
-      <Card>
-        <Row>
-          <Column width={3}>Quiz-title:</Column>
-          <Column>
-            <Form.Input
-              placeholder="Quiz title"
-              type="text"
-              value={this.props.title}
-              onChange={(event) => (this.props.title = event.currentTarget.value)}
-            ></Form.Input>
-            <br></br>
-          </Column>
-        </Row>
-        <Row>
-          <Column width={3}>Quiz-Category:</Column>
-          <Column>
-            <select
-              name="Category"
-              value={this.props.categoryId}
-              onChange={(event) => (this.props.categoryId = event.currentTarget.value)}
-            >
-              <option value="0">Velg en kategori</option>
-              <option value="1">Matte</option>
-              <option value="2">Fotball</option>
-              <option value="3">Geografi</option>
-              <option value="4">It</option>
-              <option value="5">History</option>
-            </select>
-          </Column>
-        </Row>
-        <Row>
-          <Column>Quiz-Id:</Column>
-          <Column>
-            <Form.Input value={this.props.nextId} disabled></Form.Input>
-            <br></br>
-          </Column>
-        </Row>
-        <Row>
-          <Column width={3}>Quiz-description:</Column>
-          <Column>
-            <Form.Textarea
-              placeholder="Quiz description"
-              type="text"
-              value={this.props.description}
-              onChange={(event) => (this.props.description = event.currentTarget.value)}
-              row={10}
-            ></Form.Textarea>
-          </Column>
-        </Row>
-      </Card>
-    );
-  }
-}
-
-/**
  * Renders a single question
  */
 export class Question extends Component {
-  // These are redefined in mounted fwiw
   title: string = '';
   questionText: string = '';
   answers: AnswerType[] = [];
@@ -364,21 +378,22 @@ export class Question extends Component {
           value={this.questionText}
           onChange={(event) => {
             this.questionText = event.currentTarget.value;
+            this.updateParentState();
           }}
         ></Form.Input>
+        <br></br>
       </>
     );
   }
 
   /**
    * Generates each answer with checkbox etc.
-   * The output varies based on how many answers there are for
-   * a given question:
+   * TODO: Make it possible to add or remove answers.
    */
   renderAnswers() {
     let jsx: [] = [];
 
-    let i = 0;
+    let i = 1;
     this.answers.forEach((answer) => {
       jsx.push(
         <Row>
@@ -387,6 +402,7 @@ export class Question extends Component {
               checked={answer.correct}
               onChange={(event) => {
                 answer.correct = event.target.checked;
+                this.updateParentState();
                 console.log(`answer.correct set to ${answer.correct}`);
               }}
             ></Form.Checkbox>
@@ -397,6 +413,7 @@ export class Question extends Component {
               value={answer.answerText}
               onChange={(event) => {
                 answer.answerText = event.currentTarget.value;
+                this.updateParentState();
               }}
             ></Form.Input>
           </Column>
@@ -411,7 +428,7 @@ export class Question extends Component {
   mounted() {
     this.id = this.props.id;
     this.quizId = this.props.quizId;
-    this.title = 'New Question';
+    this.title = this.props.title;
     this.questionText = this.props.questionText;
     this.answers = this.props.answers;
   }
@@ -426,23 +443,19 @@ export class Question extends Component {
     this.props.removeQuestion(this.id);
   }
 
-
-
-  /**
-   * TODO: Add number of correct answers to the first column
-   */
   render() {
     return (
       <>
-        <Card title={this.title}>
-          <Button.Success onClick={this.updateParentState}>Update State</Button.Success>
-          <Button.Danger onClick={this.removeButton}>Remove Question</Button.Danger>
+        <QuestionCard title={this.title}>
           <Row>
             <Column width={2}>Question: {}</Column>
             <Column> {this.renderQuestionText()} </Column>
+            <Column width={1}>
+              <Button.Back onClick={this.removeButton}>X</Button.Back>
+            </Column>
           </Row>
           {this.renderAnswers()}
-        </Card>
+        </QuestionCard>
       </>
     );
   }
