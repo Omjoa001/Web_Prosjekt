@@ -46,9 +46,9 @@ router.post('/quizzes', (request, response) => {
 
 router.post('/questions', (request, response) => {
   const data = request.body;
-  if(data && typeof data.question == 'string' && data.question.length != 0 && typeof data.quizId == 'number' && typeof data.answ0 == 'string' && typeof data.answ1 == 'string' && typeof data.answ2 == 'string' && typeof data.answ3 == 'string'){
+  if(data && typeof data.question == 'string' && data.question.length != 0 && typeof data.quizId == 'number' && typeof data.answ0 == 'string' && typeof data.answ1 == 'string' && typeof data.answ2 == 'string' && typeof data.answ3 == 'string' && typeof data.numCorrect == 'number'){
     quizService
-      .createQuestions(data.quizId, data.question, data.answ0, data.answ1, data.answ2, data.answ3)
+      .createQuestions(data.quizId, data.question, data.answ0, data.answ1, data.answ2, data.answ3, data.numCorrect)
       .then((id) => response.send({ id: id }))
       .catch((error: Error) => response.status(500).send(error));
     } else {response.status(400).send('Missing QUIZ information');}

@@ -7,11 +7,11 @@ export type QuestionType = {
   id: number,
   quizId: number,
   question: string,
-  numCorrect: any,
   answ0: string,
   answ1: string,
   answ2: string,
   answ3: string,
+  numCorrect: any,
 };
 
 export type SendQuestionType = {
@@ -79,7 +79,7 @@ class QuestionService {
    * 
    * Create new questions
    */
-  createQuestion(quizId: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string) {
+  createQuestion(quizId: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string, numCorrect: number) {
     console.log("create question")
     return axios
     .post<{}, {id: number}>('/questions', {
@@ -89,6 +89,7 @@ class QuestionService {
       answ1: answ1,
       answ2: answ2,
       answ3: answ3,
+      numCorrect: numCorrect,
     })
     .then((response) => response.data.id)
   }

@@ -80,10 +80,10 @@ class QuizService {
 
 
   // ikke ferdig 
-  createQuestions(quizId: number, question: string, answ0: string , answ1: string, answ2: string, answ3: string) {
+  createQuestions(quizId: number, question: string, answ0: string , answ1: string, answ2: string, answ3: string, numCorrect: number) {
     console.log("utenfor create question - router")
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?', [quizId, question, answ0, answ1, answ2, answ3], (error, results) => {
+      pool.query('INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?, numCorrect=?', [quizId, question, answ0, answ1, answ2, answ3, numCorrect], (error, results) => {
         if (error) return reject(error);
         if (!results.insertId) return reject(new Error('No row inserted'));
 

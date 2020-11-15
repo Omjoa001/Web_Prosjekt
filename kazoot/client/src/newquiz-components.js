@@ -187,20 +187,34 @@ export class NewQuiz extends Component {
    */
   createQuiz() {
     quizService.createQuiz(this.title, this.description, this.categoryId);
+
     this.state.questions.forEach((question) => {
-      let correct: [] = [];
-      let incorrect: [] = [];
+      let correct: string[] = [];
+      let incorrect: string[] = [];
+
       question.answers.forEach((answer) => {
-        if (answer.correct)
-          correct.push(answer.answerText);
-        else
-          incorrect.push(answer.answerText);
+        if (answer.correct) correct.push(answer.answerText);
+        else incorrect.push(answer.answerText);
+      });
 
-        let numCorrect = correct.length;
+      let numCorrect: number = correct.length;
+      let allAnswers: string[] = correct.concat(incorrect);
 
-      })
-      questionService.createQuestion(question.quizId, question.questionText, )
-    })
+      let answ0: string = allAnswers[0];
+      let answ1: string = allAnswers[1];
+      let answ2: string = allAnswers[2];
+      let answ3: string = allAnswers[3];
+
+      questionService.createQuestion(
+        question.quizId,
+        question.questionText,
+        question.answ0,
+        question.answ1,
+        question.answ2,
+        question.answ3,
+        question.numCorrect
+      );
+    });
   }
 
   /**
@@ -299,22 +313,30 @@ export class NewQuiz extends Component {
         {/* troubleshooting info */}
         {/* TODO: remove */}
         <Card title="NewQuiz's state">
+          <div>
+            <div>quiz title: {this.title}</div>
+            <div>category: {this.categoryId}</div>
+            <div>quiz id: {this.nextId}</div>
+            <div>quiz desc: {this.description}</div>
+          </div>
           {this.state.questions.map((question) => {
             return (
-              <div>
-                <div>id: {question.id}</div>
-                <div>quizId: {question.quizId}</div>
-                <div>questionText: {question.questionText}</div>
+              <>
                 <div>
-                  {question.answers.map((ans) => {
-                    return (
-                      <div>
-                        answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
-                      </div>
-                    );
-                  })}
+                  <div>id: {question.id}</div>
+                  <div>quizId: {question.quizId}</div>
+                  <div>questionText: {question.questionText}</div>
+                  <div>
+                    {question.answers.map((ans) => {
+                      return (
+                        <div>
+                          answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              </>
             );
           })}
         </Card>
@@ -411,7 +433,6 @@ export class Question extends Component {
     return (
       <>
         <QuestionCard title={this.title}>
-          <Button.Success onClick={this.updateParentState}>Update State</Button.Success>
           <Row>
             <Column width={2}>Question: {}</Column>
             <Column> {this.renderQuestionText()} </Column>
