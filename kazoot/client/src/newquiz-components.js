@@ -86,7 +86,7 @@ export class NewQuiz extends Component {
         {
           id: 1,
           quizId: 1,
-          questionText: '',
+          questionText: 'default',
           answers: [
             { answerText: '', correct: false },
             { answerText: '', correct: false },
@@ -105,22 +105,24 @@ export class NewQuiz extends Component {
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-    this.fun();
   }
 
-  // Callback function to be passed to Question component
-  // TODO: Make it work on an array of question objects.
-  // TODO: Replace 0 with actual ID
-  // TODO: Convert list to map if necessary
+  /**
+   *
+   * TODO: Make it work on an array of question objects.
+   */
   sendData(id, quizId, questionText, answers) {
     let newarray = this.state.questions;
-    let index = this.state.questions.length - 1;
-    console.log(`sendData: ${newarray[index].questionText}`);
-    newarray[index].questionText = questionText;
-    newarray[index].quizId = this.nextId;
-    newarray[index].id = id;
-    newarray[index].answers = answers;
-    this.setState({ questions: newarray });
+    let index = this.findIndexOfQuestion(id);
+    if (index != -1) {
+      newarray[index].questionText = questionText;
+      newarray[index].quizId = this.nextId;
+      newarray[index].id = id;
+      newarray[index].answers = answers;
+      this.setState({ questions: newarray });
+    } else {
+      console.log('error');
+    }
   }
 
   /**
@@ -139,8 +141,11 @@ export class NewQuiz extends Component {
           title={q.title}
           questionText={q.questionText}
           answers={q.answers}
-          parentCallback={(id, quizId, questionText, answers) => {
+          sendData={(id, quizId, questionText, answers) => {
             this.sendData(id, quizId, questionText, answers);
+          }}
+          removeQuestion={(id) => {
+            this.removeQuestion(id);
           }}
         />
       );
@@ -191,11 +196,13 @@ export class NewQuiz extends Component {
    * @param id - ID of question to remove
    * Warning: Manipulates state
    */
-  removeQuestionFromState(id: number) {
+  removeQuestion(id: number) {
     let index = this.findIndexOfQuestion(id);
     if (index != -1) {
       this.state.questions.splice(index, 1);
     }
+
+    console.log(`removeQuestion state questions: ${this.state.questions}`);
   }
 
   /**
@@ -397,10 +404,17 @@ export class Question extends Component {
     this.answers = this.props.answers;
   }
 
-  handleOnClick() {
-    // console.log(this.answers);
-    this.props.parentCallback(this.id, this.quizId, this.questionText, this.answers);
+  // Sends its props back to the NewQuiz component
+  updateParentState() {
+    this.props.sendData(this.id, this.quizId, this.questionText, this.answers);
   }
+
+  // Click handler for remove question button
+  removeButton() {
+    this.props.removeQuestion(this.id);
+  }
+
+
 
   /**
    * TODO: Add number of correct answers to the first column
@@ -409,7 +423,8 @@ export class Question extends Component {
     return (
       <>
         <Card title={this.title}>
-          <Button.Success onClick={this.handleOnClick}>Update State</Button.Success>
+          <Button.Success onClick={this.updateParentState}>Update State</Button.Success>
+          <Button.Danger onClick={this.removeButton}>Remove Question</Button.Danger>
           <Row>
             <Column width={2}>Question: {}</Column>
             <Column> {this.renderQuestionText()} </Column>
