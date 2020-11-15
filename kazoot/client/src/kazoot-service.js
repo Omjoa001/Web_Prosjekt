@@ -109,6 +109,7 @@ class QuizService {
   
   /**
    * Test that the class is imported correctly
+   * TODO: Remove?
    */
   hey() {
     console.log('hey');
