@@ -42,33 +42,9 @@ type StateQuestionType = {
 
 /**
  * Component which renders the New Quiz page.
+ * TODO: maybe rename question id to index or something to diff it from db id
  */
 export class NewQuiz extends Component {
-  logMapElements(value, key, map) {
-    console.log(`m[${key}] = ${value.quizId}`);
-    console.log(`m[${key}] = ${value.questionText}`);
-    value.answers.forEach((ans) => console.log(`m[${key}] = ${ans.answerText}`));
-  }
-
-  fun() {
-    let map = new Map();
-    let id = 1;
-    map.set(id, {
-      id: 1,
-      quizId: 69,
-      questionText: 'le mao',
-      answers: [
-        { answerText: 'woo', correct: false },
-        { answerText: 'wee', correct: false },
-        { answerText: 'wii', correct: false },
-        { answerText: 'wyy', correct: false },
-      ],
-    });
-
-    map.forEach(this.logMapElements);
-  }
-
-  // TODO: maybe rename question id to index or something to diff it from db id
 
   // This makes flow happy
   state: {
@@ -79,24 +55,8 @@ export class NewQuiz extends Component {
   constructor(props) {
     super(props);
 
-    // This is designed for multiple questions
-    // TODO: Maybe use a map, in order to update the correct question when adding multiple questions
     this.state = {
       questions: []
-      // vvv Remove?
-      // questions: [
-      //   {
-      //     id: 1,
-      //     quizId: 1,
-      //     questionText: 'default',
-      //     answers: [
-      //       { answerText: '', correct: false },
-      //       { answerText: '', correct: false },
-      //       { answerText: '', correct: false },
-      //       { answerText: '', correct: false },
-      //     ],
-      //   },
-      // ],
     };
   }
 
@@ -229,76 +189,21 @@ export class NewQuiz extends Component {
     return -1;
   }
 
-  render() {
-    return (
-      <>
-        <Card title="New Quiz!">
-          <QuizInfoCard
-            title={this.title}
-            description={this.description}
-            categoryId={this.categoryId}
-            nextId={this.nextId}
-          ></QuizInfoCard>
-        </Card>
-
-        <Button.Success onClick={() => {this.forceUpdate()}}>Update state</Button.Success>
-
-        <Button.Success
-          onClick={() => {
-            console.log(`clicked addQuestion`);
-            this.addNewQuestionToState();
-          }}
-        >
-          Add New Question
-        </Button.Success>
-
-        <Card title="NewQuiz's state">
-          {/* proper render */}
-          {this.state.questions.map((question) => {
-            return (
-              <div>
-                <div>id: {question.id}</div>
-                <div>quizId: {question.quizId}</div>
-                <div>questionText: {question.questionText}</div>
-                <div>
-                  {question.answers.map((ans) => {
-                    return (
-                      <div>
-                        answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </Card>
-
-        {this.renderQuestions()}
-      </>
-    );
-  }
-}
-
-/**
- * Component to render information about the quiz being created in NewQuiz
- * TODO: Add database call for categories, etc.
- */
-export class QuizInfoCard extends Component {
-  title: string = '';
-  description: string = '';
-  categoryId: number = 0;
-  nextId: number = 0;
-
-  mounted() {
-    this.title = this.props.title;
-    this.description = this.props.description;
-    this.categoryId = this.props.categoryId;
-    this.nextId = this.props.nextId;
+  /**
+   * WIP
+   * Create a new quiz.
+   */
+  createQuiz() {
+    // this.state.questions.forEach((question));
   }
 
-  render() {
-    return (
+  /**
+   * Displays editable information about the quiz.
+   */
+  renderQuizInfo() {
+    let jsx: [] = [];
+
+    jsx.push(
       <Card>
         <Row>
           <Column width={3}>Quiz-title:</Column>
@@ -350,8 +255,56 @@ export class QuizInfoCard extends Component {
         </Row>
       </Card>
     );
+
+    return jsx;
+  }
+
+  render() {
+    return (
+      <>
+        <Card title="New Quiz!">
+        {this.renderQuizInfo()}
+        </Card>
+        <Button.Success onClick={() => {this.forceUpdate()}}>Update state</Button.Success>
+        <Button.Success onClick={() => {this.createQuiz()}}>Create Quiz</Button.Success>
+
+        <Button.Success
+          onClick={() => {
+            console.log(`clicked addQuestion`);
+            this.addNewQuestionToState();
+          }}
+        >
+          Add New Question
+        </Button.Success>
+
+        <Card title="NewQuiz's state">
+          {/* proper render */}
+          {this.state.questions.map((question) => {
+            return (
+              <div>
+                <div>id: {question.id}</div>
+                <div>quizId: {question.quizId}</div>
+                <div>questionText: {question.questionText}</div>
+                <div>
+                  {question.answers.map((ans) => {
+                    return (
+                      <div>
+                        answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </Card>
+
+        {this.renderQuestions()}
+      </>
+    );
   }
 }
+
 
 /**
  * Renders a single question
