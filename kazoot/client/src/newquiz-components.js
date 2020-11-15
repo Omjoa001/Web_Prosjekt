@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, TileCard, QuestionCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import {
   type QuizType,
@@ -78,7 +78,8 @@ export class NewQuiz extends Component {
 
   /**
    * Removes a question from the questions array.
-   * This is passed as a callback function to each question component.
+   * This is passed as a callback function to each question component, so that
+   * the remove question button can be rendered by the question component.
    * @param id - ID of question to remove
    * Warning: Manipulates state
    */
@@ -167,7 +168,6 @@ export class NewQuiz extends Component {
     this.setState({ questions: tempArray });
   }
 
-
   /**
    * Finds the index of a question with a given ID
    */
@@ -206,9 +206,9 @@ export class NewQuiz extends Component {
               value={this.title}
               onChange={(event) => (this.title = event.currentTarget.value)}
             ></Form.Input>
-            <br></br>
           </Column>
         </Row>
+        <br></br>
         <Row>
           <Column width={3}>Quiz-Category:</Column>
           <Column>
@@ -226,13 +226,14 @@ export class NewQuiz extends Component {
             </select>
           </Column>
         </Row>
+        <br></br>
         <Row>
-          <Column>Quiz-Id:</Column>
+          <Column width={3}>Quiz-Id:</Column>
           <Column>
             <Form.Input value={this.nextId} disabled></Form.Input>
-            <br></br>
           </Column>
         </Row>
+        <br></br>
         <Row>
           <Column width={3}>Quiz-description:</Column>
           <Column>
@@ -254,7 +255,7 @@ export class NewQuiz extends Component {
   render() {
     return (
       <>
-        <Card title="New Quiz!">{this.renderQuizInfo()}</Card>
+        <Card title="Creating a new quiz!">{this.renderQuizInfo()}</Card>
 
         <Button.Success
           onClick={() => {
@@ -314,7 +315,6 @@ export class NewQuiz extends Component {
  * Renders a single question
  */
 export class Question extends Component {
-  // These are redefined in mounted fwiw
   title: string = '';
   questionText: string = '';
   answers: AnswerType[] = [];
@@ -393,15 +393,17 @@ export class Question extends Component {
   render() {
     return (
       <>
-        <Card title={this.title}>
+        <QuestionCard title={this.title}>
           <Button.Success onClick={this.updateParentState}>Update State</Button.Success>
-          <Button.Danger onClick={this.removeButton}>Remove Question</Button.Danger>
           <Row>
             <Column width={2}>Question: {}</Column>
             <Column> {this.renderQuestionText()} </Column>
+            <Column>
+              <Button.Danger onClick={this.removeButton}>Remove Question</Button.Danger>
+            </Column>
           </Row>
           {this.renderAnswers()}
-        </Card>
+        </QuestionCard>
       </>
     );
   }
