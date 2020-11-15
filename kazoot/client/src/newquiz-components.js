@@ -294,6 +294,44 @@ export class NewQuiz extends Component {
     return jsx;
   }
 
+  /**
+   * Render troubleshooting information about quiz and question state by setting debug variable
+   */
+  renderStateInfo() {
+    let debug = false;
+    if (debug)
+      return (
+        <Card title="NewQuiz's state">
+          <div>
+            <div>quiz title: {this.title}</div>
+            <div>category: {this.categoryId}</div>
+            <div>quiz id: {this.nextId}</div>
+            <div>quiz desc: {this.description}</div>
+          </div>
+          {this.state.questions.map((question) => {
+            return (
+              <>
+                <div>
+                  <div>id: {question.id}</div>
+                  <div>quizId: {question.quizId}</div>
+                  <div>questionText: {question.questionText}</div>
+                  <div>
+                    {question.answers.map((ans) => {
+                      return (
+                        <div>
+                          answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        </Card>
+      );
+  }
+
   render() {
     return (
       <>
@@ -324,36 +362,7 @@ export class NewQuiz extends Component {
           Add New Question
         </Button.Success>
 
-        {/* troubleshooting info */}
-        {/* TODO: remove */}
-        <Card title="NewQuiz's state">
-          <div>
-            <div>quiz title: {this.title}</div>
-            <div>category: {this.categoryId}</div>
-            <div>quiz id: {this.nextId}</div>
-            <div>quiz desc: {this.description}</div>
-          </div>
-          {this.state.questions.map((question) => {
-            return (
-              <>
-                <div>
-                  <div>id: {question.id}</div>
-                  <div>quizId: {question.quizId}</div>
-                  <div>questionText: {question.questionText}</div>
-                  <div>
-                    {question.answers.map((ans) => {
-                      return (
-                        <div>
-                          answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            );
-          })}
-        </Card>
+        {this.renderStateInfo()}
 
         {this.renderQuestions()}
       </>
