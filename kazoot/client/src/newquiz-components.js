@@ -32,7 +32,7 @@ type StateQuestionType = {
  * TODO: maybe rename question id to index or something to diff it from db id
  */
 export class NewQuiz extends Component {
-  // This makes flow happy
+  // This should make flow happy
   state: {
     questions: StateQuestionType[],
   };
@@ -57,8 +57,10 @@ export class NewQuiz extends Component {
   }
 
   /**
-   *
-   * TODO: Make it work on an array of question objects.
+   * This is passed as a callback function to a question component.
+   * When called in the question comp, it sends all of its information
+   * back to the NewQuiz comp and changes NewQuiz' state.
+   * NewQuiz needs this information to make database calls to create a new quiz.
    */
   sendData(id, quizId, questionText, answers) {
     let newarray = this.state.questions;
@@ -70,12 +72,30 @@ export class NewQuiz extends Component {
       newarray[index].answers = answers;
       this.setState({ questions: newarray });
     } else {
-      console.log('error');
+      console.log(`sendData: Question with id ${id} not found`);
     }
   }
 
   /**
-   * Renders each question in the state
+   * Removes a question from the questions array.
+   * This is passed as a callback function to each question component.
+   * @param id - ID of question to remove
+   * Warning: Manipulates state
+   */
+  removeQuestion(id: number) {
+    let index = this.findIndexOfQuestion(id);
+    let newQuestions = this.state.questions;
+    if (index != -1) {
+      newQuestions.splice(index, 1);
+    } else {
+      console.log(`removeQuestion: Could not remove question with id ${id}`);
+    }
+
+    this.setState({ questions: newQuestions });
+  }
+
+  /**
+   * Renders each question.
    */
   renderQuestions() {
     // Array of JSX elements to return
@@ -144,23 +164,6 @@ export class NewQuiz extends Component {
     this.setState({ questions: tempArray });
   }
 
-  /**
-   * Removes a question from the questions array
-   * @param id - ID of question to remove
-   * Warning: Manipulates state
-   */
-  removeQuestion(id: number) {
-    let index = this.findIndexOfQuestion(id);
-    let newQuestions = this.state.questions;
-    if (index != -1) {
-      newQuestions.splice(index, 1);
-    } else {
-      console.log(`Could not remove question with id ${id}`);
-    }
-
-    this.setState({ questions: newQuestions });
-    console.log(`removeQuestion state questions: ${this.state.questions}`);
-  }
 
   /**
    * Finds the index of a question with a given ID
