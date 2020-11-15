@@ -22,30 +22,12 @@ type StateQuestionType = {
   answers: AnswerType[],
 };
 
-/*BRAINSTORMING*/
-// All question props:
-//     title: string = '';
-//     questionText: string = '';
-//     correct: string[] = [];
-//     incorrect: string[] = [];
-//     numCorrect: number = 0;
-//     answers: AnswerType[] = [];
-
-// Absolutely necessary:
-//     questionText: string = '';
-//     correct: string[] = [];
-//     incorrect: string[] = [];
-
-// database call per question needs:
-// ans0, ans1, ans2, ans3
-// ...
-
 /**
  * Component which renders the New Quiz page.
+ *
  * TODO: maybe rename question id to index or something to diff it from db id
  */
 export class NewQuiz extends Component {
-
   // This makes flow happy
   state: {
     questions: StateQuestionType[],
@@ -56,7 +38,7 @@ export class NewQuiz extends Component {
     super(props);
 
     this.state = {
-      questions: []
+      questions: [],
     };
   }
 
@@ -64,7 +46,7 @@ export class NewQuiz extends Component {
   description: string = '';
   categoryId: number = 0;
   nextId: number = 0;
-  nextQuestionId: number = 1;	// Only used for indexing
+  nextQuestionId: number = 1; // Only used for indexing
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
@@ -172,7 +154,7 @@ export class NewQuiz extends Component {
       console.log(`Could not remove question with id ${id}`);
     }
 
-    this.setState({questions: newQuestions});
+    this.setState({ questions: newQuestions });
     console.log(`removeQuestion state questions: ${this.state.questions}`);
   }
 
@@ -262,11 +244,23 @@ export class NewQuiz extends Component {
   render() {
     return (
       <>
-        <Card title="New Quiz!">
-        {this.renderQuizInfo()}
-        </Card>
-        <Button.Success onClick={() => {this.forceUpdate()}}>Update state</Button.Success>
-        <Button.Success onClick={() => {this.createQuiz()}}>Create Quiz</Button.Success>
+        <Card title="New Quiz!">{this.renderQuizInfo()}</Card>
+
+        <Button.Success
+          onClick={() => {
+            this.forceUpdate();
+          }}
+        >
+          Update state
+        </Button.Success>
+
+        <Button.Success
+          onClick={() => {
+            this.createQuiz();
+          }}
+        >
+          Create Quiz
+        </Button.Success>
 
         <Button.Success
           onClick={() => {
@@ -277,8 +271,9 @@ export class NewQuiz extends Component {
           Add New Question
         </Button.Success>
 
+        {/* troubleshooting info */}
+        {/* TODO: remove */}
         <Card title="NewQuiz's state">
-          {/* proper render */}
           {this.state.questions.map((question) => {
             return (
               <div>
@@ -304,7 +299,6 @@ export class NewQuiz extends Component {
     );
   }
 }
-
 
 /**
  * Renders a single question
@@ -385,8 +379,6 @@ export class Question extends Component {
   removeButton() {
     this.props.removeQuestion(this.id);
   }
-
-
 
   /**
    * TODO: Add number of correct answers to the first column
