@@ -82,19 +82,21 @@ export class NewQuiz extends Component {
     // This is designed for multiple questions
     // TODO: Maybe use a map, in order to update the correct question when adding multiple questions
     this.state = {
-      questions: [
-        {
-          id: 1,
-          quizId: 1,
-          questionText: 'default',
-          answers: [
-            { answerText: '', correct: false },
-            { answerText: '', correct: false },
-            { answerText: '', correct: false },
-            { answerText: '', correct: false },
-          ],
-        },
-      ],
+      questions: []
+      // vvv Remove?
+      // questions: [
+      //   {
+      //     id: 1,
+      //     quizId: 1,
+      //     questionText: 'default',
+      //     answers: [
+      //       { answerText: '', correct: false },
+      //       { answerText: '', correct: false },
+      //       { answerText: '', correct: false },
+      //       { answerText: '', correct: false },
+      //     ],
+      //   },
+      // ],
     };
   }
 
@@ -102,6 +104,7 @@ export class NewQuiz extends Component {
   description: string = '';
   categoryId: number = 0;
   nextId: number = 0;
+  nextQuestionId: number = 1;	// Only used for indexing
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
@@ -154,9 +157,13 @@ export class NewQuiz extends Component {
     return jsx;
   }
 
-  // TODO: Find or make a database call to get a new id
+  /**
+   * Returns a new question id.
+   * This has nothing to do with the question id in the database,
+   * it is only used for indexing in this component.
+   */
   getNewId() {
-    return this.state.questions.length + 1;
+    return this.nextQuestionId++;
   }
 
   /**
@@ -198,10 +205,14 @@ export class NewQuiz extends Component {
    */
   removeQuestion(id: number) {
     let index = this.findIndexOfQuestion(id);
+    let newQuestions = this.state.questions;
     if (index != -1) {
-      this.state.questions.splice(index, 1);
+      newQuestions.splice(index, 1);
+    } else {
+      console.log(`Could not remove question with id ${id}`);
     }
 
+    this.setState({questions: newQuestions});
     console.log(`removeQuestion state questions: ${this.state.questions}`);
   }
 
@@ -230,7 +241,8 @@ export class NewQuiz extends Component {
           ></QuizInfoCard>
         </Card>
 
-        <Column></Column>
+        <Button.Success onClick={() => {this.forceUpdate()}}>Update state</Button.Success>
+
         <Button.Success
           onClick={() => {
             console.log(`clicked addQuestion`);
