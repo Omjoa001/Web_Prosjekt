@@ -186,7 +186,21 @@ export class NewQuiz extends Component {
    * Create a new quiz.
    */
   createQuiz() {
-    // this.state.questions.forEach((question));
+    quizService.createQuiz(this.title, this.description, this.categoryId);
+    this.state.questions.forEach((question) => {
+      let correct: [] = [];
+      let incorrect: [] = [];
+      question.answers.forEach((answer) => {
+        if (answer.correct)
+          correct.push(answer.answerText);
+        else
+          incorrect.push(answer.answerText);
+
+        let numCorrect = correct.length;
+
+      })
+      questionService.createQuestion(question.quizId, question.questionText, )
+    })
   }
 
   /**
