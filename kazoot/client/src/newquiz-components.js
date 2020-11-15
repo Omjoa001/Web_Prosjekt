@@ -328,21 +328,22 @@ export class Question extends Component {
           value={this.questionText}
           onChange={(event) => {
             this.questionText = event.currentTarget.value;
+            this.updateParentState();
           }}
         ></Form.Input>
+        <br></br>
       </>
     );
   }
 
   /**
    * Generates each answer with checkbox etc.
-   * The output varies based on how many answers there are for
-   * a given question:
+   * TODO: Make it possible to add or remove answers.
    */
   renderAnswers() {
     let jsx: [] = [];
 
-    let i = 0;
+    let i = 1;
     this.answers.forEach((answer) => {
       jsx.push(
         <Row>
@@ -351,6 +352,7 @@ export class Question extends Component {
               checked={answer.correct}
               onChange={(event) => {
                 answer.correct = event.target.checked;
+                this.updateParentState();
                 console.log(`answer.correct set to ${answer.correct}`);
               }}
             ></Form.Checkbox>
@@ -361,6 +363,7 @@ export class Question extends Component {
               value={answer.answerText}
               onChange={(event) => {
                 answer.answerText = event.currentTarget.value;
+                this.updateParentState();
               }}
             ></Form.Input>
           </Column>
@@ -398,8 +401,8 @@ export class Question extends Component {
           <Row>
             <Column width={2}>Question: {}</Column>
             <Column> {this.renderQuestionText()} </Column>
-            <Column>
-              <Button.Danger onClick={this.removeButton}>Remove Question</Button.Danger>
+            <Column width={1}>
+              <Button.Back onClick={this.removeButton}>X</Button.Back>
             </Column>
           </Row>
           {this.renderAnswers()}
