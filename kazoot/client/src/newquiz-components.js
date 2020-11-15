@@ -290,6 +290,13 @@ export class QuizInfoCard extends Component {
   categoryId: number = 0;
   nextId: number = 0;
 
+  mounted() {
+    this.title = this.props.title;
+    this.description = this.props.description;
+    this.categoryId = this.props.categoryId;
+    this.nextId = this.props.nextId;
+  }
+
   render() {
     return (
       <Card>
@@ -299,8 +306,8 @@ export class QuizInfoCard extends Component {
             <Form.Input
               placeholder="Quiz title"
               type="text"
-              value={this.props.title}
-              onChange={(event) => (this.props.title = event.currentTarget.value)}
+              value={this.title}
+              onChange={(event) => (this.title = event.currentTarget.value)}
             ></Form.Input>
             <br></br>
           </Column>
@@ -310,8 +317,8 @@ export class QuizInfoCard extends Component {
           <Column>
             <select
               name="Category"
-              value={this.props.categoryId}
-              onChange={(event) => (this.props.categoryId = event.currentTarget.value)}
+              value={this.categoryId}
+              onChange={(event) => (this.categoryId = event.currentTarget.value)}
             >
               <option value="0">Velg en kategori</option>
               <option value="1">Matte</option>
@@ -325,7 +332,7 @@ export class QuizInfoCard extends Component {
         <Row>
           <Column>Quiz-Id:</Column>
           <Column>
-            <Form.Input value={this.props.nextId} disabled></Form.Input>
+            <Form.Input value={this.nextId} disabled></Form.Input>
             <br></br>
           </Column>
         </Row>
@@ -335,8 +342,8 @@ export class QuizInfoCard extends Component {
             <Form.Textarea
               placeholder="Quiz description"
               type="text"
-              value={this.props.description}
-              onChange={(event) => (this.props.description = event.currentTarget.value)}
+              value={this.description}
+              onChange={(event) => (this.description = event.currentTarget.value)}
               row={10}
             ></Form.Textarea>
           </Column>
