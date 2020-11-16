@@ -51,9 +51,11 @@ export class NewQuiz extends Component {
   categoryId: number = 0;
   nextId: number = 0;
   nextQuestionId: number = 1; // "local" ID used for indexing
+  categories: CategoryType[] = [];
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    categoryService.getAllCategories().then(cats => this.categories = cats);
   }
 
   /**
@@ -228,9 +230,7 @@ export class NewQuiz extends Component {
    * Displays editable information about the quiz.
    */
   renderQuizInfo() {
-    let jsx: [] = [];
-
-    jsx.push(
+    return (
       <Card>
         <Row>
           <Column width={3}>Quiz-title:</Column>
@@ -246,18 +246,17 @@ export class NewQuiz extends Component {
         <br></br>
         <Row>
           <Column width={3}>Quiz-Category:</Column>
+
           <Column>
             <select
               name="Category"
               value={this.categoryId}
               onChange={(event) => (this.categoryId = event.currentTarget.value)}
             >
-              <option value="0">Velg en kategori</option>
-              <option value="1">Matte</option>
-              <option value="2">Fotball</option>
-              <option value="3">Geografi</option>
-              <option value="4">It</option>
-              <option value="5">History</option>
+              <option value="0">Choose a category</option>
+              {this.categories.map((cat) => {
+                return <option value={cat.id}>{cat.category}</option>;
+              })}
             </select>
           </Column>
         </Row>
@@ -283,8 +282,6 @@ export class NewQuiz extends Component {
         </Row>
       </Card>
     );
-
-    return jsx;
   }
 
   /**
