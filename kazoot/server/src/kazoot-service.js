@@ -130,7 +130,7 @@ class QuizService {
     });
   }
 
-  getQuizQuestions(quizId: number) {
+  getQuizQuestion(quizId: number) {
     return new Promise<QuestionType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Questions WHERE quizId=?', [quizId], (error, results) => {
         if (error) return reject(error);
