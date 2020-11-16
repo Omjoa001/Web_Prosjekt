@@ -55,7 +55,7 @@ export class NewQuiz extends Component {
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
-    categoryService.getAllCategories().then(cats => this.categories = cats);
+    categoryService.getAllCategories().then((cats) => (this.categories = cats));
   }
 
   /**
@@ -114,19 +114,22 @@ export class NewQuiz extends Component {
     let i = 1;
     this.state.questions.map((q) => {
       jsx.push(
-        <Question
-          id={q.id}
-          quizId={q.quizId}
-          title={`Question ${i}`}
-          questionText={q.questionText}
-          answers={q.answers}
-          sendData={(id, quizId, questionText, answers) => {
-            this.sendData(id, quizId, questionText, answers);
-          }}
-          removeQuestion={(id) => {
-            this.removeQuestion(id);
-          }}
-        />
+        <>
+          <Question
+            id={q.id}
+            quizId={q.quizId}
+            title={`Question ${i}`}
+            questionText={q.questionText}
+            answers={q.answers}
+            sendData={(id, quizId, questionText, answers) => {
+              this.sendData(id, quizId, questionText, answers);
+            }}
+            removeQuestion={(id) => {
+              this.removeQuestion(id);
+            }}
+          />
+          <br></br>
+        </>
       );
       i++;
     });
@@ -325,36 +328,36 @@ export class NewQuiz extends Component {
   render() {
     return (
       <>
-        <Card title="Creating a new quiz!">{this.renderQuizInfo()}</Card>
-
-        <Button.Success
-          onClick={() => {
-            this.forceUpdate();
-          }}
-        >
-          Update state
-        </Button.Success>
-
-        <Button.Success
-          onClick={() => {
-            this.createQuiz();
-          }}
-        >
-          Create Quiz
-        </Button.Success>
-
-        <Button.Success
-          onClick={() => {
-            console.log(`clicked addQuestion`);
-            this.addNewQuestionToState();
-          }}
-        >
-          Add New Question
-        </Button.Success>
+        <center>
+          <Column width={10}>
+            <Card title="Creating a new quiz!">{this.renderQuizInfo()}</Card>
+          </Column>
+        </center>
 
         {this.renderStateInfo()}
 
-        {this.renderQuestions()}
+        <center>{this.renderQuestions()}</center>
+
+        <br></br>
+
+        <Row>
+          <Button.Submit
+            onClick={() => {
+              this.addNewQuestionToState();
+            }}
+          >
+            ➕ Add Question
+          </Button.Submit>
+        </Row>
+        <Row>
+          <Button.Submit
+            onClick={() => {
+              this.createQuiz();
+            }}
+          >
+            🔫 Create Quiz
+          </Button.Submit>
+        </Row>
       </>
     );
   }
