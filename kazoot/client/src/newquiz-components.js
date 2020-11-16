@@ -379,6 +379,7 @@ export class Question extends Component {
   answers: AnswerType[] = [];
 
   /*Separate from render to reduce clutter*/
+
   renderQuestionText() {
     return (
       <>
@@ -396,7 +397,22 @@ export class Question extends Component {
   }
 
   /**
+   * Callback function to update NewQuiz' state with data from this question
+   */
+  updateParentState() {
+    this.props.sendData(this.id, this.quizId, this.questionText, this.answers);
+  }
+
+  /**
+   * Callback function to remove this question from NewQuiz' state
+   */
+  removeButton() {
+    this.props.removeQuestion(this.id);
+  }
+
+  /**
    * Generates each answer with checkbox etc.
+   * @return - array of JSX elements to be rendered in render()
    * TODO: Make it possible to add or remove answers.
    */
   renderAnswers() {
@@ -442,15 +458,6 @@ export class Question extends Component {
     this.answers = this.props.answers;
   }
 
-  // Sends its props back to the NewQuiz component
-  updateParentState() {
-    this.props.sendData(this.id, this.quizId, this.questionText, this.answers);
-  }
-
-  // Click handler for remove question button
-  removeButton() {
-    this.props.removeQuestion(this.id);
-  }
 
   render() {
     return (
@@ -458,7 +465,17 @@ export class Question extends Component {
         <QuestionCard title={this.title}>
           <Row>
             <Column width={2}>Question: {}</Column>
-            <Column> {this.renderQuestionText()} </Column>
+            <Column>
+            <Form.Input
+              placeholder="Question text"
+              value={this.questionText}
+              onChange={(event) => {
+                this.questionText = event.currentTarget.value;
+                this.updateParentState();
+              }}
+            ></Form.Input>
+            </Column>
+            <br></br>
             <Column width={1}>
               <Button.Back onClick={this.removeButton}>X</Button.Back>
             </Column>
