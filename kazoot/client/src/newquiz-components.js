@@ -217,7 +217,7 @@ export class NewQuiz extends Component {
       console.log(`answ1: ${answ1}`);
       console.log(`answ2: ${answ2}`);
       console.log(`answ3: ${answ3}`);
-      console.log(`numcorrect: ${numcorrect}`);
+      console.log(`numcorrect: ${numCorrect}`);
 
       questionService.createQuestion(
         question.quizId,
@@ -294,6 +294,44 @@ export class NewQuiz extends Component {
     return jsx;
   }
 
+  /**
+   * Render troubleshooting information about quiz and question state by setting debug variable
+   */
+  renderStateInfo() {
+    let debug = false;
+    if (debug)
+      return (
+        <Card title="NewQuiz's state">
+          <div>
+            <div>quiz title: {this.title}</div>
+            <div>category: {this.categoryId}</div>
+            <div>quiz id: {this.nextId}</div>
+            <div>quiz desc: {this.description}</div>
+          </div>
+          {this.state.questions.map((question) => {
+            return (
+              <>
+                <div>
+                  <div>id: {question.id}</div>
+                  <div>quizId: {question.quizId}</div>
+                  <div>questionText: {question.questionText}</div>
+                  <div>
+                    {question.answers.map((ans) => {
+                      return (
+                        <div>
+                          answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        </Card>
+      );
+  }
+
   render() {
     return (
       <>
@@ -324,36 +362,7 @@ export class NewQuiz extends Component {
           Add New Question
         </Button.Success>
 
-        {/* troubleshooting info */}
-        {/* TODO: remove */}
-        <Card title="NewQuiz's state">
-          <div>
-            <div>quiz title: {this.title}</div>
-            <div>category: {this.categoryId}</div>
-            <div>quiz id: {this.nextId}</div>
-            <div>quiz desc: {this.description}</div>
-          </div>
-          {this.state.questions.map((question) => {
-            return (
-              <>
-                <div>
-                  <div>id: {question.id}</div>
-                  <div>quizId: {question.quizId}</div>
-                  <div>questionText: {question.questionText}</div>
-                  <div>
-                    {question.answers.map((ans) => {
-                      return (
-                        <div>
-                          answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            );
-          })}
-        </Card>
+        {this.renderStateInfo()}
 
         {this.renderQuestions()}
       </>
@@ -369,25 +378,31 @@ export class Question extends Component {
   questionText: string = '';
   answers: AnswerType[] = [];
 
-  /*Separate from render to reduce clutter*/
-  renderQuestionText() {
-    return (
-      <>
-        <Form.Input
-          placeholder="Question text"
-          value={this.questionText}
-          onChange={(event) => {
-            this.questionText = event.currentTarget.value;
-            this.updateParentState();
-          }}
-        ></Form.Input>
-        <br></br>
-      </>
-    );
+  mounted() {
+    this.id = this.props.id;
+    this.quizId = this.props.quizId;
+    this.title = this.props.title;
+    this.questionText = this.props.questionText;
+    this.answers = this.props.answers;
+  }
+
+  /**
+   * Callback function to update NewQuiz' state with data from this question
+   */
+  updateParentState() {
+    this.props.sendData(this.id, this.quizId, this.questionText, this.answers);
+  }
+
+  /**
+   * Callback function to remove this question from NewQuiz' state
+   */
+  removeButton() {
+    this.props.removeQuestion(this.id);
   }
 
   /**
    * Generates each answer with checkbox etc.
+   * @return - array of JSX elements to be rendered in render()
    * TODO: Make it possible to add or remove answers.
    */
   renderAnswers() {
@@ -425,23 +440,6 @@ export class Question extends Component {
     return jsx;
   }
 
-  mounted() {
-    this.id = this.props.id;
-    this.quizId = this.props.quizId;
-    this.title = this.props.title;
-    this.questionText = this.props.questionText;
-    this.answers = this.props.answers;
-  }
-
-  // Sends its props back to the NewQuiz component
-  updateParentState() {
-    this.props.sendData(this.id, this.quizId, this.questionText, this.answers);
-  }
-
-  // Click handler for remove question button
-  removeButton() {
-    this.props.removeQuestion(this.id);
-  }
 
   render() {
     return (
@@ -449,7 +447,17 @@ export class Question extends Component {
         <QuestionCard title={this.title}>
           <Row>
             <Column width={2}>Question: {}</Column>
-            <Column> {this.renderQuestionText()} </Column>
+            <Column>
+            <Form.Input
+              placeholder="Question text"
+              value={this.questionText}
+              onChange={(event) => {
+                this.questionText = event.currentTarget.value;
+                this.updateParentState();
+              }}
+            ></Form.Input>
+            </Column>
+            <br></br>
             <Column width={1}>
               <Button.Back onClick={this.removeButton}>X</Button.Back>
             </Column>
