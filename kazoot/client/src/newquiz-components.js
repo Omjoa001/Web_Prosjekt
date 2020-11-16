@@ -30,8 +30,6 @@ type StateQuestionType = {
  * These question objects are used to create question components,
  * which render the information stored in them.
  * These question components receive callbacks to update the parent's state as props.
- *
- * TODO: maybe rename question id to index or something to diff it from db id
  */
 export class NewQuiz extends Component {
   // This should make flow happy
@@ -52,10 +50,19 @@ export class NewQuiz extends Component {
   description: string = '';
   categoryId: number = 0;
   nextId: number = 0;
-  nextQuestionId: number = 1; // Only used for indexing
+  nextQuestionId: number = 1; // "local" ID used for indexing
+  categories: CategoryType[] = [];
 
   mounted() {
     quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    categoryService.getAllCategories().then((cats) => (this.categories = cats));
+  }
+
+  /**
+   * Returns a new, unique question ID.
+   */
+  getNewId() {
+    return this.nextQuestionId++;
   }
 
   /**
@@ -83,7 +90,6 @@ export class NewQuiz extends Component {
    * This is passed as a callback function to each question component, so that
    * the remove question button can be rendered by the question component.
    * @param id - ID of question to remove
-   * Warning: Manipulates state
    */
   removeQuestion(id: number) {
     let index = this.findIndexOfQuestion(id);
@@ -98,8 +104,7 @@ export class NewQuiz extends Component {
   }
 
   /**
-   * Renders each question.
-   * TODO: Removequestion doesn't need to be a callback. Render the remove button from newquiz.
+   * Renders all the questions stored in state
    */
   renderQuestions() {
     // Array of JSX elements to return
@@ -109,19 +114,22 @@ export class NewQuiz extends Component {
     let i = 1;
     this.state.questions.map((q) => {
       jsx.push(
-        <Question
-          id={q.id}
-          quizId={q.quizId}
-          title={`Question ${i}`}
-          questionText={q.questionText}
-          answers={q.answers}
-          sendData={(id, quizId, questionText, answers) => {
-            this.sendData(id, quizId, questionText, answers);
-          }}
-          removeQuestion={(id) => {
-            this.removeQuestion(id);
-          }}
-        />
+        <>
+          <Question
+            id={q.id}
+            quizId={q.quizId}
+            title={`Question ${i}`}
+            questionText={q.questionText}
+            answers={q.answers}
+            sendData={(id, quizId, questionText, answers) => {
+              this.sendData(id, quizId, questionText, answers);
+            }}
+            removeQuestion={(id) => {
+              this.removeQuestion(id);
+            }}
+          />
+          <br></br>
+        </>
       );
       i++;
     });
@@ -130,19 +138,9 @@ export class NewQuiz extends Component {
   }
 
   /**
-   * Returns a new question id.
-   * This has nothing to do with the question id in the database,
-   * it is only used for indexing in this component.
-   */
-  getNewId() {
-    return this.nextQuestionId++;
-  }
-
-  /**
    * Returns an empty question object
    */
   newQuestionObject() {
-    console.log(`newQuestionObject() called`);
     let newQuestion: StateQuestionType = {};
     newQuestion.id = this.getNewId();
     newQuestion.quizId = this.nextId;
@@ -154,26 +152,21 @@ export class NewQuiz extends Component {
       { answerText: '', correct: false },
     ];
 
-    console.log(`the new object: ${newQuestion}`);
-
     return newQuestion;
   }
 
   /**
    * Replaces the questions array in state with a new one containing a new question object
-   * Warning: Manipulates state
    */
   addNewQuestionToState() {
     let newQuestion = this.newQuestionObject();
-    let tempArray = this.state.questions;
-    tempArray.push(newQuestion);
-    this.setState({ questions: tempArray });
+    let newArray = this.state.questions;
+    newArray.push(newQuestion);
+    this.setState({ questions: newArray });
   }
 
   /**
    * Finds the index of a question with a given ID
-   * If there are multiple questions with the same ID (which shouldn't
-   * happen), the index of the first one will be returned.
    */
   findIndexOfQuestion(id: number) {
     for (let i = 0; i < this.state.questions.length; i++) {
@@ -187,6 +180,7 @@ export class NewQuiz extends Component {
 
   /**
    * Create a new quiz.
+   * TODO: Remove console logs when stable
    */
   createQuiz() {
     quizService.createQuiz(this.title, this.description, this.categoryId);
@@ -239,9 +233,7 @@ export class NewQuiz extends Component {
    * Displays editable information about the quiz.
    */
   renderQuizInfo() {
-    let jsx: [] = [];
-
-    jsx.push(
+    return (
       <Card>
         <Row>
           <Column width={3}>Quiz-title:</Column>
@@ -257,18 +249,17 @@ export class NewQuiz extends Component {
         <br></br>
         <Row>
           <Column width={3}>Quiz-Category:</Column>
-          <Column>
+
+          <Column left>
             <select
               name="Category"
               value={this.categoryId}
               onChange={(event) => (this.categoryId = event.currentTarget.value)}
             >
-              <option value="0">Velg en kategori</option>
-              <option value="1">Matte</option>
-              <option value="2">Fotball</option>
-              <option value="3">Geografi</option>
-              <option value="4">It</option>
-              <option value="5">History</option>
+              <option value="0">Choose a category</option>
+              {this.categories.map((cat) => {
+                return <option value={cat.id}>{cat.category}</option>;
+              })}
             </select>
           </Column>
         </Row>
@@ -294,8 +285,6 @@ export class NewQuiz extends Component {
         </Row>
       </Card>
     );
-
-    return jsx;
   }
 
   /**
@@ -339,36 +328,36 @@ export class NewQuiz extends Component {
   render() {
     return (
       <>
-        <Card title="Creating a new quiz!">{this.renderQuizInfo()}</Card>
-
-        <Button.Success
-          onClick={() => {
-            this.forceUpdate();
-          }}
-        >
-          Update state
-        </Button.Success>
-
-        <Button.Success
-          onClick={() => {
-            this.createQuiz();
-          }}
-        >
-          Create Quiz
-        </Button.Success>
-
-        <Button.Success
-          onClick={() => {
-            console.log(`clicked addQuestion`);
-            this.addNewQuestionToState();
-          }}
-        >
-          Add New Question
-        </Button.Success>
+        <center>
+          <Column width={10}>
+            <Card title="📣 Creating a new quiz! 📣">{this.renderQuizInfo()}</Card>
+          </Column>
+        </center>
 
         {this.renderStateInfo()}
 
-        {this.renderQuestions()}
+        <center>{this.renderQuestions()}</center>
+
+        <br></br>
+
+        <Row>
+          <Button.Submit
+            onClick={() => {
+              this.addNewQuestionToState();
+            }}
+          >
+            ➕ Add Question
+          </Button.Submit>
+        </Row>
+        <Row>
+          <Button.Submit
+            onClick={() => {
+              this.createQuiz();
+            }}
+          >
+           🔥 Create Quiz 🔥
+          </Button.Submit>
+        </Row>
       </>
     );
   }
@@ -444,7 +433,6 @@ export class Question extends Component {
     return jsx;
   }
 
-
   render() {
     return (
       <>
@@ -452,20 +440,20 @@ export class Question extends Component {
           <Row>
             <Column width={2}>Question: {}</Column>
             <Column>
-            <Form.Input
-              placeholder="Question text"
-              value={this.questionText}
-              onChange={(event) => {
-                this.questionText = event.currentTarget.value;
-                this.updateParentState();
-              }}
-            ></Form.Input>
+              <Form.Input
+                placeholder="Question text"
+                value={this.questionText}
+                onChange={(event) => {
+                  this.questionText = event.currentTarget.value;
+                  this.updateParentState();
+                }}
+              ></Form.Input>
             </Column>
-            <br></br>
             <Column width={1}>
               <Button.Back onClick={this.removeButton}>X</Button.Back>
             </Column>
           </Row>
+          <br></br>
           {this.renderAnswers()}
         </QuestionCard>
       </>
