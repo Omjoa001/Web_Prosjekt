@@ -38,7 +38,7 @@ router.post('/quizzes', (request, response) => {
     typeof data.title == 'string' &&
     data.title.length != 0 &&
     typeof data.description == 'string' &&
-    typeof data.categoryId == 'number'
+    typeof data.categoryId == 'string'
   ) {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)
@@ -80,12 +80,14 @@ router.post('/questions', (request, response) => {
   }
 });
 
-router.delete('/quizzes/:id', (request, response) => {
+router.delete('/questions/:id', (request, response) => {
+  const quizId = Number(request.params.id);
   quizService
-    .delete(Number(request.params.id))
+    .deleteQuestions(quizId)
     .then((result) => response.send())
     .catch((error: Error) => response.status(500).send(error));
 });
+
 
 // funker
 router.get('/questions', (request, response) => {
@@ -110,5 +112,25 @@ router.get('/categories', (request, response) => {
     .then((rows) => response.send(rows))
     .catch((error: Error) => response.status(500).send(error));
 });
+
+router.put('/quiz/:id', (request, response) => {
+  const id = Number(request.params.id);
+
+  const data = request.body;
+  if(data && typeof data.title == 'string' && data.title.length != 0 && typeof data.description =='string' && typeof data.categoryId == 'number' ){
+    quizService
+      .updateQuiz(data.title, data.description, data.categoryId, id)
+      .then((quiz) => response.send(quiz))
+      .catch((error: Error) => response.status(500).send(error));
+    } else {response.status(400).send('Missing QUIZ information');}
+});
+
+router.delete('/quiz/:id', (request, response) => {
+  const id = Number(request.params.id);
+  quizService
+  .deleteQuiz(id)
+  .then((result) => response.send())
+  .catch((error: Error) => response.status(500).send(error));
+})
 
 export default router;
