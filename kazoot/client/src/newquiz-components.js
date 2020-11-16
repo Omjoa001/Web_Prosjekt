@@ -14,7 +14,9 @@ import {
 
 const history = createHashHistory();
 
-// TODO: maybe rename
+/**
+ * Type used to store question objects in state
+ */
 type StateQuestionType = {
   id: number,
   quizId: number,
