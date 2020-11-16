@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, CenterCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, CenterCard, TileCard, LayoutCenter, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import { BrowseQuizzes } from './browsequizzes-components';
 import {
@@ -23,8 +23,15 @@ export class Home extends Component {
   render() {
     return (
       <>
-        <Card title="Welcome">This is Quiz App</Card>
-        <Card title=""> 
+        <LayoutCenter title="Welcome">
+          <div class= 'font-italic'>To Kazoot - our Quiz App </div> <br></br>
+        <h4><small class='font-italic, text-muted'>Find a playable quiz by browsing through <br></br>
+        existing quizzes by clicking on "Browse Quiz" <br></br>  
+        or click on "New Quiz" to create a new quiz.  
+        </small></h4>
+      </LayoutCenter>
+
+        <Card> 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button.Start onClick={() => history.push('/BrowseQuizzes') }>
             Browse Quizzes{' '}
