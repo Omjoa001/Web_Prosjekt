@@ -250,7 +250,7 @@ export class NewQuiz extends Component {
         <Row>
           <Column width={3}>Quiz-Category:</Column>
 
-          <Column>
+          <Column left>
             <select
               name="Category"
               value={this.categoryId}
@@ -330,7 +330,7 @@ export class NewQuiz extends Component {
       <>
         <center>
           <Column width={10}>
-            <Card title="Creating a new quiz!">{this.renderQuizInfo()}</Card>
+            <Card title="📣 Creating a new quiz! 📣">{this.renderQuizInfo()}</Card>
           </Column>
         </center>
 
@@ -355,7 +355,7 @@ export class NewQuiz extends Component {
               this.createQuiz();
             }}
           >
-            🔫 Create Quiz
+           🔥 Create Quiz 🔥
           </Button.Submit>
         </Row>
       </>
@@ -449,11 +449,11 @@ export class Question extends Component {
                 }}
               ></Form.Input>
             </Column>
-            <br></br>
             <Column width={1}>
               <Button.Back onClick={this.removeButton}>X</Button.Back>
             </Column>
           </Row>
+          <br></br>
           {this.renderAnswers()}
         </QuestionCard>
       </>
