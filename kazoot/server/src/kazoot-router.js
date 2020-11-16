@@ -26,7 +26,7 @@ router.get('/quizzes/:id', (request, response) => {
   const id = Number(request.params.id);
   quizService
     .getQuiz(id)
-    .then((task) => (task ? response.send(task) : response.status(404).send('Task not found')))
+    .then((task) => (task ? response.send(task) : response.status(404).send('Quiz not found')))
     .catch((error: Error) => response.status(500).send(error));
 });
 

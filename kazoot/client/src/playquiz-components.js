@@ -16,19 +16,6 @@ import {
 const history = createHashHistory();
 
 export class PlayQuiz extends Component {
-  // Flow happiness achieved:
-  /*state: {
-    points: number;
-  };*/
-
-  /*
-  constructor(props) {
-    super(props);
-    this.state = {
-      points: 0
-    }
-  }
-*/
 
   id: number = 0;
   quizzes: QuizType = [];
@@ -84,12 +71,12 @@ export class PlayQuiz extends Component {
       return array
   }
 
-
   render() {
     return (
       <>
         <CenterCard title={this.quiz.title}>
           {this.quiz.description}
+
           <br></br>
           <br></br>
         </CenterCard>

@@ -113,7 +113,7 @@ export class BrowseQuizzes extends Component {
    */
   renderCategories() {
     let jsx: [] = [];
-    this.categories.forEach((category) => {
+    this.categories.map((category) => {
       jsx.push(
         <Column>
           <Form.Checkbox
