@@ -136,7 +136,7 @@ export class AnswerCard extends Component<{
             <div className="card-text">
               {this.props.children}
               <Button.Answer style={this.selectStyle[0]} onClick={this.stil.bind(this, 1)} show={this.props.show} correct={this.props.answ0[1]}>
-                {this.props.answ0[0]} {// kan vi ikke mekke en løkke her }
+                {this.props.answ0[0]} 
               </Button.Answer>
               &nbsp;&nbsp;&nbsp;
                <Button.Answer style={this.selectStyle[1]} onClick={this.stil.bind(this, 2)} show={this.props.show} correct={this.props.answ1[1]}>

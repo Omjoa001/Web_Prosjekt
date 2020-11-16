@@ -38,7 +38,7 @@ router.post('/quizzes', (request, response) => {
     typeof data.title == 'string' &&
     data.title.length != 0 &&
     typeof data.description == 'string' &&
-    typeof data.categoryId == 'string'
+    typeof data.categoryId == 'number'
   ) {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)
@@ -80,12 +80,12 @@ router.post('/questions', (request, response) => {
   }
 });
 
-// router.delete('/quizzes/:id', (request, response) => {
-//   quizService
-//     .delete(Number(request.params.id))
-//     .then((result) => response.send())
-//     .catch((error: Error) => response.status(500).send(error));
-// });
+router.delete('/quizzes/:id', (request, response) => {
+  quizService
+    .delete(Number(request.params.id))
+    .then((result) => response.send())
+    .catch((error: Error) => response.status(500).send(error));
+});
 
 // funker
 router.get('/questions', (request, response) => {

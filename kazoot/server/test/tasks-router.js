@@ -72,7 +72,7 @@ describe('Fetch Quizzes (GET)', () => {
   });
 
   test('Fetch task (200 OK)', (done) => {
-    axios.get<Task>('/tasks/1').then((response) => {
+    axios.get<Quizzes>('/tasks/1').then((response) => {
       expect(response.status).toEqual(200);
       expect(response.data).toEqual(testTasks[0]);
       done();

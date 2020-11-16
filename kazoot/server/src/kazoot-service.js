@@ -67,8 +67,7 @@ class QuizService {
   }
 
   //Ikke ferdig - CategorId er ikke en string!!
-  createQuiz(title: string, description: string, categoryId: string) {
-    console.log('create');
+  createQuiz(title: string, description: string, categoryId: number) {
     return new Promise<number>((resolve, reject) => {
       pool.query(
         'INSERT INTO Quizzes SET title=?, description=?, categoryId=?',
