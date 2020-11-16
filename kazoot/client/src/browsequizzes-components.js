@@ -19,100 +19,21 @@ const history = createHashHistory();
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
-  quizzes: Array<{ id: number, title: string, description: string }> = [
-    {
-      id: 1,
-      title: 'Sportsquiz',
-      description: 'woowowowoowow',
-      category: 1,
-    },
-    {
-      id: 2,
-      title: 'Mattequiz',
-      description: 'wewewewewe',
-      category: 2,
-    },
-    {
-      id: 3,
-      title: 'Geografiquiz',
-      description: 'wuwuwuwuwu',
-      category: 3,
-    },
-    {
-      id: 4,
-      title: 'Historiequiz',
-      description: 'wewewowow',
-      category: 4,
-    },
-    {
-      id: 5,
-      title: 'Noe rart noe',
-      description:
-        'long ass description. This description is multiple lines long. It is huge. Waow',
-      category: 5,
-    },
-    {
-      id: 6,
-      title: 'quiz 6',
-      description: 'kjdskad',
-      category: 1,
-    },
-    {
-      id: 7,
-      title: 'quiz 7',
-      description: 'hdsoafiosaj',
-      category: 1,
-    },
-    {
-      id: 8,
-      title: 'quiz 8',
-      description: 'jfkdlsajflkdsafø',
-      category: 1,
-    },
-    {
-      id: 9,
-      title: 'quiz 9',
-      description: 'jsidjaidsaj',
-      category: 1,
-    },
-    {
-      id: 10,
-      title: 'quiz 10',
-      description: 'sljdskal',
-      category: 1,
-    },
-    {
-      id: 11,
-      title: 'quiz 11',
-      description: 'jdksaljdskaljds',
-      category: 1,
-    },
-    {
-      id: 12,
-      title: 'quiz 12',
-      description: 'jdjskaldjskal',
-      category: 1,
-    },
-  ];
+  quizzes: Array<{ id: number, title: string, description: string }> = [];
 
   // Dummy array of categories
   // TODO: Replace with database call
 //  categories = [];
-  test = []
   categories: [] = [
-    { id: 1, name: 'Sport', checked: false },
-    { id: 2, name: 'Math', checked: false },
-    { id: 3, name: 'Geography', checked: false },
-    { id: 4, name: 'History', checked: false },
-    { id: 5, name: 'Yo Mama', checked: false },
+    { id: 1, name: 'Failed to get categories', checked: false },
   ];
-
+  quizarr: Array<QuizType> = []
   /**
    * Renders category names with checkboxes.
    * Handles checkbox state.
    */
   renderCategories() {
-    let jsx: [] = [];
+    let jsx: Array<any> = [];
     this.categories.map((category) => {
       jsx.push(
         <Column>
@@ -122,7 +43,7 @@ export class BrowseQuizzes extends Component {
             }}
           />
           &nbsp;&nbsp;&nbsp;
-          {category.name}
+          {category.category}
         </Column>
       );
     });
@@ -208,10 +129,15 @@ export class BrowseQuizzes extends Component {
     );
   }
   mounted() {
-    categoryService.getAllCategories().then((c) => (this.test = c));
-   this.categories.map((cat) => {
+    categoryService.getAllCategories()
+    .then((c) => {
+      this.categories = c
+      console.log(this.categories)
+    })
+    .then(() => {this.categories.map((cat) => {
       cat.checked = false;
-    });
+    })
+    })
   }
 }
 
@@ -220,7 +146,7 @@ export class BrowseQuizzes extends Component {
  * Used in BrowseQuizzes.
  */
 export class QuizTileGrid extends Component {
-  quizzarr: Array<any> = []; //Needs fix
+  quizzes: Array<any> = []; //Needs fix
 
   render() {
     const grid: [] = this.quizzesToJSX();
@@ -228,16 +154,14 @@ export class QuizTileGrid extends Component {
   }
 
   /**
-   * Generates the grid of quizzes and pushes it to an array of JSX elements.
+   * Generates the grid of quizzes and pushes it to an array of JSX elements.
    */
   quizzesToJSX() {
     // Array of rows of quizzes in columns
     let grid: [] = [];
 
     // TODO: Replace with database call sometime?
-    let quizzes = this.props.quizarr;
-    console.log(`quizzes length: ${quizzes.length}`);
-    console.log(`q2j: quizzes: ${quizzes}`);
+    let quizzes = this.quizzes;
     if (quizzes.length == 0) {
       grid.push(<div>No quizzes matched the combination of categories and search 😢</div>);
     } else {
@@ -259,6 +183,7 @@ export class QuizTileGrid extends Component {
   /**
    * Surrounds each quiz in a row with a Column tag and pushes it to an array of JSX elements.
    */
+
   rowContents(row) {
     let jsx: [] = [];
     for (const quiz of row) {
@@ -271,7 +196,7 @@ export class QuizTileGrid extends Component {
     return jsx;
   }
   mounted() {
-  quizService.getQuiz(this.id).then((q) => (this.quizzarr = q));
+  quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }
 }
 
