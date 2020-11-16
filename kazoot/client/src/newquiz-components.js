@@ -170,6 +170,8 @@ export class NewQuiz extends Component {
 
   /**
    * Finds the index of a question with a given ID
+   * If there are multiple questions with the same ID (which shouldn't
+   * happen), the index of the first one will be returned.
    */
   findIndexOfQuestion(id: number) {
     for (let i = 0; i < this.state.questions.length; i++) {
@@ -182,7 +184,6 @@ export class NewQuiz extends Component {
   }
 
   /**
-   * WIP
    * Create a new quiz.
    */
   createQuiz() {
@@ -229,6 +230,7 @@ export class NewQuiz extends Component {
         numCorrect
       );
     });
+    history.push('/BrowseQuizzes');
   }
 
   /**
