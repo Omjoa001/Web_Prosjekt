@@ -160,7 +160,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               </Column>
               <Column>
               <br></br>
-                <Button.Danger onClick={this.delQuestion}>Delete question</Button.Danger>
+                <Button.Danger onClick={this.delQuestion(index)}>Delete question</Button.Danger>
               </Column>
             </Row>
           </Card>
