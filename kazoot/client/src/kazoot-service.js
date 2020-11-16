@@ -14,13 +14,6 @@ export type QuestionType = {
   numCorrect: any,
 };
 
-export type SendQuestionType = {
-  id: number,
-  quizId: number,
-  questionText: string,
-  answers: AnswerType[],
-};
-
 export type AnswerType = {
   answerText: string,
   correct: boolean,
@@ -45,11 +38,10 @@ export type Quiz = {
 };
 
 /**
- * Service to retrieve and manage questions (not entire quizzes).
+ * Service to retrieve and manage questions
  */
 class QuestionService {
   /**
-   * WIP
    * Get question with given Question id.
    */
   getQuestion(id: number) {
@@ -57,25 +49,20 @@ class QuestionService {
   }
 
   /**
-   * WIP
    * Get all questions.
    */
   getAllQuestions() {
-    console.log('alle spm: 42');
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
   /**
-   *
-   * Get questions with given  quizId
+   * Get questions with given quizId
    */
   getQuizQuestion(id: number) {
-    console.log('her skal enkelte spm komme');
     return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
 
   /**
-   *
    * Create new questions
    */
   createQuestion(
@@ -107,7 +94,6 @@ class QuestionService {
 }
 
 /**
- * WIP
  * Class to manage quizzes.
  */
 class QuizService {
@@ -119,15 +105,6 @@ class QuizService {
   }
 
   /**
-   * Test that the class is imported correctly
-   * TODO: Remove?
-   */
-  hey() {
-    console.log('hey');
-  }
-
-  /**
-   *
    * GET Quiz with given Id
    */
   getQuiz(id: number) {
@@ -135,14 +112,15 @@ class QuizService {
   }
 
   /**
-   * WIP
    * Get all questions.
    */
   getAllQuizzes() {
     return axios.get<QuizType[]>('/quizzes').then((response) => response.data);
   }
 
-  // create new quiz
+  /**
+   * Create a new quiz
+   */
   createQuiz(title: string, description: string, categoryId: number) {
     console.log('service1');
     return axios
@@ -152,17 +130,6 @@ class QuizService {
         categoryId: categoryId,
       })
       .then((response) => response.data.id);
-  }
-
-  /**
-   * Dummy function to return Quiz object
-   */
-  getQuizInfo(id: number) {
-    return Promise.resolve({
-      title: 'Dummy Quiz',
-      id: 1,
-      categories: [1, 2],
-    });
   }
 
 
@@ -185,24 +152,15 @@ class QuizService {
  
 
 /**
- * WIP
  * Service to manage categories
  */
 class CategoryService {
+  /**
+   * Get all category objects
+   */
   getAllCategories() {
-    console.log('kazoot-service');
     return axios.get<CategoryType[]>('/categories').then((response) => response.data);
   }
-  /**
-   * WIP
-   * Function to get all categories
-   */
-  getAll() {
-    // dummy
-    return Promise.resolve([1, 2, 3]);
-  }
-
-  //post() {}
 }
 
 export const quizService = new QuizService();
