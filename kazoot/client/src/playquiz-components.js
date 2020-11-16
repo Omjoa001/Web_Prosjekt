@@ -16,6 +16,20 @@ import {
 const history = createHashHistory();
 
 export class PlayQuiz extends Component {
+  // Flow happiness achieved:
+  /*state: {
+    points: number;
+  };*/
+
+  /*
+  constructor(props) {
+    super(props);
+    this.state = {
+      points: 0
+    }
+  }
+*/
+
   id: number = 0;
   quizzes: QuizType = [];
   questions: QuestionType[] = [];
@@ -23,10 +37,20 @@ export class PlayQuiz extends Component {
   quiz: QuizType = {};
   show:boolean = false;
   shuffledQuestions: QuestionType[] = []
+  points: number = 0;
+  totalPoints: number = 0;
+  resultText: string = "";
+  
+  sendPoints(pnt) {
+    this.points += pnt
+  }
 
   randomizeOrder(array: QuestionType[]) {
+    this.questions.map((q) => {
+      this.totalPoints += q.numCorrect;
+    });
     let i = array.length - 1;
-    for (i; i > 0; i--) {
+    for (i; i >= 0; i--) {
 
       let answOrder = []
       answOrder.push([array[i].answ0, 0], [array[i].answ1, 0], [array[i].answ2, 0], [array[i].answ3, 0])
@@ -46,7 +70,7 @@ export class PlayQuiz extends Component {
       quizId: array[i].quizId,
     }
       this.shuffledQuestions.push(tempQuestionObject)
-    } 
+    }
   }
 
   randomizeAnswerArr(array: []) {
@@ -58,15 +82,18 @@ export class PlayQuiz extends Component {
         array[j] = temp;
       }
       return array
-  } 
+  }
+
+
   render() {
     return (
       <>
-    
-        <CenterCard 
-        title={this.quiz.title}>{this.quiz.description} 
+        <CenterCard title={this.quiz.title}>
+          {this.quiz.description}
+          <br></br>
+          <br></br>
         </CenterCard>
-        
+
         <div>
           {this.shuffledQuestions.map((a) => (
             <div key={a.id}>
@@ -77,9 +104,10 @@ export class PlayQuiz extends Component {
                 answ2={a.answ2}
                 answ3={a.answ3}
                 show={this.show}
+                parentCallback = {this.sendPoints}
               >
                 <div title={a.question}>
-                  Number of correct answers: {a.numCorrect}
+                  Correct answers: {a.numCorrect}
                   <br></br>
                 </div>
               </AnswerCard>
@@ -90,11 +118,16 @@ export class PlayQuiz extends Component {
         </div>
 
         <center>
-          <Button.Submit onClick={() => {
-          this.show = true
-          }}>
+          <Button.Submit
+            onClick={() => {
+              this.show = true;
+              this.resultText = `You got ${this.points}/${this.totalPoints} correct answers`
+            }}
+          >
             SUBMIT ANSWERS
           </Button.Submit>
+          <br></br>  
+          <Card title={this.resultText}></Card>
         </center>
         <br></br>
         <br></br>
@@ -103,6 +136,7 @@ export class PlayQuiz extends Component {
     );
   }
   mounted() {
+
     this.id = this.props.match.params.id;
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
       quizService.getQuiz(this.id)
@@ -113,6 +147,5 @@ export class PlayQuiz extends Component {
           this.randomizeOrder(this.questions)
         })
       categoryService.getAllCategories().then((c) => (this.categories = c))
-      
   }
 }

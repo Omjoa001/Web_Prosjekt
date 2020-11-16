@@ -114,11 +114,19 @@ export class AnswerCard extends Component<{
   answ3?: Array<mixed>,
   numCorrect?: number,
   show?: boolean,
+  parentCallback: any,
 }> {
+  points: number = 0;
 
   selectStyle = [{}, {}, {}, {}]
 
-  stil(num: number) {
+  stil(num: number, corr: boolean) {
+    if (corr) {
+      this.points = 1;
+      this.props.parentCallback(this.points);
+    } else {
+      this.points = 0;
+    }
     for (let i = 1; i <= this.selectStyle.length; i++) {
       if (num == i) {
         this.selectStyle[i - 1] = { border: '3px solid navy' }
@@ -135,25 +143,62 @@ export class AnswerCard extends Component<{
             <hr />
             <div className="card-text">
               {this.props.children}
-              <Button.Answer style={this.selectStyle[0]} onClick={this.stil.bind(this, 1)} show={this.props.show} correct={this.props.answ0[1]}>
+              <Button.Answer
+                style={this.selectStyle[0]}
+                onClick={this.stil.bind(this, 1, this.props.answ0[1])}
+                show={this.props.show}
+                correct={this.props.answ0[1]}
+              >
                 {this.props.answ0[0]}
               </Button.Answer>
               &nbsp;&nbsp;&nbsp;
-               <Button.Answer style={this.selectStyle[1]} onClick={this.stil.bind(this, 2)} show={this.props.show} correct={this.props.answ1[1]}>
+              <Button.Answer
+                style={this.selectStyle[1]}
+                onClick={this.stil.bind(this, 2, this.props.answ1[1])}
+                show={this.props.show}
+                correct={this.props.answ1[1]}
+              >
                 {this.props.answ1[0]}
               </Button.Answer>
-                 &nbsp;&nbsp;&nbsp;
-                <Button.Answer style={this.selectStyle[2]} onClick={this.stil.bind(this, 3)} show={this.props.show} correct={this.props.answ2[1]}>
+              &nbsp;&nbsp;&nbsp;
+              <Button.Answer
+                style={this.selectStyle[2]}
+                onClick={this.stil.bind(this, 3, this.props.answ2[1])}
+                show={this.props.show}
+                correct={this.props.answ2[1]}
+              >
                 {this.props.answ2[0]}
               </Button.Answer>
-                &nbsp;&nbsp;&nbsp;
-                <Button.Answer style={this.selectStyle[3]} onClick={this.stil.bind(this, 4)} show={this.props.show} correct={this.props.answ3[1]}>
+              &nbsp;&nbsp;&nbsp;
+              <Button.Answer
+                style={this.selectStyle[3]}
+                onClick={this.stil.bind(this, 4, this.props.answ3[1])}
+                show={this.props.show}
+                correct={this.props.answ3[1]}
+              >
                 {this.props.answ3[0]}
               </Button.Answer>
             </div>
           </div>
         </div>
       </center>
+    );
+  }
+}
+
+export class LayoutCenter extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card">
+        <div className="card-body">
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10vh', marginBottom: '1vh'}}>
+          <h1 className="card-title">{this.props.title}</h1>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1vh', marginBottom: '10vh'}}>
+          <h3 className="card-text">{this.props.children}</h3>
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -202,13 +247,14 @@ export class Row extends Component<{ children?: React.Node }> {
 /**
  * Renders a column with specified width using Bootstrap classes.
  */
-export class Column extends Component<{ width?: number, right?: boolean, children?: React.Node }> {
+export class Column extends Component<{ width?: number, right?: boolean, left?: boolean, children?: React.Node }> {
   render() {
     return (
       <div
         className={
           'col' +
           (this.props.width ? '-' + this.props.width : '') +
+          (this.props.left ? ' text-left' : '') +
           (this.props.right ? ' text-right' : '')
         }
       >
