@@ -4,8 +4,6 @@ import axios from 'axios';
 import pool from '../src/mysql-pool';
 import app from '../src/app';
 import quizService, { type QuizType } from '../src/kazoot-service';
-// import { response } from 'express';
-// import { Types } from 'mysql';
 
  const testQuizzes: QuizType[] = [
     {id: 1, title: 'Matte nivå 1', description: 'Enkel matte', categoryId: 1}, 
@@ -29,32 +27,26 @@ beforeEach((done) => {
 
         // Create testTasks sequentially in order to set correct id, and call done() when finished
         quizService
-        .createQuiz(testQuizzes[0].title, testQuizzes[0].description, testQuizzes[0].categoryId)
-        .then(() => quizService.createQuiz(testQuizzes[1].title, testQuizzes[1].description, testQuizzes[1].categoryId)) // Create testTask[1] after testTask[0] has been created
-        .then(() => quizService.createQuiz(testQuizzes[2].title, testQuizzes[2].description, testQuizzes[2].categoryId)) // Create testTask[2] after testTask[1] has been created
+        .createQuiz(
+            testQuizzes[0].title, 
+            testQuizzes[0].description, 
+            testQuizzes[0].categoryId
+            )
+        .then(() => 
+        quizService.createQuiz(
+            testQuizzes[1].title, 
+            testQuizzes[1].description, 
+            testQuizzes[1].categoryId
+            )
+        ) // Create testTask[1] after testTask[0] has been created
+        .then(() => 
+        quizService.createQuiz(
+            testQuizzes[2].title, 
+            testQuizzes[2].description, 
+            testQuizzes[2].categoryId
+            )
+        ) // Create testTask[2] after testTask[1] has been created
         .then(() => done()); // Call done() after testQuizzes[2] has been created
-
-        // Note that the above expression can be written as:
-        // const promise1 = quizService.createQuiz(testQuizzes[0].title);
-        // const promise2 = promise1.then(() => quizService.createQuiz(testQuizzes[1].title));
-        // const promise3 = promise2.then(() => quizService.createQuiz(testQuizzes[2].title));
-        // promise3.then(() => done());
-
-        // Can also be written as:
-        // let lastPromise = quizService.createQuiz(testQuizzes[0].title);
-        // lastPromise = lastPromise.then(() => quizService.createQuiz(testQuizzes[1].title));
-        // lastPromise = lastPromise.then(() => quizService.createQuiz(testQuizzes[2].title));
-        // lastPromise.then(() => done());
-
-        // Or without specifying each test quiz:
-        // let lastPromise = new Promise((resolve) => resolve());
-        // for (const quiz of testQuizzes) lastPromise = lastPromise.then(() => quizService.createQuiz(quiz.title));
-        // lastPromise.then(() => done());
-
-        // Or more compactly:
-        // testQuizzes
-        //   .reduce((prev, cur) => prev.then(() => quizService.createQuiz(cur.title)), Promise.resolve())
-        //   .then(() => done());
     });
 });
 
@@ -131,14 +123,14 @@ describe('Create new quiz (POST)', () => {
 
 describe('Delete quiz (DELETE)', () => {
     test('Detete quiz 1 (200 OK)', (done) => {
-        axios.delete('/quizzes/2').then((response) => {
+        axios.delete('/quiz/2').then((response) => {
             expect(response.status).toEqual(200);
             done();
           });
     })
 
     test('Delete quiz (500)', (done) => {
-        axios.delete('/quizzes/10').catch((error: Error) => {
+        axios.delete('/quiz/10').catch((error: Error) => {
             expect(error.message).toEqual('Request failed with status code 500');
             done();
           });
@@ -148,15 +140,20 @@ describe('Delete quiz (DELETE)', () => {
 describe('Update quiz (PUT)', () => {
     test('Update quiz 1 (200 OK)', (done) => {
         axios
-        .put<{}, void>('/quizzes', {id: 1, title: 'Quiz1', description: 'description 2.0', categoryId: 2})
+        .put<{}, void>('/quiz/1', {id: 1, title: 'Quiz1', description: 'description 2.0', categoryId: 2})
         .then((response) => {
             expect(response.status).toEqual(200);
             done();
         })
     })
 
-    test.skip('Updated quiz (400)', () => {
-        // todo
-    })
+    test('Updated quiz (400)', (done) => {
+        axios
+        .put<{}, void>('/quiz/1', {id: 1, title: '', description: 'description 2.0', categoryId: 2})
+        .catch((error: Error) => {
+            expect(error.message).toEqual('Request failed with status code 400');
+            done();
+        })
+    });
 })
 

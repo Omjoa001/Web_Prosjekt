@@ -21,6 +21,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
   id: number = 0;
   questions: QuestionType[] = []
   categories: CategoryType[] = [];
+  
   quiz: QuizType = {};
 
 
@@ -50,11 +51,9 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
                   onChange={(event) => (this.quiz.categoryId = event.currentTarget.value)}
                 >
                   <option value={0}>Velg en kategori</option>
-                  <option value={1}>Matte</option>
-                  <option value={2}>Fotball</option>
-                  <option value={3}>Geografi</option>
-                  <option value={4}>It</option>
-                  <option value={5}>History</option>
+                  {this.categories.map((c) => (
+                  <option value={c.id}>{c.category}</option>
+                  ))}
                 </select>
               </Column>
             </Row>
@@ -200,6 +199,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     this.id = this.props.match.params.id;
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
     questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
+    categoryService.getAllCategories().then((c) => (this.categories = c));
     }
 
   

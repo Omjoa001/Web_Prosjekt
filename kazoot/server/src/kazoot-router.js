@@ -38,7 +38,7 @@ router.post('/quizzes', (request, response) => {
     typeof data.title == 'string' &&
     data.title.length != 0 &&
     typeof data.description == 'string' &&
-    typeof data.categoryId == 'string'
+    typeof data.categoryId == 'number'
   ) {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)

@@ -20,7 +20,7 @@ export type QuizType = {
 };
 
 export type CategoryType = {
-  id: Number,
+  id: number,
   category: string,
 };
 
