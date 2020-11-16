@@ -16,44 +16,12 @@ const history = createHashHistory();
 
 export class EditQuiz extends Component <{ match: { params: { id: number } } }> {
 
+
+
   id: number = 0;
-  questions: QuestionType[] = [];
+  questions: QuestionType[] = []
   categories: CategoryType[] = [];
   quiz: QuizType = {};
-
-  nextId: number = 0;
-
-
-  newquestion: Array<{
-    id: 0,
-    question: '',
-    answ0: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-    answ1: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-    answ2: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-    answ3: {
-      id: 0,
-      ans: '',
-      bool: false
-    },
-  }> = [
-    {
-    },
-  ];
-
-  questions: QuestionType[] = []
-
 
 
   render() {
@@ -62,19 +30,14 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
       <>
         <Card title={"Edit Quiz " + this.quiz.id}>
           <Card>
-            <Column>
-              <Row>
-              </Row>
-            </Column>
             <Row>
               <Column width={3}>Quiz-title:</Column>
               <Column>
                 <Form.Input
                   placeholder="Quiz title"
-                  type="text"
-                  value={this.quiz.title}
-                  onChange={(event) => (this.quiz.title = event.currentTarget.value)}>
-                </Form.Input>
+                  value={this.quiz.title || ''}
+                  onChange={(event) => (this.quiz.title = event.currentTarget.value)}
+                ></Form.Input>
               </Column>
             </Row>
             <br></br>
@@ -83,22 +46,22 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               <Column>
                 <select
                   name="Category"
-                  value={this.quiz.categoryId}
+                  value={this.quiz.categoryId }
                   onChange={(event) => (this.quiz.categoryId = event.currentTarget.value)}
                 >
-                  <option value="0">Velg en kategori</option>
-                  <option value="1">Matte</option>
-                  <option value="2">Fotball</option>
-                  <option value="3">Geografi</option>
-                  <option value="4">It</option>
-                  <option value="5">History</option>
+                  <option value={0}>Velg en kategori</option>
+                  <option value={1}>Matte</option>
+                  <option value={2}>Fotball</option>
+                  <option value={3}>Geografi</option>
+                  <option value={4}>It</option>
+                  <option value={5}>History</option>
                 </select>
               </Column>
             </Row>
             <Row>
-              <Column>Quiz-Id:</Column>
+              <Column width={3}>Quiz-Id:</Column>
               <Column>
-                <Form.Input value={this.quiz.id} disabled></Form.Input>
+                <Form.Input value={this.quiz.id || ''} disabled></Form.Input>
               </Column>
             </Row>
             <br></br>
@@ -107,8 +70,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               <Column>
                 <Form.Textarea
                   placeholder="Quiz description"
-                  type="text"
-                  value={this.quiz.description}
+                  value={this.quiz.description || ''}
                   onChange={(event) => (this.quiz.description = event.currentTarget.value)}
                   row={10}
                 ></Form.Textarea>
@@ -117,7 +79,7 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
           </Card>
 
           {this.questions.map((q, index) => (
-            <Card key={q.id} title={'Spørsmål ' + (index + 1)}>
+            <Card key={index} title={'Spørsmål ' + (index + 1)}>
               <Row>
                 <Column width={2}>Tick the correct answer: </Column>
                 <Column>
@@ -153,8 +115,8 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
               <Column>
                 <Form.Input
                     placeholder='Answer 2'
-                    onChange={(event) => (q.answ1 = event.currentTarget.value)}
                     value={q.answ1}
+                    onChange={(event) => (q.answ1 = event.currentTarget.value)}
                 ></Form.Input>
                 <br></br>
               </Column>
@@ -206,14 +168,26 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
 
           <Card>
             <Row>
-              <Button.Success id="newquest" disabled={false} onClick={this.add}>
+              <Button.Success onClick={this.add}>
                 New question
               </Button.Success>
             </Row>
             <br></br>
             <Row>
-              <Button.Save onClick={this.saveQuiz}>Save quiz changes</Button.Save>
-             <Button.Back onClick={() => history.push('/')}>Back to home</Button.Back>
+              <Column left>
+                <Button.Light onClick={() => history.push('/')}>Back</Button.Light>
+              </Column>
+              <Column>
+                <Button.Success onClick={this.saveQuiz}>Save Quiz changes</Button.Success>
+              </Column>
+              <Column righet>
+                <Button.Danger onClick={this.deleteQuiz}>Delete Quiz</Button.Danger>
+              </Column>
+            </Row>
+            <Row>
+              <Button.Success onClick={this.logg}>
+                console.log question array
+              </Button.Success>
             </Row>
           </Card>
         </Card>
@@ -221,37 +195,76 @@ export class EditQuiz extends Component <{ match: { params: { id: number } } }> 
     );
   }
 
+  // funker som fle
   mounted() {
-
     this.id = this.props.match.params.id;
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
     questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
-
     }
 
-  saveQuiz(){
-
+  
+  logg() {
+    console.log(this.questions)
+    console.log(this.quiz.categoryId)
   }
 
-  delQuestion(){
-    this.questions.splice(this.index, 1)
+  saveQuiz(){    
+    // sletter alle questions 
+    questionService
+    .deleteQuestions(this.quiz.id)
+  
+    // legger til spøsmål
+    for (let i = 0; i < this.questions.length; i++) {
+      questionService
+        .createQuestion(
+          this.quiz.id,
+          this.questions[i].question,
+          this.questions[i].answ0,
+          this.questions[i].answ1,
+          this.questions[i].answ2,
+          this.questions[i].answ3
+        )
+    } 
+    // endrer quiz
+    quizService
+    .updateQuiz(
+      this.quiz.id,
+      this.quiz.title, 
+      this.quiz.description, 
+      this.quiz.categoryId,
+      )
+    .then((id) => history.push('/listQuizzes'))
+    .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message))
   }
 
-  add() {
+  // funker som fle
+  deleteQuiz(){
 
+    questionService
+      .deleteQuestions(this.quiz.id)
+      .catch((error: Error) => Alert.danger('Error deleting Questions: ' + error.message))
 
-    this.questions.id = (this.questions.id + 1);
-    this.questions.push({
-      question: '',
+    quizService 
+      .deleteQuiz(this.quiz.id)
+      .then((id) => history.push('/BrowseQuizzes'))
+      .catch((error: Error) => Alert.danger('Error deleting Quiz: ' + error.message))
+  }
+  
+  // funkersom som fle
+  delQuestion(x: number) {
+    this.questions.splice(x, 1);
+  }
+  // funker 
+  add() {   
+    this.newQuestion = {
       quizId: this.quiz.id,
+      question: '',
       answ0: '',
       answ1: '',
       answ2: '',
       answ3: '',
-    });
+    }
+    this.questions.push(this.newQuestion)
   }
 
-
-  button() {
-  }
 }
