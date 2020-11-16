@@ -7,17 +7,17 @@ export type QuestionType = {
   id: number,
   quizId: number,
   question: string,
-  numCorrect: any,
   answ0: string,
   answ1: string,
   answ2: string,
   answ3: string,
+  numCorrect: any,
 };
 
 export type AnswerType = {
   answerText: string,
-  correct: bool,
-}
+  correct: boolean,
+};
 
 export type QuizType = {
   id: number,
@@ -29,21 +29,19 @@ export type QuizType = {
 export type CategoryType = {
   id: number,
   category: string,
-}
+};
 
 export type Quiz = {
   id: number,
   title: string,
   description: string,
-}
+};
 
- 
 /**
- * Service to retrieve and manage questions (not entire quizzes).
+ * Service to retrieve and manage questions
  */
 class QuestionService {
   /**
-   * WIP
    * Get question with given Question id.
    */
   getQuestion(id: number) {
@@ -51,64 +49,58 @@ class QuestionService {
   }
 
   /**
-   * WIP
    * Get all questions.
    */
   getAllQuestions() {
-    console.log("alle spm: 42")
     return axios.get<QuestionType[]>('/questions').then((response) => response.data);
   }
 
   /**
-   * 
-   * Get questions with given  quizId
+   * Get questions with given quizId
    */
   getQuizQuestion(id: number) {
-    console.log("her skal enkelte spm komme")
     return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
-  
+
   /**
-   * 
    * Create new questions
    */
-  createQuestion(quizId: number, question: string, answ0: string, answ1: string, answ2: string, answ3: string) {
-    console.log("create question")
+  createQuestion(
+    quizId: number,
+    question: string,
+    answ0: string,
+    answ1: string,
+    answ2: string,
+    answ3: string,
+    numCorrect: number
+  ) {
+    console.log('create question');
     return axios
-    .post<{}, {id: number}>('/questions', {
-      quizId: quizId,
-      question: question,
-      answ0: answ0,
-      answ1: answ1,
-      answ2: answ2,
-      answ3: answ3,
-    })
-    .then((response) => response.data.id)
+      .post<{}, { id: number }>('/questions', {
+        quizId: quizId,
+        question: question,
+        answ0: answ0,
+        answ1: answ1,
+        answ2: answ2,
+        answ3: answ3,
+        numCorrect: numCorrect,
+      })
+      .then((response) => response.data.id);
   }
 }
 
 /**
- * WIP
  * Class to manage quizzes.
  */
 class QuizService {
-  
   /**
    * Get next Id to give questions quizID
    */
-  getNextId(){
+  getNextId() {
     return axios.get('/nextId').then((response) => response.data);
-  }
-  
-  /**
-   * Test that the class is imported correctly
-   */
-  hey() {
-    console.log('hey');
   }
 
   /**
-   * 
    * GET Quiz with given Id
    */
   getQuiz(id: number) {
@@ -116,56 +108,37 @@ class QuizService {
   }
 
   /**
-   * WIP
    * Get all questions.
    */
   getAllQuizzes() {
     return axios.get<QuizType[]>('/quizzes').then((response) => response.data);
   }
 
-  // create new quiz
+  /**
+   * Create a new quiz
+   */
   createQuiz(title: string, description: string, categoryId: number) {
-    console.log('service1')  
+    console.log('service1');
     return axios
-        .post<{}, {id: number}>('/quizzes', {
+      .post<{}, { id: number }>('/quizzes', {
         title: title,
         description: description,
         categoryId: categoryId,
       })
       .then((response) => response.data.id);
   }
-
-  /**
-   * Dummy function to return Quiz object
-   */
-  getQuizInfo(id: number) {
-    return Promise.resolve({
-      title: 'Dummy Quiz',
-      id: 1,
-      categories: [1, 2],
-    });
-  }
 }
 
 /**
- * WIP
  * Service to manage categories
  */
 class CategoryService {
-
-  getAllCategories() {
-    console.log("kazoot-service")
-    return axios.get<CategoryType[]>('/categories').then((response) => response.data);
-  }  /**
-   * WIP
-   * Function to get all categories
+  /**
+   * Get all category objects
    */
-  getAll() {
-    // dummy
-    return Promise.resolve([1, 2, 3]);
+  getAllCategories() {
+    return axios.get<CategoryType[]>('/categories').then((response) => response.data);
   }
-
-  //post() {}
 }
 
 export const quizService = new QuizService();
