@@ -217,7 +217,7 @@ export class NewQuiz extends Component {
       console.log(`answ1: ${answ1}`);
       console.log(`answ2: ${answ2}`);
       console.log(`answ3: ${answ3}`);
-      console.log(`numcorrect: ${numcorrect}`);
+      console.log(`numcorrect: ${numCorrect}`);
 
       questionService.createQuestion(
         question.quizId,
@@ -378,22 +378,12 @@ export class Question extends Component {
   questionText: string = '';
   answers: AnswerType[] = [];
 
-  /*Separate from render to reduce clutter*/
-
-  renderQuestionText() {
-    return (
-      <>
-        <Form.Input
-          placeholder="Question text"
-          value={this.questionText}
-          onChange={(event) => {
-            this.questionText = event.currentTarget.value;
-            this.updateParentState();
-          }}
-        ></Form.Input>
-        <br></br>
-      </>
-    );
+  mounted() {
+    this.id = this.props.id;
+    this.quizId = this.props.quizId;
+    this.title = this.props.title;
+    this.questionText = this.props.questionText;
+    this.answers = this.props.answers;
   }
 
   /**
@@ -448,14 +438,6 @@ export class Question extends Component {
     });
 
     return jsx;
-  }
-
-  mounted() {
-    this.id = this.props.id;
-    this.quizId = this.props.quizId;
-    this.title = this.props.title;
-    this.questionText = this.props.questionText;
-    this.answers = this.props.answers;
   }
 
 
