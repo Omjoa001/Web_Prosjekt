@@ -146,7 +146,7 @@ describe('Delete quiz (DELETE)', () => {
 })
 
 describe('Update quiz (PUT)', () => {
-    test.skip('Update quiz 1 (200 OK)', (done) => {
+    test('Update quiz 1 (200 OK)', (done) => {
         axios
         .put<{}, void>('/quizzes', {id: 1, title: 'Quiz1', description: 'description 2.0', categoryId: 2})
         .then((response) => {
