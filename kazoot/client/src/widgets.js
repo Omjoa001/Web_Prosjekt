@@ -247,13 +247,14 @@ export class Row extends Component<{ children?: React.Node }> {
 /**
  * Renders a column with specified width using Bootstrap classes.
  */
-export class Column extends Component<{ width?: number, right?: boolean, children?: React.Node }> {
+export class Column extends Component<{ width?: number, right?: boolean, left?: boolean, children?: React.Node }> {
   render() {
     return (
       <div
         className={
           'col' +
           (this.props.width ? '-' + this.props.width : '') +
+          (this.props.left ? ' text-left' : '') +
           (this.props.right ? ' text-right' : '')
         }
       >
