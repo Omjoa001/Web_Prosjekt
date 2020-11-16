@@ -171,16 +171,6 @@ class CategoryService {
     console.log('kazoot-service');
     return axios.get<CategoryType[]>('/categories').then((response) => response.data);
   }
-  /**
-   * WIP
-   * Function to get all categories
-   */
-  getAll() {
-    // dummy
-    return Promise.resolve([1, 2, 3]);
-  }
-
-  //post() {}
 }
 
 export const quizService = new QuizService();
