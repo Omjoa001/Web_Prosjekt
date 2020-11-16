@@ -25,9 +25,8 @@ export class BrowseQuizzes extends Component {
   // TODO: Replace with database call
 //  categories = [];
   categories: [] = [
-    { id: 1, name: 'Failed to get categories', checked: false },
+    { id: 1, name: 'Failed to get categories', checked: false }
   ];
-  quizarr: Array<QuizType> = []
   /**
    * Renders category names with checkboxes.
    * Handles checkbox state.
@@ -63,9 +62,9 @@ export class BrowseQuizzes extends Component {
   categoryFilter() {
     let catFilter: [] = [];
 
-    this.categories.forEach((category) => {
+    this.categories.map((category) => {
       if (category.checked) {
-        this.quizzes.forEach((quiz) => {
+        this.quizzes.map((quiz) => {
           if (quiz.category == category.id) {
             catFilter.push(quiz);
           }
@@ -138,6 +137,8 @@ export class BrowseQuizzes extends Component {
       cat.checked = false;
     })
     })
+
+    quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }
 }
 
