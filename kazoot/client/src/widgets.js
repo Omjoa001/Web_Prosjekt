@@ -106,12 +106,26 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
 
 //Custom cards for PlayQuiz component.
 export class AnswerCard extends Component<{
-  title?: React.Node,
+  title?: string,
   children?: React.Node,
-  answ0?: React.Node,
-  answ1?: React.Node,
-  answ2?:React.Node,
-  answ3?:React.Node}> {
+  answ0?: Array<mixed>,
+  answ1?: Array<mixed>,
+  answ2?: Array<mixed>,
+  answ3?: Array<mixed>,
+  numCorrect?: number,
+  show?: boolean,
+}> {
+
+  selectStyle = [{}, {}, {}, {}]
+
+  stil(num: number) {
+    for (let i = 1; i <= this.selectStyle.length; i++) {
+      if (num == i) {
+        this.selectStyle[i - 1] = { border: '3px solid navy' }
+      }
+    }
+  }
+
   render() {
     return (
       <center>
@@ -121,13 +135,21 @@ export class AnswerCard extends Component<{
             <hr />
             <div className="card-text">
               {this.props.children}
-              <Button.Answer>{this.props.answ0}</Button.Answer>
+              <Button.Answer style={this.selectStyle[0]} onClick={this.stil.bind(this, 1)} show={this.props.show} correct={this.props.answ0[1]}>
+                {this.props.answ0[0]}
+              </Button.Answer>
               &nbsp;&nbsp;&nbsp;
-              <Button.Answer>{this.props.answ1}</Button.Answer>
-              &nbsp;&nbsp;&nbsp;
-              <Button.Answer>{this.props.answ2}</Button.Answer>
-              &nbsp;&nbsp;&nbsp;
-              <Button.Answer>{this.props.answ3}</Button.Answer>
+               <Button.Answer style={this.selectStyle[1]} onClick={this.stil.bind(this, 2)} show={this.props.show} correct={this.props.answ1[1]}>
+                {this.props.answ1[0]}
+              </Button.Answer>
+                 &nbsp;&nbsp;&nbsp;
+                <Button.Answer style={this.selectStyle[2]} onClick={this.stil.bind(this, 3)} show={this.props.show} correct={this.props.answ2[1]}>
+                {this.props.answ2[0]}
+              </Button.Answer>
+                &nbsp;&nbsp;&nbsp;
+                <Button.Answer style={this.selectStyle[3]} onClick={this.stil.bind(this, 4)} show={this.props.show} correct={this.props.answ3[1]}>
+                {this.props.answ3[0]}
+              </Button.Answer>
             </div>
           </div>
         </div>
@@ -135,6 +157,7 @@ export class AnswerCard extends Component<{
     );
   }
 }
+
 /**
  * Renders a card with a smaller width than normal
  * TODO: Add variable width
@@ -195,6 +218,8 @@ export class Column extends Component<{ width?: number, right?: boolean, childre
   }
 }
 
+
+
 /**
  * Renders a success button using Bootstrap styles.
  */
@@ -216,10 +241,9 @@ class ButtonSuccess extends Component<{
 }
 
 /**
- * Renders a blue block-button using Bootstrap styles.
+ * Renders a green outline-block-button using Bootstrap styles.
  */
-
-class ButtonAnswer extends Component<{
+class ButtonSave extends Component<{
   width?: number,
   onClick?: () => mixed,
   small?: boolean,
@@ -227,7 +251,81 @@ class ButtonAnswer extends Component<{
 }> {
   render() {
     return (
-    <button type="button" class="btn btn-primary btn-lg btn-block">{this.props.children}</button>
+
+      <button 
+      type="button" class="btn btn-outline-success btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+     
+    );
+  }
+}
+
+/**
+ * Renders a red outline-block-button using Bootstrap styles.
+ */
+class ButtonBack extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <button 
+      type="button" class="btn btn-outline-danger btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+     
+    );
+  }
+}
+
+/**
+ * Renders a blue outline-block-button using Bootstrap styles.
+ */
+class ButtonSubmit extends Component<{
+  width?: number,
+  onClick?: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+
+      <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
+      <button 
+      type="button" class="btn btn-outline-primary btn-large btn-block"
+      onClick={this.props.onClick}>
+       {this.props.children} </button>
+       </div>
+     
+    );
+  }
+}
+
+
+
+/**
+ * Renders a blue block-button using Bootstrap styles.
+ */
+
+class ButtonAnswer extends Component<{
+  width?: number,
+  onClick?:() => Mixed,
+  small?:Boolean,
+  children?:React.Node,
+  correct?:Boolean,
+  show?:boolean,
+  style: {border: string},
+  onClick: () => mixed,
+}> {
+render() {
+  let value = this.props.correct ? "success" : "danger"
+  let ButtonClass = this.props.show ? "btn btn-" + value + " btn-lg btn-block" : "btn btn-outline-primary btn-lg btn-block"
+    return (
+      <button type="button" style={this.props.style} onClick={this.props.onClick} class={ButtonClass}>{this.props.children}</button>
     );
   }
 }
@@ -355,6 +453,9 @@ export class Button {
   static Primary = ButtonPrimary;
   static Answer = ButtonAnswer;
   static Start = ButtonStart;
+  static Save = ButtonSave;
+  static Back = ButtonBack;
+  static Submit = ButtonSubmit;
 }
 
 /**

@@ -17,13 +17,12 @@ export type QuizType = {
   title: string,
   description: string,
   categoryId: number,
-}
+};
 
 export type CategoryType = {
   id: Number,
   category: string,
-}
-
+};
 
 /*
 export type Category = {
@@ -32,14 +31,16 @@ export type Category = {
 }*/
 
 class QuizService {
-
-  getNextId(){
+  getNextId() {
     return new Promise<{}>((resolve, reject) => {
-      pool.query('SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "Quizzes"', (error, results) => {
-        if (error) return reject(error);
-        resolve(results[0])
-      })
-    })
+      pool.query(
+        'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "Quizzes"',
+        (error, results) => {
+          if (error) return reject(error);
+          resolve(results[0]);
+        }
+      );
+    });
   }
 
   /**
@@ -69,25 +70,42 @@ class QuizService {
   createQuiz(title: string, description: string, categoryId: number) {
     console.log('create')
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Quizzes SET title=?, description=?, categoryId=?', [title, description, categoryId], (error, results) => {
-        if (error) return reject(error);
-        if (!results.insertId) return reject(new Error('No row inserted'));
+      pool.query(
+        'INSERT INTO Quizzes SET title=?, description=?, categoryId=?',
+        [title, description, categoryId],
+        (error, results) => {
+          if (error) return reject(error);
+          if (!results.insertId) return reject(new Error('No row inserted'));
 
-        resolve(Number(results.insertId));
-      });
+          resolve(Number(results.insertId));
+        }
+      );
     });
   }
 
-
-  // ikke ferdig 
-  createQuestions(quizId: number, question: string, answ0: string , answ1: string, answ2: string, answ3: string) {
+  // ikke ferdig
+  createQuestions(
+    quizId: number,
+    question: string,
+    answ0: string,
+    answ1: string,
+    answ2: string,
+    answ3: string,
+    numCorrect: number
+  ) {
+    console.log('utenfor create question - router');
     return new Promise<number>((resolve, reject) => {
-      pool.query('INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?', [quizId, question, answ0, answ1, answ2, answ3], (error, results) => {
-        if (error) return reject(error);
-        if (!results.insertId) return reject(new Error('No row inserted'));
+      pool.query(
+        'INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?, numCorrect=?',
+        [quizId, question, answ0, answ1, answ2, answ3, numCorrect],
+        (error, results) => {
+          if (error) return reject(error);
+          if (!results.insertId) return reject(new Error('No row inserted'));
 
-        resolve(Number(results.insertId));
-      });
+          resolve(Number(results.insertId));
+          console.log('inni create qustion - reuter');
+        }
+      );
     });
   }
 
@@ -116,15 +134,14 @@ class QuizService {
   getQuizQuestions(quizId: number) {
     return new Promise<QuestionType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Questions WHERE quizId=?', [quizId], (error, results) => {
-        if (error) return reject(error)
+        if (error) return reject(error);
 
-        resolve(results)
-      })
-    })
+        resolve(results);
+      });
+    });
   }
 
- getAllCategories() {
-   console.log('halla')
+  getAllCategories() {
     return new Promise<CategoryType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Categories', (error, results) => {
         if (error) return reject(error);
@@ -160,6 +177,5 @@ class QuizService {
   }
 }
 
-
- const quizService = new QuizService();
+const quizService = new QuizService();
 export default quizService;

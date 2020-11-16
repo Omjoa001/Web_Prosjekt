@@ -114,11 +114,10 @@ export class BrowseQuizzes extends Component {
     this.categories.forEach((category) => {
       jsx.push(
         <Column>
-          <Form.Checkbox
-            onChange={(event) => {
-              category.checked = event.target.checked;
-            }}
-          />
+          <Form.Checkbox onChange={(event) => 
+            {category.checked = event.target.checked }
+            }/> 
+          &nbsp;&nbsp;&nbsp;
           {category.name}
         </Column>
       );
