@@ -117,7 +117,7 @@ router.put('/quiz/:id', (request, response) => {
   const id = Number(request.params.id);
 
   const data = request.body;
-  if(data && typeof data.title == 'string' && data.title.length != 0 && typeof data.description =='string' && typeof data.categoryId == 'string' ){
+  if(data && typeof data.title == 'string' && data.title.length != 0 && typeof data.description =='string' && typeof data.categoryId == 'number' ){
     quizService
       .updateQuiz(data.title, data.description, data.categoryId, id)
       .then((quiz) => response.send(quiz))
