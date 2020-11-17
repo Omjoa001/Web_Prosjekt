@@ -23,6 +23,16 @@ const testCategories: CategoryType[] = [
     {id: 3, category: 'Fotball'}  
 ];
 
+/**
+ * 
+ * Det som er da::....
+ * skal vi mekke noen internal error tester?
+ * 
+ * hvordan funker det.
+ * 
+ */
+
+
 
 // Since API is not compatible with v1, API version is increased to v2
 axios.defaults.baseURL = 'http://localhost:3001/api/v2';
@@ -52,7 +62,7 @@ beforeEach((done) => {
             testQuizzes[1].description, 
             testQuizzes[1].categoryId
             )
-        ) // Create testTask[1] after testTask[0] has been created
+        ) // Create testQuizzes[1] after testQuizzes[0] has been created
         .then(() => 
         quizService
         .createQuiz(
@@ -60,7 +70,7 @@ beforeEach((done) => {
             testQuizzes[2].description, 
             testQuizzes[2].categoryId
             )
-        ) // Create testTask[2] after testTask[1] has been created
+        ) // Create testQuizzes[2] after testQuizzes[1] has been created
         .then(() => done()); // Call done() after testQuizzes[2] has been created
     });
 });
@@ -70,7 +80,7 @@ beforeEach((done) => {
     pool.query('TRUNCATE TABLE Questions', (error) => {
         if (error) return done.fail(error);
 
-        // Create testTasks sequentially in order to set correct id, and call done() when finished
+        // Create testQuestions sequentially in order to set correct id, and call done() when finished
         quizService
         .createQuestions(
             testQuestions[0].quizId, 
@@ -92,7 +102,7 @@ beforeEach((done) => {
             testQuestions[1].answ3,
             testQuestions[1].numCorrect
             )
-        ) // Create testTask[1] after testTask[0] has been created
+        ) // Create testQuestions[1] after testQuestions[0] has been created
         .then(() => 
         quizService
         .createQuestions(
@@ -104,8 +114,8 @@ beforeEach((done) => {
             testQuestions[2].answ3,
             testQuestions[2].numCorrect
             )
-        ) // Create testTask[2] after testTask[1] has been created
-        .then(() => done()); // Call done() after testQuizzes[2] has been created
+        ) // Create testQuestions[2] after testQuestions[1] has been created
+        .then(() => done()); // Call done() after testQuestions[2] has been created
     });
 });
 
