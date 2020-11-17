@@ -10,6 +10,7 @@ import {
   type CategoryType,
   type QuestionType,
   type AnswerType,
+  type CategoryFilterType,
 } from './kazoot-service';
 
 const history = createHashHistory();
@@ -23,10 +24,8 @@ export class BrowseQuizzes extends Component {
 
   // Dummy array of categories
   // TODO: Replace with database call
-//  categories = [];
-  categories: [] = [
-    { id: 1, name: 'Failed to get categories', checked: false }
-  ];
+  //  categories = [];
+  categories: CategoryFilterType[] = [{ id: 1, name: 'Failed to get categories', checked: false }];
   /**
    * Renders category names with checkboxes.
    * Handles checkbox state.
@@ -64,7 +63,7 @@ export class BrowseQuizzes extends Component {
 
     this.categories.map((category) => {
       if (category.checked) {
-        console.log(this.quizzes)
+        console.log(this.quizzes);
         this.quizzes.map((quiz) => {
           if (quiz.categoryId == category.id) {
             catFilter.push(quiz);
@@ -87,7 +86,7 @@ export class BrowseQuizzes extends Component {
    * Searches for the title or description of quizzes in the selected categories
    */
   search() {
-    const filteredQuizzes = this.categoryFilter();
+    const filteredQuizzes: <() => {QuizType}> = this.categoryFilter();
     return filteredQuizzes.filter(
       (quiz) =>
         quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
@@ -129,15 +128,17 @@ export class BrowseQuizzes extends Component {
     );
   }
   mounted() {
-    categoryService.getAllCategories()
-    .then((c) => {
-      this.categories = c
-      console.log(this.categories)
-    })
-    .then(() => {this.categories.map((cat) => {
-      cat.checked = false;
-    })
-    })
+    categoryService
+      .getAllCategories()
+      .then((c) => {
+        this.categories = c;
+        console.log(this.categories);
+      })
+      .then(() => {
+        this.categories.map((cat) => {
+          cat.checked = false;
+        });
+      });
 
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }

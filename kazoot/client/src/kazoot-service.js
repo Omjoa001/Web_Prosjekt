@@ -31,6 +31,13 @@ export type CategoryType = {
   category: string,
 };
 
+export type CategoryFilterType = {
+  id?: number,
+  category?: string,
+  checked?: boolean,
+};
+
+
 export type Quiz = {
   id: number,
   title: string,
