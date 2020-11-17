@@ -83,17 +83,27 @@ export class QuizEditor extends Component {
             tempQuestion.quizId = q.quizId;
             tempQuestion.questionText = q.question;
 
-            let : string[] = [];
-            questions.push(answ0);
-            questions.push(answ1);
-            questions.push(answ2);
-            questions.push(answ3);
+            // Stores string value of all answers
+            // TODO: Add support for more answers
+            let answers: string[] = [];
+            answers.push(answ0);
+            answers.push(answ1);
+            answers.push(answ2);
+            answers.push(answ3);
+
+            let correct: string[] = [];
+            let incorrect: string[] = [];
+            for (let i = 0; i < q.numCorrect; i++) correct.push(answers[i]);
+            for (let i = q.numCorrect; i < answers.length; i++) correct.push(answers[i]);
+
+            // answerobjs: AnswerType[] = [];
+            // correct.forEach((ans) => {
+            // });
 
             tempQuestions.push(tempQuestion);
-          })
+          });
           // this.setState({questions: q});
-        })
-
+        });
       });
     } else if (this.mode == 'new') {
       quizService.getNextId().then((next) => (this.id = next.AUTO_INCREMENT));
