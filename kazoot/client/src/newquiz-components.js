@@ -106,7 +106,7 @@ export class QuizEditor extends Component {
         });
       });
     } else if (this.mode == 'new') {
-      quizService.getNextId().then((next) => (this.id = next.AUTO_INCREMENT));
+      quizService.getNextId().then((next) => (this.id = next[0].AUTO_INCREMENT));
     }
 
     categoryService.getAllCategories().then((cats) => (this.categories = cats));
