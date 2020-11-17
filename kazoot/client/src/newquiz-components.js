@@ -395,7 +395,7 @@ export class QuizEditor extends Component {
    * Render troubleshooting information about quiz and question state by setting debug variable
    */
   renderStateInfo() {
-    let debug = true;
+    let debug = false;
     if (debug)
       return (
         <Card title="NewQuiz's state">
