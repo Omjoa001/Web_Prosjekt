@@ -322,6 +322,7 @@ export class QuizEditor extends Component {
    * Delete the quiz
    */
   deleteQuiz() {
+
     questionService
       .deleteQuestions(this.quiz.id)
       .catch((error: Error) => Alert.danger('Error deleting Questions: ' + error.message));
