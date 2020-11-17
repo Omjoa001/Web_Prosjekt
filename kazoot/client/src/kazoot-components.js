@@ -25,9 +25,9 @@ export class Home extends Component {
       <>
         <LayoutCenter title="Welcome">
           <div class= 'font-italic'>To Kazoot - our Quiz App </div> <br></br>
-        <h4><small class='font-italic, text-muted'>Find a playable quiz by browsing through <br></br>
-        existing quizzes by clicking on "Browse Quiz" <br></br>  
-        or click on "New Quiz" to create a new quiz.  
+        <h4><small class='font-italic, text-muted'>Browse through playable quizzes <br></br>
+        by clicking on "Browse Quiz", <br></br>  
+        or create a brand new quiz by clicking on "New Quiz"!  
         </small></h4>
       </LayoutCenter>
 
