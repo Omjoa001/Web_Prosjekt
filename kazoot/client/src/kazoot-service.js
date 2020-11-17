@@ -38,6 +38,16 @@ export type Quiz = {
 };
 
 /**
+ * Type used to store question objects in state
+ */
+export type StateQuestionType = {
+  id: number,
+  quizId: number,
+  questionText: string,
+  answers: AnswerType[],
+};
+
+/**
  * Service to retrieve and manage questions
  */
 class QuestionService {
