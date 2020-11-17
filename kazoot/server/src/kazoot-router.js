@@ -31,7 +31,6 @@ router.get('/quizzes/:id', (request, response) => {
 });
 
 router.post('/quizzes', (request, response) => {
-  console.log('post');
   const data = request.body;
   if (
     data &&
@@ -99,7 +98,6 @@ router.get('/questions', (request, response) => {
 
 router.get('/quizQuestions/:id', (request, response) => {
   const quizId = Number(request.params.id);
-  console.log('quizId');
   quizService
     .getQuizQuestion(quizId)
     .then((quiz) => (quiz ? response.send(quiz) : response.status(404).send('Question not found')))

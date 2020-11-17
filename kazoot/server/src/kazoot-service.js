@@ -10,6 +10,7 @@ export type QuestionType = {
   answ1: string,
   answ2: string,
   answ3: string,
+  numCorrect: number,
 };
 
 export type QuizType = {
@@ -37,7 +38,7 @@ class QuizService {
         'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "Quizzes"',
         (error, results) => {
           if (error) return reject(error);
-          resolve(results[0]);
+          resolve(results);
         }
       );
     });
@@ -92,7 +93,6 @@ class QuizService {
     answ3: string,
     numCorrect: number
   ) {
-    console.log('utenfor create question - router');
     return new Promise<number>((resolve, reject) => {
       pool.query(
         'INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?, numCorrect=?',
@@ -102,7 +102,6 @@ class QuizService {
           if (!results.insertId) return reject(new Error('No row inserted'));
 
           resolve(Number(results.insertId));
-          console.log('inni create qustion - reuter');
         }
       );
     });
