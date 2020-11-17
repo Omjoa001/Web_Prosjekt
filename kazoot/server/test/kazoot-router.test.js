@@ -126,12 +126,10 @@ afterAll((done) => {
     test('Get Next Quiz Id (200 OK)', (done) => {
         axios.get<{}>('/nextId').then((response) => {
             expect(response.status).toEqual(200);
-            expect(response.data).toEqual({AUTO_INCREMENT: 38})
+            expect(response.data[1]).toEqual({AUTO_INCREMENT: 4})
             done();
         })
     })
-
-
 
     test('Fetch all quizzes (200 OK)', (done) => {
         axios.get<QuizType[]>('/quizzes').then((response) => {
@@ -248,14 +246,6 @@ describe('Fetch Questions (GET)', () => {
           });
     })
 
-    test.skip('Fetch Question with id: 1 (200 OK)', (done) => {
-        axios.get<QuestionType>('/questions/1').then((response) => {
-            expect(response.status).toEqual(200);
-            expect(response.data).toEqual(testQuestions[0]);
-            done();
-        })
-    });
-
     test('Fetch Questions with quizId: 1 (200 OK)', (done) => {
     axios.get<QuestionType>('/quizQuestions/1').then((response) => {
             expect(response.status).toEqual(200);
@@ -273,10 +263,46 @@ describe('Fetch Questions (GET)', () => {
         done();
         })  
     });
-
 })
 
+describe('Create questions ', () => {
 
+    test('Create new question (200 Created)', (done) => {
+        axios
+        .post<{}, number>('/questions', { quizId: 2, question: 'Hva er 10*2?', answ0: '20', answ1: '10', answ2: '15', answ3: '4 ', numCorrect: 1})
+        .then((response) => {
+             expect(response.status).toEqual(200);
+             expect(response.data).toEqual({ id: 4});
+             done();
+         });
+     });
+ 
+     test('Create new questions (400 Bad Request)', (done) => {
+         axios
+         .post<{}, number>('/questions', { quizId: 1, question: '', answ0: 'Hei', answ1: 'på', answ2: 'deg', answ3: '1', numCorrect: 4} )
+         .catch((error: Error) => {
+             expect(error.message).toEqual('Request failed with status code 400')
+             done();
+         })
+     });
+})
+
+describe('Delete questions', () => {
+
+    test('Delete question 1 (200 OK)', (done) => {
+        axios.delete('/questions/1').then((response) => {
+            expect(response.status).toEqual(200);
+            done();
+          });
+    })
+
+    test('Delete question (500)', (done) => {
+        axios.delete('/questions/10').catch((error: Error) => {
+            expect(error.message).toEqual('Request failed with status code 500');
+            done();
+          });
+    })
+})
 
 
 
