@@ -19,27 +19,42 @@ const history = createHashHistory();
  */
 export class BrowseQuizzes extends Component {
   quizzes: Array<{ id: number, title: string, description: string }> = [];
-
-  // Dummy array of categories
-  // TODO: Replace with database call
-  //  categories = [];
   categories: [] = [{ id: 1, name: 'Failed to get categories', checked: false }];
+
+  mounted() {
+    categoryService
+      .getAllCategories()
+      .then((c) => {
+        this.categories = c;
+        console.log(this.categories);
+      })
+      .then(() => {
+        this.categories.map((cat) => {
+          cat.checked = false;
+        });
+      });
+
+    quizService.getAllQuizzes().then((q) => (this.quizzes = q));
+  }
+
   /**
    * Renders category names with checkboxes.
    * Handles checkbox state.
    */
   renderCategories() {
-    this.categories.map((category) => {
+    return this.categories.map((category) => {
       return (
-        <Column>
-          <Form.Checkbox
-            onChange={(event) => {
-              category.checked = event.target.checked;
-            }}
-          />
-          &nbsp;&nbsp;&nbsp;
-          {category.category}
-        </Column>
+        <>
+          <Column>
+            <Form.Checkbox
+              onChange={(event) => {
+                category.checked = event.target.checked;
+              }}
+            />
+            &nbsp;&nbsp;&nbsp;
+            {category.category}
+          </Column>
+        </>
       );
     });
   }
@@ -47,25 +62,28 @@ export class BrowseQuizzes extends Component {
   /**
    * Filters the quizzes array based on the selected categories.
    * If no categories are selected, all quizzes are shown.
+   * @return - quizzes with selected category
    */
   categoryFilter() {
-    let catFilter: [] = [];
+    let filteredQuizzes: [] = [];
 
     this.categories.map((category) => {
       if (category.checked) {
-        console.log(this.quizzes);
+        console.log(`catfiler: ${this.quizzes}`);
         this.quizzes.map((quiz) => {
           if (quiz.categoryId == category.id) {
-            catFilter.push(quiz);
+            filteredQuizzes.push(quiz);
           }
         });
       }
     });
 
-    if (catFilter.length == 0) {
+    console.log(`catfilter: ${JSON.stringify(filteredQuizzes)}`);
+
+    if (filteredQuizzes.length == 0) {
       return this.quizzes;
     } else {
-      return catFilter;
+      return filteredQuizzes;
     }
   }
 
@@ -77,11 +95,21 @@ export class BrowseQuizzes extends Component {
    */
   search() {
     const filteredQuizzes = this.categoryFilter();
-    return filteredQuizzes.filter(
-      (quiz) =>
-        quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
-        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase())
-    );
+
+    console.log(`search filteredquizzes: ${JSON.stringify(filteredQuizzes)}`);
+    console.log(`search searchterm: ${this.searchterm}`);
+
+    let hei = filteredQuizzes.filter((quiz) => {
+      console.log(`fq quiz: ${JSON.stringify(quiz)}`);
+      console.log(`fq quiz: ${quiz.title.toLowerCase().includes('torstein')}`);
+      quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) //||
+        // quiz.description.toLowerCase().includes(this.searchterm.toLowerCase());
+    });
+
+    console.log(`search searchterm: ${this.searchterm}`);
+    console.log(`search hei: ${hei}`);
+
+    return hei;
   }
 
   /**
@@ -89,6 +117,7 @@ export class BrowseQuizzes extends Component {
    */
   editSearchTerm(event) {
     this.searchterm = event.currentTarget.value;
+    console.log(`editst: ${this.searchterm}`);
   }
 
   render() {
@@ -112,25 +141,11 @@ export class BrowseQuizzes extends Component {
         </Card>
 
         <Card title="Quizzes">
+          {console.log(`inside render: ${JSON.stringify(this.search())}`)}
           <QuizTileGrid quizarr={this.search()} />
         </Card>
       </>
     );
-  }
-  mounted() {
-    categoryService
-      .getAllCategories()
-      .then((c) => {
-        this.categories = c;
-        console.log(this.categories);
-      })
-      .then(() => {
-        this.categories.map((cat) => {
-          cat.checked = false;
-        });
-      });
-
-    quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }
 }
 
@@ -147,7 +162,7 @@ export class QuizTileGrid extends Component {
   }
 
   /**
-   * Generates the grid of quizzes and pushes it to an array of JSX elements.
+   * Generates the grid of quizzes
    */
   quizzesToJSX() {
     // Array of rows of quizzes in columns
@@ -174,20 +189,18 @@ export class QuizTileGrid extends Component {
   }
 
   /**
-   * Surrounds each quiz in a row with a Column tag and pushes it to an array of JSX elements.
+   * Surrounds each quiz in a row in column tags
    */
-
   rowContents(row) {
-    let jsx: [] = [];
     for (const quiz of row) {
-      jsx.push(
+      return (
         <Column>
           <Quiz quiz={quiz}></Quiz>
         </Column>
       );
     }
-    return jsx;
   }
+
   mounted() {
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }
@@ -213,6 +226,7 @@ export class Quiz extends Component {
   editButton() {
     history.push('/editQuiz/' + this.props.id);
   }
+
   render() {
     return (
       <>
