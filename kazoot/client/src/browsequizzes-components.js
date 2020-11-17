@@ -64,8 +64,9 @@ export class BrowseQuizzes extends Component {
 
     this.categories.map((category) => {
       if (category.checked) {
+        console.log(this.quizzes)
         this.quizzes.map((quiz) => {
-          if (quiz.category == category.id) {
+          if (quiz.categoryId == category.id) {
             catFilter.push(quiz);
           }
         });
