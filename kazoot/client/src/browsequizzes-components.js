@@ -190,13 +190,6 @@ export class BrowseQuizzes extends Component {
  * TODO: Make this accept quiz objects instead.
  */
 export class Quiz extends Component {
-  playButton() {
-    history.push('/playQuiz/' + this.props.quiz.id);
-  }
-
-  editButton() {
-    history.push('/editQuiz/' + this.props.quiz.id);
-  }
 
   render() {
     return (
@@ -206,7 +199,9 @@ export class Quiz extends Component {
           <hr />
           <Row>
             <Column left>
-              <Button.Success onClick={this.props.quiz.playButton}>Play</Button.Success>
+              <Button.Success onClick={() => history.push('/playQuiz/' + this.props.quiz.id)}>
+                Play
+              </Button.Success>
             </Column>
             <Column right>
               <Button.Primary onClick={() => history.push('/editQuiz/' + this.props.quiz.id)}>
