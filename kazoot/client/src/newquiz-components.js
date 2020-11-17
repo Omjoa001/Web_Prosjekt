@@ -55,16 +55,50 @@ export class QuizEditor extends Component {
   title: string = '';
   description: string = '';
   categoryId: number = 0;
-  nextId: number = 0;
+  // nextId: number = 0; // new quiz
+  id: number = 0;
   nextQuestionId: number = 1; // "local" ID used for indexing
   categories: CategoryType[] = [];
   mode: string = ''; // 'new' quiz mode or 'edit' quiz mode (mandatory!)
-  quiz: QuizType = {};
+  quiz: QuizType = {}; // Quiz to edit in 'edit' mode
 
   mounted() {
     this.title = this.props.title;
+    this.id = this.props.id;
     this.mode = this.props.mode;
-    // quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+
+    console.log(`${this.mode} mode`);
+
+    if (this.mode == 'edit') {
+      this.id = this.props.id;
+      quizService.getQuiz(this.id).then((q) => {
+        this.quiz = q;
+        console.log(JSON.stringify(this.quiz));
+        questionService.getQuizQuestion(this.id).then((qs) => {
+          console.log(`questions: ${JSON.stringify(qs)}`);
+          let tempQuestions: StateQuestionType[] = [];
+          qs.forEach((q) => {
+            let tempQuestion: StateQuestionType;
+            tempQuestion.id = q.id;
+            tempQuestion.quizId = q.quizId;
+            tempQuestion.questionText = q.question;
+
+            let : string[] = [];
+            questions.push(answ0);
+            questions.push(answ1);
+            questions.push(answ2);
+            questions.push(answ3);
+
+            tempQuestions.push(tempQuestion);
+          })
+          // this.setState({questions: q});
+        })
+
+      });
+    } else if (this.mode == 'new') {
+      quizService.getNextId().then((next) => (this.id = next.AUTO_INCREMENT));
+    }
+
     categoryService.getAllCategories().then((cats) => (this.categories = cats));
   }
 
@@ -86,7 +120,7 @@ export class QuizEditor extends Component {
     let index = this.findIndexOfQuestion(id);
     if (index != -1) {
       newarray[index].questionText = questionText;
-      newarray[index].quizId = this.nextId;
+      newarray[index].quizId = this.id;
       newarray[index].id = id;
       newarray[index].answers = answers;
       this.setState({ questions: newarray });
@@ -153,7 +187,7 @@ export class QuizEditor extends Component {
   newQuestionObject() {
     let newQuestion: StateQuestionType = {};
     newQuestion.id = this.getNewId();
-    newQuestion.quizId = this.nextId;
+    newQuestion.quizId = this.id;
     newQuestion.questionText = '';
     newQuestion.answers = [
       { answerText: '', correct: false },
@@ -246,27 +280,32 @@ export class QuizEditor extends Component {
    */
   saveQuiz() {
     console.log('Saved quiz');
+    console.log(JSON.stringify(this.quiz));
 
-    this.state.questions.forEach((question) => {
-      let correct: string[] = [];
-      let incorrect: string[] = [];
-      let answ0: string = '';
-      let answ1: string = '';
-      let answ2: string = '';
-      let answ3: string = '';
+    if (false) {
+      questionService.deleteQuestions(this.quiz.id);
 
-      // Sort the answers based on correctness
-      question.answers.forEach((answer) => {
-        if (answer.correct) correct.push(answer.answerText);
-        else incorrect.push(answer.answerText);
+      this.state.questions.forEach((question) => {
+        let correct: string[] = [];
+        let incorrect: string[] = [];
+        let answ0: string = '';
+        let answ1: string = '';
+        let answ2: string = '';
+        let answ3: string = '';
+
+        // Sort the answers based on correctness
+        question.answers.forEach((answer) => {
+          if (answer.correct) correct.push(answer.answerText);
+          else incorrect.push(answer.answerText);
+        });
+        let numCorrect: number = correct.length;
+        let allAnswers: string[] = correct.concat(incorrect);
+
+        // createQuestion
       });
-      let numCorrect: number = correct.length;
-      let allAnswers: string[] = correct.concat(incorrect);
 
-      // createQuestion
-    });
-
-    // quizservice update
+      // quizservice update
+    }
   }
 
   /**
@@ -319,10 +358,10 @@ export class QuizEditor extends Component {
         </Row>
         <br></br>
         <Row>
-            {/* TODO: Remove this?  */}
+          {/* TODO: Remove this?  */}
           <Column width={3}>Quiz-Id:</Column>
           <Column>
-            <Form.Input value={this.nextId} disabled></Form.Input>
+            <Form.Input value={this.id} disabled></Form.Input>
           </Column>
         </Row>
         <br></br>
@@ -346,14 +385,14 @@ export class QuizEditor extends Component {
    * Render troubleshooting information about quiz and question state by setting debug variable
    */
   renderStateInfo() {
-    let debug = false;
+    let debug = true;
     if (debug)
       return (
         <Card title="NewQuiz's state">
           <div>
             <div>quiz title: {this.title}</div>
             <div>category: {this.categoryId}</div>
-            <div>quiz id: {this.nextId}</div>
+            <div>quiz id: {this.id}</div>
             <div>quiz desc: {this.description}</div>
           </div>
           {this.state.questions.map((question) => {
@@ -402,7 +441,7 @@ export class QuizEditor extends Component {
           <Row>
             <Button.Submit
               onClick={() => {
-                this.createQuiz();
+                this.saveQuiz();
               }}
             >
               🔥 Save Quiz 🔥
