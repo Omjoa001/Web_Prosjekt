@@ -37,7 +37,7 @@ class QuizService {
         'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = "Quizzes"',
         (error, results) => {
           if (error) return reject(error);
-          resolve(results[0]);
+          resolve(results);
         }
       );
     });
