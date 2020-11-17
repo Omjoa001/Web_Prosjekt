@@ -35,6 +35,7 @@ export class NewQuiz extends Component {
 /**
  * "Generic" interface for creating or editing quizzes
  * It's functionality is determined based on props and callback functions passed to it.
+ * The 'mode' prop _must_ be set to 'edit' or 'new'.
  */
 export class QuizEditor extends Component {
   // This should make flow happy
@@ -57,7 +58,7 @@ export class QuizEditor extends Component {
   nextId: number = 0;
   nextQuestionId: number = 1; // "local" ID used for indexing
   categories: CategoryType[] = [];
-  mode: string = ''; // 'new' quiz mode or 'edit' quiz mode
+  mode: string = ''; // 'new' quiz mode or 'edit' quiz mode (mandatory!)
   quiz: QuizType = {};
 
   mounted() {
@@ -318,6 +319,7 @@ export class QuizEditor extends Component {
         </Row>
         <br></br>
         <Row>
+            {/* TODO: Remove this?  */}
           <Column width={3}>Quiz-Id:</Column>
           <Column>
             <Form.Input value={this.nextId} disabled></Form.Input>
@@ -378,6 +380,9 @@ export class QuizEditor extends Component {
       );
   }
 
+  /**
+   * Generate buttons based on mode
+   */
   theButton() {
     if (this.mode == 'new') {
       return (
@@ -404,19 +409,19 @@ export class QuizEditor extends Component {
             </Button.Submit>
           </Row>
           <br></br>
-            <center>
-          <Row>
+          <center>
+            <Row>
               <Column>
                 <Button.Danger
                   onClick={() => {
-                    this.createQuiz();
+                    this.deleteQuiz();
                   }}
                 >
                   ☠ Delete Quiz ☠
                 </Button.Danger>
               </Column>
-          </Row>
-            </center>
+            </Row>
+          </center>
         </>
       );
     }
