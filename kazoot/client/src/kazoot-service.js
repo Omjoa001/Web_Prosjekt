@@ -38,6 +38,16 @@ export type Quiz = {
 };
 
 /**
+ * Type used to store question objects in state
+ */
+export type StateQuestionType = {
+  id: number,
+  quizId: number,
+  questionText: string,
+  answers: AnswerType[],
+};
+
+/**
  * Service to retrieve and manage questions
  */
 class QuestionService {
@@ -87,6 +97,10 @@ class QuestionService {
       })
       .then((response) => response.data.id);
   }
+
+  deleteQuestions(id: number){
+    return axios.delete<void>('/questions/' + id).then((response) => response.data);
+  }
 }
 
 /**
@@ -127,7 +141,25 @@ class QuizService {
       })
       .then((response) => response.data.id);
   }
+
+
+  updateQuiz(id: number, title: string, description: string, categoryId: number){
+    console.log(categoryId)
+    return axios
+      .put<{}, {id: number, categoryId: number}>('/quiz/' + id, {
+        id: id,
+        title: title,
+        description: description,
+        categoryId: categoryId,
+      })
+      .then((response) => response.data.id);
+  }
+
+  deleteQuiz(id: number) {
+    return axios.delete<void>('/quiz/' + id).then((response) => response.data);
+  }
 }
+ 
 
 /**
  * Service to manage categories

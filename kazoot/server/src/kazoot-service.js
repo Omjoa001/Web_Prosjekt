@@ -67,8 +67,8 @@ class QuizService {
   }
 
   //Ikke ferdig - CategorId er ikke en string!!
-  createQuiz(title: string, description: string, categoryId: string) {
-    console.log('create');
+  createQuiz(title: string, description: string, categoryId: number) {
+    console.log('create')
     return new Promise<number>((resolve, reject) => {
       pool.query(
         'INSERT INTO Quizzes SET title=?, description=?, categoryId=?',
@@ -109,9 +109,9 @@ class QuizService {
     });
   }
 
-  delete(id: number) {
+  deleteQuestions(quizId: number) {
     return new Promise<void>((resolve, reject) => {
-      pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
+      pool.query('DELETE FROM Questions WHERE quizId=?', [quizId], (error, results) => {
         if (error) return reject(error);
         if (!results.affectedRows) reject(new Error('No row deleted'));
 
@@ -119,6 +119,7 @@ class QuizService {
       });
     });
   }
+
 
   getAllQuestions() {
     return new Promise<QuestionType[]>((resolve, reject) => {
@@ -147,6 +148,32 @@ class QuizService {
         resolve(results);
       });
     });
+  }
+
+  updateQuiz(title: string, description: string, categoryId: number, id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query(
+        'UPDATE Quizzes SET title=?, description=?, categoryId=? WHERE id=?',
+        [title, description, categoryId, id],
+        (error, results) => {
+          if (error) return reject(error);
+
+          resolve();
+        }
+      );
+    });
+  }
+
+
+  deleteQuiz(id: number) {
+    return new Promise<void>((resolve, reject) => {
+      pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
+        if (error) return reject(error);
+        if (!results.affectedRows) reject(new Error('No row deleted'));
+
+        resolve();
+      });
+    })
   }
 }
 
