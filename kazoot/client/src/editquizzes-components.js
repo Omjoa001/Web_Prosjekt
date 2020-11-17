@@ -5,11 +5,13 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
+import { QuizEditor } from './newquiz-components';
 import {
   type QuizType,
   type CategoryType,
   type QuestionType,
   type AnswerType,
+  type StateQuestionType,
 } from './kazoot-service';
 
 const history = createHashHistory();
@@ -20,7 +22,6 @@ export class EditQuiz extends Component<{ match: { params: { id: number } } }> {
   categories: CategoryType[] = [];
   quiz: QuizType = {};
 
-  // funker som fle
   mounted() {
     this.id = this.props.match.params.id;
     quizService.getQuiz(this.id).then((q) => (this.quiz = q));
@@ -28,9 +29,21 @@ export class EditQuiz extends Component<{ match: { params: { id: number } } }> {
   }
 
   render() {
+    return (
+      <>
+        <QuizEditor title='Editing Quiz' mode='edit' id={this.id}/>
+      </>
+    );
+  }
+
+}
+
+export class oldEditQuiz extends Component<{ match: { params: { id: number } } }> {
+  render() {
     //if (questions[0] = undefined) return <div>loading</div>
     return (
       <>
+
         <Card title={'Edit Quiz ' + this.quiz.id}>
           <Card>
             <Row>

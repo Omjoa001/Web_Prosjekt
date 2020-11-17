@@ -10,19 +10,10 @@ import {
   type CategoryType,
   type QuestionType,
   type AnswerType,
+  type StateQuestionType,
 } from './kazoot-service';
 
 const history = createHashHistory();
-
-/**
- * Type used to store question objects in state
- */
-type StateQuestionType = {
-  id: number,
-  quizId: number,
-  questionText: string,
-  answers: AnswerType[],
-};
 
 /**
  * Component which renders the New Quiz page.
@@ -32,6 +23,20 @@ type StateQuestionType = {
  * These question components receive callbacks to update the parent's state as props.
  */
 export class NewQuiz extends Component {
+  render() {
+    return (
+      <>
+        <QuizEditor title="Creating a new quiz" mode="new" />
+      </>
+    );
+  }
+}
+
+/**
+ * "Generic" interface for creating or editing quizzes
+ * It's functionality is determined based on props and callback functions passed to it.
+ */
+export class QuizEditor extends Component {
   // This should make flow happy
   state: {
     questions: StateQuestionType[],
@@ -52,9 +57,13 @@ export class NewQuiz extends Component {
   nextId: number = 0;
   nextQuestionId: number = 1; // "local" ID used for indexing
   categories: CategoryType[] = [];
+  mode: string = ''; // 'new' quiz mode or 'edit' quiz mode
+  quiz: QuizType = {};
 
   mounted() {
-    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    this.title = this.props.title;
+    this.mode = this.props.mode;
+    // quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
     categoryService.getAllCategories().then((cats) => (this.categories = cats));
   }
 
@@ -180,6 +189,7 @@ export class NewQuiz extends Component {
 
   /**
    * Create a new quiz.
+   * Displayed if mode is set to 'new'
    * TODO: Remove console logs when stable
    */
   createQuiz() {
@@ -227,6 +237,49 @@ export class NewQuiz extends Component {
       );
     });
     history.push('/BrowseQuizzes');
+  }
+
+  /**
+   * Save the quiz.
+   * Displayed if mode is set to 'edit'.
+   */
+  saveQuiz() {
+    console.log('Saved quiz');
+
+    this.state.questions.forEach((question) => {
+      let correct: string[] = [];
+      let incorrect: string[] = [];
+      let answ0: string = '';
+      let answ1: string = '';
+      let answ2: string = '';
+      let answ3: string = '';
+
+      // Sort the answers based on correctness
+      question.answers.forEach((answer) => {
+        if (answer.correct) correct.push(answer.answerText);
+        else incorrect.push(answer.answerText);
+      });
+      let numCorrect: number = correct.length;
+      let allAnswers: string[] = correct.concat(incorrect);
+
+      // createQuestion
+    });
+
+    // quizservice update
+  }
+
+  /**
+   * Delete the quiz
+   */
+  deleteQuiz() {
+    questionService
+      .deleteQuestions(this.quiz.id)
+      .catch((error: Error) => Alert.danger('Error deleting Questions: ' + error.message));
+
+    quizService
+      .deleteQuiz(this.quiz.id)
+      .then((id) => history.push('/BrowseQuizzes'))
+      .catch((error: Error) => Alert.danger('Error deleting Quiz: ' + error.message));
   }
 
   /**
@@ -325,12 +378,56 @@ export class NewQuiz extends Component {
       );
   }
 
+  theButton() {
+    if (this.mode == 'new') {
+      return (
+        <Row>
+          <Button.Submit
+            onClick={() => {
+              this.createQuiz();
+            }}
+          >
+            🔥 Create Quiz 🔥
+          </Button.Submit>
+        </Row>
+      );
+    } else if (this.mode == 'edit') {
+      return (
+        <>
+          <Row>
+            <Button.Submit
+              onClick={() => {
+                this.createQuiz();
+              }}
+            >
+              🔥 Save Quiz 🔥
+            </Button.Submit>
+          </Row>
+          <br></br>
+            <center>
+          <Row>
+              <Column>
+                <Button.Danger
+                  onClick={() => {
+                    this.createQuiz();
+                  }}
+                >
+                  ☠ Delete Quiz ☠
+                </Button.Danger>
+              </Column>
+          </Row>
+            </center>
+        </>
+      );
+    }
+  }
+
   render() {
     return (
       <>
         <center>
           <Column width={10}>
-            <Card title="📣 Creating a new quiz! 📣">{this.renderQuizInfo()}</Card>
+            <Card title={this.props.title}>{this.renderQuizInfo()}</Card>
           </Column>
         </center>
 
@@ -349,15 +446,7 @@ export class NewQuiz extends Component {
             ➕ Add Question
           </Button.Submit>
         </Row>
-        <Row>
-          <Button.Submit
-            onClick={() => {
-              this.createQuiz();
-            }}
-          >
-           🔥 Create Quiz 🔥
-          </Button.Submit>
-        </Row>
+        {this.theButton()}
       </>
     );
   }
