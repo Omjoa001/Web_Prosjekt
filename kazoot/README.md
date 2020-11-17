@@ -2,13 +2,12 @@
 This QuizApp is running on "localserver:3000"
 In order to reach this QuizApp on the localserver:3000, it is necessary to complete the steps described below.
 
-It is necessary to be in the right folder/path while using the terminal. The right folder is where the code is downloaded. 
+Check that you are in the correct folder/path while using the terminal. The right folder is where the code is downloaded. 
 
-Since our quiz is dependent on a database, which is already created. To make it work it must be created two files named "config.js".
-This file must be created in following path:
+Our quiz is dependent on a database which is already created. To connect to the database and get the server up and running two files named "config.js" must be created in the following folders:
 
-1) '.\kazoot\server\src'
-2) '.\kazoot\server\test'
+1) './kazoot/server/src'
+2) './kazoot/server/test'
 
 # Insert this database in '.\kazoot\server\src\config.js'
 
@@ -25,7 +24,7 @@ process.env.MYSQL_PASSWORD = 'Kazoot';
 process.env.MYSQL_DATABASE = 'stud_gruppefire_test';
 
 
-First, start the server by installing the dependecies by using a terminal. 
+First, start the server by installing the dependecies through a terminal. 
 
 ## Start server
 
@@ -35,8 +34,7 @@ npm install
 npm start
 ```
 
-The second step is to install the dependencies and bundle the client files. 
-This step is also done by using a terminal.
+The second step is to install the dependencies and bundle the client files through the terminal.
 
 ## Bundle client files to be served through server
 
@@ -48,11 +46,11 @@ npm install
 npm start
 ```
 
-After the two steps above are completed, use a webbrowser and type in localhost:3000 in the URL. 
+After the two steps above are completed, use a web browser and type in localhost:3000 in the URL. 
 The QuizApp, Kazoot, will now start running and is playable.
 
 
-If interested to run tests on client and server, do following: 
+To run tests on the client and server, do the following: 
 
 ### Run client tests:
 
