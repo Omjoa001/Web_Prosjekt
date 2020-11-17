@@ -24,18 +24,20 @@ export class EditQuiz extends Component<{ match: { params: { id: number } } }> {
 
   mounted() {
     this.id = this.props.match.params.id;
-    quizService.getQuiz(this.id).then((q) => (this.quiz = q));
+    quizService.getQuiz(this.id).then((q) => {
+      this.quiz = q;
+      console.log(`editquiz mounted quiz: ${JSON.stringify(this.quiz)}`);
+    });
     questionService.getQuizQuestion(this.id).then((p) => (this.questions = p));
   }
 
   render() {
     return (
       <>
-        <QuizEditor title='Editing Quiz' mode='edit' id={this.id}/>
+        <QuizEditor title="Editing Quiz" mode="edit" id={this.id} />
       </>
     );
   }
-
 }
 
 export class oldEditQuiz extends Component<{ match: { params: { id: number } } }> {
@@ -43,7 +45,6 @@ export class oldEditQuiz extends Component<{ match: { params: { id: number } } }
     //if (questions[0] = undefined) return <div>loading</div>
     return (
       <>
-
         <Card title={'Edit Quiz ' + this.quiz.id}>
           <Card>
             <Row>
