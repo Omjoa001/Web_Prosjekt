@@ -61,18 +61,16 @@ export class oldEditQuiz extends Component<{ match: { params: { id: number } } }
             <Row>
               <Column width={3}>Quiz-Category:</Column>
               <Column>
-                <select
+                <Form.Select
                   name="Category"
                   value={this.quiz.categoryId}
                   onChange={(event) => (this.quiz.categoryId = event.currentTarget.value)}
                 >
                   <option value={0}>Velg en kategori</option>
-                  <option value={1}>Matte</option>
-                  <option value={2}>Fotball</option>
-                  <option value={3}>Geografi</option>
-                  <option value={4}>It</option>
-                  <option value={5}>History</option>
-                </select>
+                  {this.categories.map((c) => (
+                  <option key={c.id} value={c.id}>{c.category}</option>
+                  ))}
+                </Form.Select>
               </Column>
             </Row>
             <Row>
@@ -94,11 +92,11 @@ export class oldEditQuiz extends Component<{ match: { params: { id: number } } }
               </Column>
             </Row>
           </Card>
-
+         
           {this.questions.map((q, index) => (
             <Card key={index} title={'Spørsmål ' + (index + 1)}>
               <Row>
-                <Column width={2}>Tick the correct answer: </Column>
+                <Column width={2}>Question: </Column>
                 <Column>
                   <Form.Input
                     placeholder="Question"
@@ -183,6 +181,7 @@ export class oldEditQuiz extends Component<{ match: { params: { id: number } } }
               </Row>
             </Card>
           ))}
+
 
           <Card>
             <Row>

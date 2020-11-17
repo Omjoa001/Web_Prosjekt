@@ -24,6 +24,13 @@ export class ListQuizzes extends Component {
   render() {
     return (
       <>
+        <Card>
+          <Column>
+            {[1, 2, 3, 4, 5, 6].map((rating) => (
+              <button key={rating}  width="30" onClick={() => this.button(rating)}>{rating}</ button>
+            ))}  
+          </Column>
+        </Card>
         <Card title="Max id in Quizzes table">
           <Card>
             <Row>{this.nextId}</Row>
@@ -77,10 +84,14 @@ export class ListQuizzes extends Component {
   }
 
   mounted() {
-    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    quizService.getNextId().then((next) => (this.nextId = next[0].AUTO_INCREMENT));
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
     //quizService.getQuiz(1).then((q) => (this.quiz = q));
     questionService.getAllQuestions().then((p) => (this.questions = p));
     categoryService.getAllCategories().then((c) => (this.categories = c));
+  }
+
+  button(x: number) {
+    Alert.success(x)
   }
 }
