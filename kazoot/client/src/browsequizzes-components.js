@@ -14,7 +14,6 @@ import {
 
 const history = createHashHistory();
 
-
 /**
  * Component which renders the Browse Quizzes page.
  */
@@ -23,18 +22,15 @@ export class BrowseQuizzes extends Component {
 
   // Dummy array of categories
   // TODO: Replace with database call
-//  categories = [];
-  categories: [] = [
-    { id: 1, name: 'Failed to get categories', checked: false }
-  ];
+  //  categories = [];
+  categories: [] = [{ id: 1, name: 'Failed to get categories', checked: false }];
   /**
    * Renders category names with checkboxes.
    * Handles checkbox state.
    */
   renderCategories() {
-    let jsx: Array<any> = [];
     this.categories.map((category) => {
-      jsx.push(
+      return (
         <Column>
           <Form.Checkbox
             onChange={(event) => {
@@ -46,13 +42,6 @@ export class BrowseQuizzes extends Component {
         </Column>
       );
     });
-    // jsx = (
-    //   <div style={{ margin: '25px' }}>
-    //     <Row>{jsx}</Row>
-    //   </div>
-    // );
-
-    return jsx;
   }
 
   /**
@@ -64,7 +53,7 @@ export class BrowseQuizzes extends Component {
 
     this.categories.map((category) => {
       if (category.checked) {
-        console.log(this.quizzes)
+        console.log(this.quizzes);
         this.quizzes.map((quiz) => {
           if (quiz.categoryId == category.id) {
             catFilter.push(quiz);
@@ -129,15 +118,17 @@ export class BrowseQuizzes extends Component {
     );
   }
   mounted() {
-    categoryService.getAllCategories()
-    .then((c) => {
-      this.categories = c
-      console.log(this.categories)
-    })
-    .then(() => {this.categories.map((cat) => {
-      cat.checked = false;
-    })
-    })
+    categoryService
+      .getAllCategories()
+      .then((c) => {
+        this.categories = c;
+        console.log(this.categories);
+      })
+      .then(() => {
+        this.categories.map((cat) => {
+          cat.checked = false;
+        });
+      });
 
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }
@@ -198,7 +189,7 @@ export class QuizTileGrid extends Component {
     return jsx;
   }
   mounted() {
-  quizService.getAllQuizzes().then((q) => (this.quizzes = q));
+    quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }
 }
 
@@ -230,12 +221,12 @@ export class Quiz extends Component {
           <hr />
           <Row>
             <Column left>
-              <Button.Success onClick={this.playButton}>
-                Play
-              </Button.Success>
+              <Button.Success onClick={this.playButton}>Play</Button.Success>
             </Column>
             <Column right>
-            <Button.Primary onClick={() => history.push('/editQuiz/'+this.id)}>Edit</Button.Primary>
+              <Button.Primary onClick={() => history.push('/editQuiz/' + this.id)}>
+                Edit
+              </Button.Primary>
             </Column>
           </Row>
         </TileCard>
