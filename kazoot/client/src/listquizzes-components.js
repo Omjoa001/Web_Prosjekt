@@ -77,7 +77,7 @@ export class ListQuizzes extends Component {
   }
 
   mounted() {
-    quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
+    quizService.getNextId().then((next) => (this.nextId = next[0].AUTO_INCREMENT));
     quizService.getAllQuizzes().then((q) => (this.quizzes = q));
     //quizService.getQuiz(1).then((q) => (this.quiz = q));
     questionService.getAllQuestions().then((p) => (this.questions = p));
