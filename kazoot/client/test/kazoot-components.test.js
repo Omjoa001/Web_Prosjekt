@@ -1,15 +1,14 @@
 // @flow
 
 import * as React from 'react';
-import { TaskList, TaskNew } from '../src/task-components';
-import { type Task } from '../src/task-service';
 import { shallow } from 'enzyme';
-import { Form, Button, Column } from '../src/widgets';
+import { type quizService, questionService, categoryService } from '../src/kazoot-service';
+import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from '../src/widgets';
 import { NavLink } from 'react-router-dom';
 
-jest.mock('../src/task-service', () => {
-  class quizService {
-    getAll() {
+jest.mock('../src/kazoot-service', () => {
+  class QuestionService {
+    getAllQuestions() {
       return Promise.resolve([
         { id: 1, title: 'Les leksjon', done: false },
         { id: 2, title: 'Møt opp på forelesning', done: false },
@@ -21,12 +20,12 @@ jest.mock('../src/task-service', () => {
       return Promise.resolve(4); // Same as: return new Promise((resolve) => resolve(4));
     }
   }
-  return new quizService();
+  return new QuestionService();
 });
 
-describe('Task component tests', () => {
-  test('TaskList draws correctly', (done) => {
-    const wrapper = shallow(<TaskList />);
+describe('Quiz component tests', () => {
+  test('Quiz draws correctly', (done) => {
+    const wrapper = shallow(<Home />);
 
     // Wait for events to complete
     setTimeout(() => {
@@ -42,7 +41,7 @@ describe('Task component tests', () => {
   });
 
   test('TaskNew correctly sets location on create', (done) => {
-    const wrapper = shallow(<TaskNew />);
+    const wrapper = shallow();
 
     wrapper.find(Form.Input).simulate('change', { currentTarget: { value: 'Kaffepause' } });
     // $FlowExpectedError
