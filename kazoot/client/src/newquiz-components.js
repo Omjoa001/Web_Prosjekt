@@ -26,7 +26,7 @@ export class NewQuiz extends Component {
   render() {
     return (
       <>
-        <QuizEditor title="Creating a new quiz" mode="new" />
+        <QuizEditor mode="new" />
       </>
     );
   }
@@ -63,7 +63,7 @@ export class QuizEditor extends Component {
   quiz: QuizType = {}; // Quiz to edit in 'edit' mode
 
   mounted() {
-    this.title = this.props.title;
+    this.title = '';
     this.id = this.props.id;
     this.mode = this.props.mode;
 
@@ -74,11 +74,17 @@ export class QuizEditor extends Component {
       quizService.getQuiz(this.id).then((q) => {
         this.quiz = q;
         console.log(JSON.stringify(this.quiz));
+
+        this.title = q.title;
+
         questionService.getQuizQuestion(this.id).then((qs) => {
+
           console.log(`questions: ${JSON.stringify(qs)}`);
           let tempQuestions: StateQuestionType[] = [];
+          let answerobjs: AnswerType[] = [];
+
           qs.forEach((q) => {
-            let tempQuestion: StateQuestionType;
+            let tempQuestion: StateQuestionType = {};
             tempQuestion.id = q.id;
             tempQuestion.quizId = q.quizId;
             tempQuestion.questionText = q.question;
@@ -86,23 +92,36 @@ export class QuizEditor extends Component {
             // Stores string value of all answers
             // TODO: Add support for more answers
             let answers: string[] = [];
-            answers.push(answ0);
-            answers.push(answ1);
-            answers.push(answ2);
-            answers.push(answ3);
+            answers.push(q.answ0);
+            answers.push(q.answ1);
+            answers.push(q.answ2);
+            answers.push(q.answ3);
 
             let correct: string[] = [];
             let incorrect: string[] = [];
             for (let i = 0; i < q.numCorrect; i++) correct.push(answers[i]);
             for (let i = q.numCorrect; i < answers.length; i++) correct.push(answers[i]);
 
-            // answerobjs: AnswerType[] = [];
-            // correct.forEach((ans) => {
-            // });
+            correct.forEach((ans) => {
+              answerobjs.push({
+                answerText: ans,
+                correct: true,
+              });
+            });
 
+            incorrect.forEach((ans) => {
+              answerobjs.push({
+                answerText: ans,
+                correct: false,
+              });
+            });
+
+            tempQuestion.answers = answerobjs;
             tempQuestions.push(tempQuestion);
           });
-          // this.setState({questions: q});
+
+          this.setState({questions: tempQuestions});
+
         });
       });
     } else if (this.mode == 'new') {
@@ -322,7 +341,6 @@ export class QuizEditor extends Component {
    * Delete the quiz
    */
   deleteQuiz() {
-
     questionService
       .deleteQuestions(this.quiz.id)
       .catch((error: Error) => Alert.danger('Error deleting Questions: ' + error.message));
@@ -399,7 +417,7 @@ export class QuizEditor extends Component {
     let debug = false;
     if (debug)
       return (
-        <Card title="NewQuiz's state">
+        <Card title="QuizEditor's state">
           <div>
             <div>quiz title: {this.title}</div>
             <div>category: {this.categoryId}</div>
