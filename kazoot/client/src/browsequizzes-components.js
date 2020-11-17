@@ -99,17 +99,13 @@ export class BrowseQuizzes extends Component {
     console.log(`search filteredquizzes: ${JSON.stringify(filteredQuizzes)}`);
     console.log(`search searchterm: ${this.searchterm}`);
 
-    let hei = filteredQuizzes.filter((quiz) => {
+    return filteredQuizzes.filter((quiz) => {
       console.log(`fq quiz: ${JSON.stringify(quiz)}`);
-      console.log(`fq quiz: ${quiz.title.toLowerCase().includes('torstein')}`);
-      quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) //||
-        // quiz.description.toLowerCase().includes(this.searchterm.toLowerCase());
+      console.log(`fq quiz: ${quiz.title.toLowerCase().includes(this.searchterm)}`);
+      quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
+        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase());
     });
 
-    console.log(`search searchterm: ${this.searchterm}`);
-    console.log(`search hei: ${hei}`);
-
-    return hei;
   }
 
   /**
@@ -118,6 +114,31 @@ export class BrowseQuizzes extends Component {
   editSearchTerm(event) {
     this.searchterm = event.currentTarget.value;
     console.log(`editst: ${this.searchterm}`);
+  }
+
+  /**
+   * Generates the grid of quizzes
+   */
+  quizTileGrid() {
+    // Array of rows of quizzes in columns
+    let grid: [] = [];
+
+    if (this.quizzes.length == 0) {
+      grid.push(<div>No quizzes matched the combination of categories and search 😢</div>);
+    } else {
+      let elements = [];
+      this.quizzes.forEach((quiz) => {
+        if (quiz != undefined) {
+          elements.push(
+            <Column>
+              <Quiz quiz={quiz}></Quiz>
+            </Column>
+          );
+        }
+      });
+      grid.push(<Row>{elements}</Row>);
+    }
+    return grid;
   }
 
   render() {
@@ -141,70 +162,13 @@ export class BrowseQuizzes extends Component {
         </Card>
 
         <Card title="Quizzes">
-          {console.log(`inside render: ${JSON.stringify(this.search())}`)}
-          <QuizTileGrid quizarr={this.search()} />
+          {this.quizTileGrid()}
         </Card>
       </>
     );
   }
 }
 
-/**
- * Renders the quiz tile cards in a grid.
- * Used in BrowseQuizzes.
- */
-export class QuizTileGrid extends Component {
-  quizzes: Array<any> = []; //Needs fix
-
-  render() {
-    const grid: [] = this.quizzesToJSX();
-    return <>{grid}</>;
-  }
-
-  /**
-   * Generates the grid of quizzes
-   */
-  quizzesToJSX() {
-    // Array of rows of quizzes in columns
-    let grid: [] = [];
-
-    // TODO: Replace with database call sometime?
-    let quizzes = this.quizzes;
-    if (quizzes.length == 0) {
-      grid.push(<div>No quizzes matched the combination of categories and search 😢</div>);
-    } else {
-      let elements = [];
-      quizzes.forEach((quiz) => {
-        if (quiz != undefined) {
-          elements.push(
-            <Column>
-              <Quiz quiz={quiz}></Quiz>
-            </Column>
-          );
-        }
-      });
-      grid.push(<Row>{elements}</Row>);
-    }
-    return grid;
-  }
-
-  /**
-   * Surrounds each quiz in a row in column tags
-   */
-  rowContents(row) {
-    for (const quiz of row) {
-      return (
-        <Column>
-          <Quiz quiz={quiz}></Quiz>
-        </Column>
-      );
-    }
-  }
-
-  mounted() {
-    quizService.getAllQuizzes().then((q) => (this.quizzes = q));
-  }
-}
 
 /**
  * Quiz component used in BrowseQuizzes.
