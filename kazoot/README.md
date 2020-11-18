@@ -1,6 +1,6 @@
 
-This QuizApp is running on "localserver:3000"
-In order to reach this QuizApp on the localserver:3000, it is necessary to complete the steps described below.
+This QuizApp is running on "localhost:3000".
+In order to reach this app on localhost:3000, it is necessary to complete the steps described below.
 
 Check that you are in the correct folder/path while using the terminal. The right folder is where the code is downloaded. 
 
