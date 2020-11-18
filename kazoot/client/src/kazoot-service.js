@@ -76,6 +76,7 @@ class QuestionService {
    * Get questions with given quizId
    */
   getQuizQuestion(id: number) {
+    console.log('1')
     return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
 

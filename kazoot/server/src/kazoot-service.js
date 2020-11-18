@@ -10,6 +10,7 @@ export type QuestionType = {
   answ1: string,
   answ2: string,
   answ3: string,
+  numCorrect: number,
 };
 
 export type QuizType = {
@@ -20,7 +21,7 @@ export type QuizType = {
 };
 
 export type CategoryType = {
-  id: Number,
+  id: number,
   category: string,
 };
 
@@ -68,7 +69,6 @@ class QuizService {
 
   //Ikke ferdig - CategorId er ikke en string!!
   createQuiz(title: string, description: string, categoryId: number) {
-    console.log('create')
     return new Promise<number>((resolve, reject) => {
       pool.query(
         'INSERT INTO Quizzes SET title=?, description=?, categoryId=?',
@@ -93,7 +93,6 @@ class QuizService {
     answ3: string,
     numCorrect: number
   ) {
-    console.log('utenfor create question - router');
     return new Promise<number>((resolve, reject) => {
       pool.query(
         'INSERT INTO Questions SET quizId=?, question=?, answ0=?, answ1=?, answ2=?, answ3=?, numCorrect=?',
@@ -103,7 +102,6 @@ class QuizService {
           if (!results.insertId) return reject(new Error('No row inserted'));
 
           resolve(Number(results.insertId));
-          console.log('inni create qustion - reuter');
         }
       );
     });
@@ -131,7 +129,7 @@ class QuizService {
     });
   }
 
-  getQuizQuestions(quizId: number) {
+  getQuizQuestion(quizId: number) {
     return new Promise<QuestionType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Questions WHERE quizId=?', [quizId], (error, results) => {
         if (error) return reject(error);

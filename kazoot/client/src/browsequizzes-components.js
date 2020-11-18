@@ -15,67 +15,90 @@ import {
 
 const history = createHashHistory();
 
-
 /**
  * Component which renders the Browse Quizzes page.
  */
 export class BrowseQuizzes extends Component {
   quizzes: Array<{ id: number, title: string, description: string }> = [];
+  categories: [] = [{ id: 1, name: 'Failed to get categories', checked: false }];
+  categoriesAreLoaded: boolean = false;
+  quizzesAreLoaded: boolean = false;
 
-  // Dummy array of categories
-  // TODO: Replace with database call
-  //  categories = [];
-  categories: CategoryFilterType[] = [{ id: 1, name: 'Failed to get categories', checked: false }];
+  mounted() {
+    categoryService
+      .getAllCategories()
+      .then((c) => {
+        this.categories = c;
+        console.log(this.categories);
+        this.categoriesAreLoaded = true;
+      })
+      .then(() => {
+        this.categories.map((cat) => {
+          cat.checked = false;
+        });
+      });
+
+    quizService.getAllQuizzes().then((q) => {
+      this.quizzes = q;
+      console.log(`mounted: ${this.quizzes}`);
+      this.quizzesAreLoaded = true;
+    });
+  }
+
+  updated() {
+    console.log('faen');
+  }
   /**
    * Renders category names with checkboxes.
    * Handles checkbox state.
    */
   renderCategories() {
-    let jsx: Array<any> = [];
-    this.categories.map((category) => {
-      jsx.push(
-        <Column>
-          <Form.Checkbox
-            onChange={(event) => {
-              category.checked = event.target.checked;
-            }}
-          />
-          &nbsp;&nbsp;&nbsp;
-          {category.category}
-        </Column>
+    return this.categories.map((category) => {
+      return (
+        <>
+          <Column>
+            <Form.Checkbox
+              onChange={(event) => {
+                category.checked = event.target.checked;
+                console.log(`category ${category.category} checked: ${category.checked}`);
+              }}
+            />
+            &nbsp;&nbsp;&nbsp;
+            {category.category}
+          </Column>
+        </>
       );
     });
-    // jsx = (
-    //   <div style={{ margin: '25px' }}>
-    //     <Row>{jsx}</Row>
-    //   </div>
-    // );
-
-    return jsx;
   }
 
   /**
    * Filters the quizzes array based on the selected categories.
    * If no categories are selected, all quizzes are shown.
+   * @return - quizzes whose category matches one of the selected categories
    */
   categoryFilter() {
-    let catFilter: [] = [];
+    let filteredQuizzes: QuizType[] = [];
 
-    this.categories.map((category) => {
+    console.log(`catfilt this.cats: ${JSON.stringify(this.categories)}`);
+
+    this.categories.forEach((category) => {
       if (category.checked) {
-        console.log(this.quizzes);
-        this.quizzes.map((quiz) => {
+        this.quizzes.forEach((quiz) => {
           if (quiz.categoryId == category.id) {
-            catFilter.push(quiz);
+            filteredQuizzes.push(quiz);
           }
         });
+      } else {
+        console.log(`cat not checked: ${category.category} checked: ${category.checked}`);
       }
     });
 
-    if (catFilter.length == 0) {
+    console.log(`catfilter filtq: ${filteredQuizzes}`);
+
+    if (filteredQuizzes.length == 0) {
       return this.quizzes;
     } else {
-      return catFilter;
+      return filteredQuizzes;
     }
   }
 
@@ -86,7 +109,8 @@ export class BrowseQuizzes extends Component {
    * Searches for the title or description of quizzes in the selected categories
    */
   search() {
-    const filteredQuizzes: <() => {QuizType}> = this.categoryFilter();
+    const filteredQuizzes = this.categoryFilter();
+    console.log(`search filtq: ${filteredQuizzes}`);
     return filteredQuizzes.filter(
       (quiz) =>
         quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
@@ -99,78 +123,24 @@ export class BrowseQuizzes extends Component {
    */
   editSearchTerm(event) {
     this.searchterm = event.currentTarget.value;
-  }
-
-  render() {
-    return (
-      <>
-        <Card title="Categories">
-          <div>{this.renderCategories()}</div>
-        </Card>
-
-        <Card title="Search">
-          <Row>
-            <div style={{ width: '50%' }}>
-              <Form.Input
-                type="text"
-                placeholder="🔎 Search for the title or description of a quiz"
-                value={this.searchterm}
-                onChange={this.editSearchTerm}
-              ></Form.Input>
-            </div>
-          </Row>
-        </Card>
-
-        <Card title="Quizzes">
-          <QuizTileGrid quizarr={this.search()} />
-        </Card>
-      </>
-    );
-  }
-  mounted() {
-    categoryService
-      .getAllCategories()
-      .then((c) => {
-        this.categories = c;
-        console.log(this.categories);
-      })
-      .then(() => {
-        this.categories.map((cat) => {
-          cat.checked = false;
-        });
-      });
-
-    quizService.getAllQuizzes().then((q) => (this.quizzes = q));
-  }
-}
-
-/**
- * Renders the quiz tile cards in a grid.
- * Used in BrowseQuizzes.
- */
-export class QuizTileGrid extends Component {
-  quizzes: Array<any> = []; //Needs fix
-
-  render() {
-    const grid: [] = this.quizzesToJSX();
-    return <>{grid}</>;
+    console.log(`editst: ${this.searchterm}`);
   }
 
   /**
-   * Generates the grid of quizzes and pushes it to an array of JSX elements.
+   * Generates the grid of quizzes
    */
-  quizzesToJSX() {
-    // Array of rows of quizzes in columns
-    let grid: [] = [];
+  quizTileGrid() {
+    let quizzes = this.search();
 
-    // TODO: Replace with database call sometime?
-    let quizzes = this.quizzes;
+    console.log(this.search());
+    console.log(`wack: ${JSON.stringify(quizzes)}`);
+
     if (quizzes.length == 0) {
-      grid.push(<div>No quizzes matched the combination of categories and search 😢</div>);
+      return <div>No quizzes matched the combination of categories and search 😢</div>;
     } else {
       let elements = [];
       quizzes.forEach((quiz) => {
-        if (quiz != undefined) {
+        if (quiz) {
           elements.push(
             <Column>
               <Quiz quiz={quiz}></Quiz>
@@ -178,28 +148,38 @@ export class QuizTileGrid extends Component {
           );
         }
       });
-      grid.push(<Row>{elements}</Row>);
+      return <Row>{elements}</Row>;
     }
-    return grid;
   }
 
-  /**
-   * Surrounds each quiz in a row with a Column tag and pushes it to an array of JSX elements.
-   */
+  render() {
+    if (this.quizzesAreLoaded && this.categoriesAreLoaded) {
+      console.log(`render quizzes: ${this.quizzes}`);
+      return (
+        <>
+          <Card title="Categories">
+            <div>{this.renderCategories()}</div>
+          </Card>
 
-  rowContents(row) {
-    let jsx: [] = [];
-    for (const quiz of row) {
-      jsx.push(
-        <Column>
-          <Quiz quiz={quiz}></Quiz>
-        </Column>
+          <Card title="Search">
+            <Row>
+              <div style={{ width: '50%' }}>
+                <Form.Input
+                  type="text"
+                  placeholder="🔎 Search for the title or description of a quiz"
+                  value={this.searchterm}
+                  onChange={this.editSearchTerm}
+                ></Form.Input>
+              </div>
+            </Row>
+          </Card>
+
+          <Card title="Quizzes">{this.quizTileGrid()}</Card>
+        </>
       );
+    } else {
+      return <div>Loading...</div>;
     }
-    return jsx;
-  }
-  mounted() {
-  quizService.getAllQuizzes().then((q) => (this.quizzes = q));
   }
 }
 
@@ -210,33 +190,23 @@ export class QuizTileGrid extends Component {
  * TODO: Make this accept quiz objects instead.
  */
 export class Quiz extends Component {
-  title: string = this.props.quiz.title;
-  id: number = this.props.quiz.id;
-  description: string = this.props.quiz.description;
 
-  playButton() {
-    console.log(`Playing quiz ${this.id}`);
-    //TODO: Link to quiz play site.
-    history.push('/playQuiz/' + this.id);
-  }
-
-  editButton() {
-    history.push('/editQuiz/' + this.props.id);
-  }
   render() {
     return (
       <>
-        <TileCard title={this.title}>
-          {this.description}
+        <TileCard title={this.props.quiz.title}>
+          {this.props.quiz.description}
           <hr />
           <Row>
             <Column left>
-              <Button.Success onClick={this.playButton}>
+              <Button.Success onClick={() => history.push('/playQuiz/' + this.props.quiz.id)}>
                 Play
               </Button.Success>
             </Column>
             <Column right>
-            <Button.Primary onClick={() => history.push('/editQuiz/'+this.id)}>Edit</Button.Primary>
+              <Button.Primary onClick={() => history.push('/editQuiz/' + this.props.quiz.id)}>
+                Edit
+              </Button.Primary>
             </Column>
           </Row>
         </TileCard>

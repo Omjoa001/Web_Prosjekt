@@ -31,14 +31,13 @@ router.get('/quizzes/:id', (request, response) => {
 });
 
 router.post('/quizzes', (request, response) => {
-  console.log('post');
   const data = request.body;
   if (
     data &&
     typeof data.title == 'string' &&
     data.title.length != 0 &&
     typeof data.description == 'string' &&
-    typeof data.categoryId == 'string'
+    typeof data.categoryId == 'number'
   ) {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)
@@ -99,10 +98,9 @@ router.get('/questions', (request, response) => {
 
 router.get('/quizQuestions/:id', (request, response) => {
   const quizId = Number(request.params.id);
-  console.log(quizId);
   quizService
-    .getQuizQuestions(quizId)
-    .then((task) => (task ? response.send(task) : response.status(404).send('Question not found')))
+    .getQuizQuestion(quizId)
+    .then((quiz) => (quiz ? response.send(quiz) : response.status(404).send('Question not found')))
     .catch((error: Error) => response.status(500).send(error));
 });
 
