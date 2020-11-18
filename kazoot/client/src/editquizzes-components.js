@@ -251,6 +251,7 @@ export class oldEditQuiz extends Component<{ match: { params: { id: number } } }
   delQuestion(x: number) {
     this.questions.splice(x, 1);
   }
+
   // funker
   add() {
     this.newQuestion = {
