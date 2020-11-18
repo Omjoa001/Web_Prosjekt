@@ -9,6 +9,7 @@ import { QuizEditor } from './newquiz-components';
 import {
   type QuizType,
   type CategoryType,
+  type CategoryFilterType,
   type QuestionType,
   type AnswerType,
   type StateQuestionType,
@@ -19,7 +20,7 @@ const history = createHashHistory();
 export class EditQuiz extends Component<{ match: { params: { id: number } } }> {
   id: number = 0;
   questions: QuestionType[] = [];
-  categories: CategoryType[] = [];
+  categories: CategoryFilterType[] = [];
   quiz: QuizType = {};
 
   mounted() {
@@ -251,6 +252,7 @@ export class oldEditQuiz extends Component<{ match: { params: { id: number } } }
   delQuestion(x: number) {
     this.questions.splice(x, 1);
   }
+
   // funker
   add() {
     this.newQuestion = {

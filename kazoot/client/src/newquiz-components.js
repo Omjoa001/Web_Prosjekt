@@ -52,8 +52,8 @@ export class QuizEditor extends Component {
     };
   }
 
-  title: string = '';       // Title of quiz
-  cardtitle: string = '';   // Title displayed in render
+  title: string = ''; // Title of quiz
+  cardtitle: string = ''; // Title displayed in render
   description: string = '';
   categoryId: number = 0;
   // nextId: number = 0; // new quiz
@@ -82,7 +82,6 @@ export class QuizEditor extends Component {
         this.categoryId = q.categoryId;
 
         questionService.getQuizQuestion(this.id).then((qs) => {
-
           console.log(`questions: ${JSON.stringify(qs)}`);
           let tempQuestions: StateQuestionType[] = [];
 
@@ -148,8 +147,7 @@ export class QuizEditor extends Component {
 
           console.log(`tempquestions: ${JSON.stringify(tempQuestions)}`);
 
-          this.setState({questions: tempQuestions});
-
+          this.setState({ questions: tempQuestions });
         });
       });
     } else if (this.mode == 'new') {
@@ -159,9 +157,7 @@ export class QuizEditor extends Component {
     categoryService.getAllCategories().then((cats) => (this.categories = cats));
   }
 
-  loadQuiz() {
-
-  }
+  loadQuiz() {}
 
   /**
    * Returns a new, unique question ID.
@@ -287,9 +283,94 @@ export class QuizEditor extends Component {
    * Create a new quiz.
    * Displayed if mode is set to 'new'
    * TODO: Remove console logs when stable
+   * TODO: Unify createquiz and savequiz?
    */
   createQuiz() {
-    quizService.createQuiz(this.title, this.description, this.categoryId);
+    console.log('createquiz info: ');
+    console.log(`this.title: ${this.title}`);
+    console.log(`this.description: ${this.description}`);
+    console.log(`this.categoryId: ${this.categoryId}`);
+
+    if (this.state.questions.length > 0) {
+      quizService
+        .createQuiz(this.title, this.description, this.categoryId)
+        .then((res) => {
+          this.state.questions.forEach((question) => {
+            let correct: string[] = [];
+            let incorrect: string[] = [];
+            let answ0: string = '';
+            let answ1: string = '';
+            let answ2: string = '';
+            let answ3: string = '';
+
+            question.answers.forEach((answer) => {
+              if (answer.correct) correct.push(answer.answerText);
+              else incorrect.push(answer.answerText);
+            });
+
+            let numCorrect: number = correct.length;
+            let allAnswers: string[] = correct.concat(incorrect);
+
+            console.log(`correct: ${correct}`);
+            console.log(`incorrect: ${incorrect}`);
+            console.log(`allAnswers: ${allAnswers}`);
+
+            answ0 = allAnswers[0];
+            answ1 = allAnswers[1];
+            answ2 = allAnswers[2];
+            answ3 = allAnswers[3];
+
+            console.log('question creat info:');
+            console.log(`question.quizId: ${question.quizId}`);
+            console.log(`question.questionText: ${question.questionText}`);
+            console.log(`answ0: ${answ0}`);
+            console.log(`answ1: ${answ1}`);
+            console.log(`answ2: ${answ2}`);
+            console.log(`answ3: ${answ3}`);
+            console.log(`numcorrect: ${numCorrect}`);
+
+            if (numCorrect > 0) {
+              questionService
+                .createQuestion(
+                  question.quizId,
+                  question.questionText,
+                  answ0,
+                  answ1,
+                  answ2,
+                  answ3,
+                  numCorrect
+                )
+                .then(() => {
+                  Alert.success('Quiz created successfully');
+                  history.push('/BrowseQuizzes');
+                })
+                .catch((error) => {
+                  Alert.danger('Error: ' + error.message);
+                });
+            } else {
+              Alert.danger('Please add at least one correct answer');
+            }
+          });
+        })
+        .catch((error) => {
+          Alert.danger('Error: ' + error.message);
+        });
+    } else {
+      Alert.danger('Error: Quiz contains no questions');
+    }
+  }
+
+  /**
+   * Save the quiz.
+   * Displayed if mode is set to 'edit'.
+   * TODO: Add then + catches
+   */
+  saveQuiz() {
+    console.log('Saved quiz');
+    console.log(JSON.stringify(this.quiz));
+
+    // Deleting the existing quiz
+    questionService.deleteQuestions(this.quiz.id);
 
     this.state.questions.forEach((question) => {
       let correct: string[] = [];
@@ -299,6 +380,7 @@ export class QuizEditor extends Component {
       let answ2: string = '';
       let answ3: string = '';
 
+      // Sort the answers based on correctness
       question.answers.forEach((answer) => {
         if (answer.correct) correct.push(answer.answerText);
         else incorrect.push(answer.answerText);
@@ -307,23 +389,31 @@ export class QuizEditor extends Component {
       let numCorrect: number = correct.length;
       let allAnswers: string[] = correct.concat(incorrect);
 
-      console.log(`correct: ${correct}`);
-      console.log(`incorrect: ${incorrect}`);
-      console.log(`allAnswers: ${allAnswers}`);
+      for (let i = 0; i < allAnswers.length; i++) {
+        if (!allAnswers[i]) allAnswers[i] = '';
+      }
 
       answ0 = allAnswers[0];
       answ1 = allAnswers[1];
       answ2 = allAnswers[2];
       answ3 = allAnswers[3];
 
+      console.log(`correct: ${JSON.stringify(correct)}`);
+      console.log(`incorrect: ${JSON.stringify(incorrect)}`);
+      console.log(`allAnswers: ${JSON.stringify(allAnswers)}`);
+
+      console.log('Info to use when creating question:');
+      console.log(`this.quiz.id: ${this.quiz.id}`);
+      console.log(`question.questionText: ${question.questionText}`);
       console.log(`answ0: ${answ0}`);
       console.log(`answ1: ${answ1}`);
       console.log(`answ2: ${answ2}`);
       console.log(`answ3: ${answ3}`);
-      console.log(`numcorrect: ${numCorrect}`);
+      console.log(`numCorrect: ${JSON.stringify(numCorrect)}`);
 
+      //createQuestion
       questionService.createQuestion(
-        question.quizId,
+        this.quiz.id,
         question.questionText,
         answ0,
         answ1,
@@ -332,45 +422,21 @@ export class QuizEditor extends Component {
         numCorrect
       );
     });
-    history.push('/BrowseQuizzes');
+
+    // quizservice update
+    console.log('quizservice update call info:');
+    console.log(`this.quiz.id: ${this.quiz.id}`);
+    console.log(`this.quiz.title: ${this.quiz.title}`);
+    console.log(`this.quiz.description: ${this.quiz.description}`);
+
+    quizService
+      .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
+      .then((id) => history.push('/listQuizzes'))
+      .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
   }
 
   /**
-   * Save the quiz.
-   * Displayed if mode is set to 'edit'.
-   */
-  saveQuiz() {
-    console.log('Saved quiz');
-    console.log(JSON.stringify(this.quiz));
-
-    if (false) {
-      questionService.deleteQuestions(this.quiz.id);
-
-      this.state.questions.forEach((question) => {
-        let correct: string[] = [];
-        let incorrect: string[] = [];
-        let answ0: string = '';
-        let answ1: string = '';
-        let answ2: string = '';
-        let answ3: string = '';
-
-        // Sort the answers based on correctness
-        question.answers.forEach((answer) => {
-          if (answer.correct) correct.push(answer.answerText);
-          else incorrect.push(answer.answerText);
-        });
-        let numCorrect: number = correct.length;
-        let allAnswers: string[] = correct.concat(incorrect);
-
-        // createQuestion
-      });
-
-      // quizservice update
-    }
-  }
-
-  /**
-   * Delete the quiz
+   * Delete the quiz (edit mode)
    */
   deleteQuiz() {
     questionService
