@@ -340,7 +340,7 @@ export class QuizEditor extends Component {
     console.log(JSON.stringify(this.quiz));
 
     // Deleting the existing quiz
-    //questionService.deleteQuestions(this.quiz.id);
+    questionService.deleteQuestions(this.quiz.id);
 
     this.state.questions.forEach((question) => {
       let correct: string[] = [];
@@ -359,15 +359,50 @@ export class QuizEditor extends Component {
       let numCorrect: number = correct.length;
       let allAnswers: string[] = correct.concat(incorrect);
 
+      for (let i = 0; i < allAnswers.length; i++) {
+        if (!allAnswers[i]) allAnswers[i] = '';
+      }
+
+      answ0 = allAnswers[0];
+      answ1 = allAnswers[1];
+      answ2 = allAnswers[2];
+      answ3 = allAnswers[3];
+
       console.log(`correct: ${JSON.stringify(correct)}`);
       console.log(`incorrect: ${JSON.stringify(incorrect)}`);
       console.log(`allAnswers: ${JSON.stringify(allAnswers)}`);
-      console.log(`allAnswers: ${JSON.stringify(allAnswers)}`);
 
-      // createQuestion
+      console.log('Info to use when creating question:');
+      console.log(`this.quiz.id: ${this.quiz.id}`);
+      console.log(`question.questionText: ${question.questionText}`);
+      console.log(`answ0: ${answ0}`);
+      console.log(`answ1: ${answ1}`);
+      console.log(`answ2: ${answ2}`);
+      console.log(`answ3: ${answ3}`);
+      console.log(`numCorrect: ${JSON.stringify(numCorrect)}`);
+
+      //createQuestion
+      questionService.createQuestion(
+        this.quiz.id,
+        question.questionText,
+        answ0,
+        answ1,
+        answ2,
+        answ3,
+        numCorrect
+      );
     });
 
     // quizservice update
+    console.log('quizservice update call info:');
+    console.log(`this.quiz.id: ${this.quiz.id}`);
+    console.log(`this.quiz.title: ${this.quiz.title}`);
+    console.log(`this.quiz.description: ${this.quiz.description}`);
+
+    quizService
+      .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
+      .then((id) => history.push('/listQuizzes'))
+      .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
   }
 
   /**
