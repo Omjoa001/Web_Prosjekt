@@ -66,14 +66,24 @@ export class QuizEditor extends Component {
   questionsCreated: boolean = false;
 
   mounted() {
-    // this.title = '';
-    // this.id = 0;
     this.cardtitle = this.props.cardtitle;
     this.mode = this.props.mode;
 
     console.log(`${this.mode} mode`);
 
     if (this.mode == 'edit') {
+      this.loadQuiz();
+    } else if (this.mode == 'new') {
+      quizService.getNextId().then((next) => (this.id = next[0].AUTO_INCREMENT));
+    }
+
+    categoryService.getAllCategories().then((cats) => (this.categories = cats));
+  }
+
+  /**
+   * Loads an existing quiz into state.
+   */
+  loadQuiz() {
       this.id = this.props.id;
       this.quizCreated = true;
       this.questionsCreated = true;
@@ -154,14 +164,7 @@ export class QuizEditor extends Component {
           this.setState({ questions: tempQuestions });
         });
       });
-    } else if (this.mode == 'new') {
-      quizService.getNextId().then((next) => (this.id = next[0].AUTO_INCREMENT));
-    }
-
-    categoryService.getAllCategories().then((cats) => (this.categories = cats));
   }
-
-  loadQuiz() {}
 
   /**
    * Returns a new, unique question ID.
@@ -288,8 +291,8 @@ export class QuizEditor extends Component {
    * Displayed if mode is set to 'new'
    */
   createQuiz() {
-    if (!this.quizCreated) {
-      if (this.state.questions.length > 0) {
+    if (this.state.questions.length > 0) {
+      if (!this.quizCreated) {
         quizService
           .createQuiz(this.title, this.description, this.categoryId)
           .then((res) => {
@@ -299,26 +302,26 @@ export class QuizEditor extends Component {
             Alert.danger('Error: ' + error.message);
           });
       } else {
-        Alert.danger('Error: Quiz contains no questions');
+        if (this.mode == 'edit') {
+          console.log(`this.quiz.id: ${this.quiz.id}`);
+          console.log(`this.quiz.title: ${this.quiz.title}`);
+          console.log(`this.quiz.description: ${this.quiz.description}`);
+          console.log(`this.quiz.categoryId: ${this.quiz.categoryId}`);
+          quizService
+            .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
+            .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
+        } else if (this.mode == 'new') {
+          console.log(`this.id: ${this.id}`);
+          console.log(`this.title: ${this.title}`);
+          console.log(`this.description: ${this.description}`);
+          console.log(`this.categoryId: ${this.categoryId}`);
+          quizService
+            .updateQuiz(this.id, this.title, this.description, this.categoryId)
+            .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
+        }
       }
     } else {
-      if (this.mode == 'edit') {
-        console.log(`this.quiz.id: ${this.quiz.id}`);
-        console.log(`this.quiz.title: ${this.quiz.title}`);
-        console.log(`this.quiz.description: ${this.quiz.description}`);
-        console.log(`this.quiz.categoryId: ${this.quiz.categoryId}`);
-        quizService
-          .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
-          .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
-      } else if (this.mode == 'new') {
-        console.log(`this.id: ${this.id}`);
-        console.log(`this.title: ${this.title}`);
-        console.log(`this.description: ${this.description}`);
-        console.log(`this.categoryId: ${this.categoryId}`);
-        quizService
-          .updateQuiz(this.id, this.title, this.description, this.categoryId)
-          .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
-      }
+      Alert.danger('Quiz contains no questions');
     }
 
     this.state.questions.forEach((question) => {
@@ -343,27 +346,36 @@ export class QuizEditor extends Component {
       answ3 = allAnswers[3];
 
       let quizId: number = question.quizId;
-      if (this.mode == 'edit') quizId = this.quiz.quizId;
+      console.log(`bef if edit quizId: ${quizId}`);
+      if (this.mode == 'edit') quizId = this.quiz.id;
+      console.log(`this.quiz.quizId: ${this.quiz.id}`);
+      console.log(`after if edit quizId: ${quizId}`);
 
-      new Promise((resolve, reject) => {
+      let myPromise = new Promise((resolve, reject) => {
+        console.log('myPromise ran');
         if (this.questionsCreated) {
+          console.log('it ran the if');
           questionService.deleteQuestions(this.id).then(resolve());
         } else {
+          console.log('it got to the else');
           resolve();
         }
-      }).then(() => {
+      });
+
+      myPromise.then(() => {
         if (numCorrect > 0) {
+          console.log('quiz id in myprmoise: ' + quizId);
           questionService
             .createQuestion(quizId, question.questionText, answ0, answ1, answ2, answ3, numCorrect)
             .then(() => {
-              Alert.success('Quiz created successfully');
+              Alert.success('Quiz saved successfully');
               history.push('/BrowseQuizzes');
             })
             .catch((error) => {
               Alert.danger('Error: ' + error.message);
             });
         } else {
-          Alert.danger('Please add at least one correct answer');
+          Alert.danger('Please add at least one correct answer for each question');
         }
       });
     });
@@ -420,7 +432,6 @@ export class QuizEditor extends Component {
       console.log(`answ3: ${answ3}`);
       console.log(`numCorrect: ${JSON.stringify(numCorrect)}`);
 
-      //createQuestion
       questionService.createQuestion(
         this.quiz.id,
         question.questionText,
