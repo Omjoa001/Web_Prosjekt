@@ -70,6 +70,7 @@ router.post('/questions', (request, response) => {
       .catch((error: Error) => response.status(500).send(error));
   } else {
     response.status(400).send('Missing QUESTION information');
+    console.log('from router post question' + JSON.stringify(data));
   }
 });
 
