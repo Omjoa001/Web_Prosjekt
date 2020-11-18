@@ -1,7 +1,7 @@
 {
   "name": "todo-server",
   "version": "1.0.0",
-  "description": "A simple Todo REST server",
+  "description": "A simple Kazoot REST server",
   "license": "MIT",
   "scripts": {
     "start": "nodemon src/server.js --exec \"babel-node --require ./src/config\"",

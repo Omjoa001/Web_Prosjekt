@@ -32,12 +32,15 @@ router.get('/quizzes/:id', (request, response) => {
 
 router.post('/quizzes', (request, response) => {
   const data = request.body;
+  console.log(typeof data.title)
+  console.log(typeof data.description)
+  console.log(typeof parseInt(data.categoryId))
   if (
     data &&
     typeof data.title == 'string' &&
     data.title.length != 0 &&
     typeof data.description == 'string' &&
-    typeof data.categoryId == 'number'
+    typeof parseInt(data.categoryId) == 'number'
   ) {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)

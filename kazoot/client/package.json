@@ -1,7 +1,7 @@
 {
   "name": "todo-client",
   "version": "1.0.0",
-  "description": "A simple Todo web client",
+  "description": "A simple Kazoot web client",
   "license": "MIT",
   "scripts": {
     "start": "webpack --mode development --watch",

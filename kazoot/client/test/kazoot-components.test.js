@@ -1,57 +1,146 @@
 // @flow
 
 import * as React from 'react';
+import { Alert, Column, Button, Form } from '../src/widgets.js';
+import { Component } from 'react-simplified';
+import {BrowseQuizzes} from '../src/browsequizzes-components'
 import { shallow } from 'enzyme';
-import { type quizService, questionService, categoryService } from '../src/kazoot-service';
-import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from '../src/widgets';
-import { NavLink } from 'react-router-dom';
+import { quizService, questionService, categoryService } from '../src/kazoot-service';
 
-jest.mock('../src/kazoot-service', () => {
-  class QuestionService {
-    getAllQuestions() {
-      return Promise.resolve([
-        { id: 1, title: 'Les leksjon', done: false },
-        { id: 2, title: 'Møt opp på forelesning', done: false },
-        { id: 3, title: 'Gjør øving', done: false },
-      ]);
-    }
+describe('Alert tests', () => {
+  test('No alerts initially', () => {
+    const wrapper = shallow(<Alert />);
 
-    create(title: string) {
-      return Promise.resolve(4); // Same as: return new Promise((resolve) => resolve(4));
-    }
-  }
-  return new QuestionService();
-});
+    expect(wrapper.matchesElement(<></>)).toEqual(true);
+  });
 
-describe('Quiz component tests', () => {
-  test('Quiz draws correctly', (done) => {
-    const wrapper = shallow(<Home />);
+  test('Show alert message', (done) => {
+    const wrapper = shallow(<Alert />);
+
+    Alert.danger('test');
 
     // Wait for events to complete
     setTimeout(() => {
       expect(
-        wrapper.containsAllMatchingElements([
-          <NavLink to="/tasks/1">Les leksjon</NavLink>,
-          <NavLink to="/tasks/2">Møt opp på forelesning</NavLink>,
-          <NavLink to="/tasks/3">Gjør øving</NavLink>,
-        ])
+        wrapper.matchesElement(
+          <>
+            <div>
+              test<button>&times;</button>
+            </div>
+          </>
+        )
       ).toEqual(true);
+
       done();
     });
   });
 
-  test('TaskNew correctly sets location on create', (done) => {
-    const wrapper = shallow();
+  test('Close alert message', (done) => {
+    const wrapper = shallow(<Alert />);
 
-    wrapper.find(Form.Input).simulate('change', { currentTarget: { value: 'Kaffepause' } });
-    // $FlowExpectedError
-    expect(wrapper.containsMatchingElement(<Form.Input value="Kaffepause" />)).toEqual(true);
+    Alert.danger('test');
 
-    wrapper.find(Button.Success).simulate('click');
     // Wait for events to complete
     setTimeout(() => {
-      expect(location.hash).toEqual('#/tasks/4');
+      expect(
+        wrapper.matchesElement(
+          <>
+            <div>
+              test<button>&times;</button>
+            </div>
+          </>
+        )
+      ).toEqual(true);
+
+      wrapper.find('button.close').simulate('click');
+
+      expect(wrapper.matchesElement(<></>)).toEqual(true);
+
       done();
     });
+  });
+});
+
+describe('Column Widgets tests', () => {
+  test('Column Widget draws correctly', () => {
+    const wrapper = shallow(<Column>text</Column>);
+
+    expect(wrapper.containsMatchingElement(<div className='col'>text</div>)).toEqual(true);
+  });
+
+  test('Column Widget draws correctly with width prperty set', () => {
+    const wrapper = shallow(<Column width={3}>text</Column>);
+
+    expect(wrapper.containsMatchingElement(<div className='col-3'>text</div>)).toEqual(true);
+  });
+  
+  test('Column Widget draws correctly right', () => {
+    const wrapper = shallow(<Column right>text</Column>);
+
+    expect(wrapper.containsMatchingElement(<div className='col text-right'>text</div>)).toEqual(true);
+  });
+
+  test('Column Widget draws correctly left', () => {
+    const wrapper = shallow(<Column left>text</Column>);
+
+    expect(wrapper.containsMatchingElement(<div className='col text-left'>text</div>)).toEqual(true);
+  });
+});
+
+describe('Button widget tests', () => {
+  test('Button.Light widget draws correctly', () => {
+    const wrapper = shallow(<Button.Light>text</Button.Light>)
+
+    expect(wrapper.containsMatchingElement(<button className='btn btn-light'>text</button>))
+  });
+
+  test('Button.Light widget draws correctly with small property set', () => {
+    const wrapper = shallow(<Button.Light small>text</Button.Light>)
+
+    expect(wrapper.containsMatchingElement(<button className='btn btn-light btn-sm py-0'>text</button>))
+  });
+
+  test('Button.Litght onClick property works', () => {
+    let buttonClicked = false
+    const wrapper = shallow(<Button.Light onClick={()=>{buttonClicked = true}}>text</Button.Light>)
+
+    expect(buttonClicked).toEqual(false)
+    wrapper.simulate('click')
+    expect(buttonClicked).toEqual(true)
+  });
+
+  test('Button.Danger widget draws correctly', () => {
+    const wrapper = shallow(<Button.Danger>text</Button.Danger>)
+
+    expect(wrapper.containsMatchingElement(<button className='btn btn-danger'>text</button>))
+  });
+
+  test('Button.Success widget draws correctly', () => {
+    const wrapper = shallow(<Button.Success>text</Button.Success>)
+
+    expect(wrapper.containsMatchingElement(<button className='btn btn-success'>text</button>))
+  });
+});
+
+describe('Form.Input widget tests', () => {
+  test('Form.Input draws correctly', () => {
+    const wrapper = shallow(<Form.Input type='text' ></Form.Input>)
+
+    expect(wrapper.containsMatchingElement(<input type='text' className='form-control'/>))
+  });
+
+  test('Form.Input draws correctly after onchange', () => {
+    const wrapper = shallow(<Form.Input type='text' value='' ></Form.Input>)
+
+    wrapper.simulate('change', {currentTarget: { value: 'test'} });
+    expect(wrapper.containsMatchingElement(<input type='text' value='test' className='form-control'/>))
+  });
+});
+
+describe('BrowseQuizzes tests', () => {
+  test('', () => {
+    const wrapper = shallow(<BrowseQuizzes />)
+
+    expect()
   });
 });
