@@ -132,3 +132,4 @@ router.delete('/quiz/:id', (request, response) => {
 });
 
 export default router;
+

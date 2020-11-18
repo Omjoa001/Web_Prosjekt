@@ -141,6 +141,19 @@ describe('BrowseQuizzes tests', () => {
   test('', () => {
     const wrapper = shallow(<BrowseQuizzes />)
 
-    expect()
+    expect(wrapper.containsMatchingElement(
+      <div>
+        <Column>
+              <Form.Checkbox
+                onChange={(event: SyntheticEvent<HTMLInputElement>) => {
+                  category.checked = event.target.checked;
+                  console.log(`category ${category.category} checked: ${category.checked}`);
+                }}
+              />
+              &nbsp;&nbsp;&nbsp;
+              {category.category}
+            </Column>
+      </div>
+    ))
   });
 });
