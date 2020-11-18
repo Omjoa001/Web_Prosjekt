@@ -20,14 +20,16 @@ const history = createHashHistory();
  */
 export class BrowseQuizzes extends Component<{}> {
   quizzes: QuizType[] = [];
-  categories: CategoryFilterType[] = [{ id: 1, name: 'Failed to get categories', checked: false }];
+  categories: CategoryFilterType[] = [
+    { id: 1, category: 'Failed to get categories', checked: false },
+  ];
   categoriesAreLoaded: boolean = false;
   quizzesAreLoaded: boolean = false;
 
   mounted() {
     categoryService
       .getAllCategories()
-      .then((c) => {
+      .then((c: CategoryType[]) => {
         this.categories = c;
         console.log(this.categories);
         this.categoriesAreLoaded = true;
@@ -40,7 +42,7 @@ export class BrowseQuizzes extends Component<{}> {
 
     quizService.getAllQuizzes().then((q) => {
       this.quizzes = q;
-      console.log(`mounted: ${this.quizzes}`);
+      console.log(`mounted: ${this.quizzes.toString()}`);
       this.quizzesAreLoaded = true;
     });
   }
@@ -53,22 +55,24 @@ export class BrowseQuizzes extends Component<{}> {
    * Handles checkbox state.
    */
   renderCategories() {
-    return this.categories.map((category: CategoryFilterType) => {
-      return (
-        <>
-          <Column>
-            <Form.Checkbox
-              onChange={(event):()=>{mixed} => {
-                category.checked = event.target.checked;
-                console.log(`category ${category.category} checked: ${category.checked}`);
-              }}
-            />
-            &nbsp;&nbsp;&nbsp;
-            {category.category}
-          </Column>
-        </>
-      );
-    });
+    return (
+      this.categories.map<mixed>((category: CategoryFilterType) => {
+        return (
+          <>
+            <Column>
+              <Form.Checkbox
+                onChange={(event: SyntheticEvent<HTMLInputElement>) => {
+                  category.checked = event.target.checked;
+                  console.log(`category ${category.category} checked: ${category.checked}`);
+                }}
+              />
+              &nbsp;&nbsp;&nbsp;
+              {category.category}
+            </Column>
+          </>
+        );
+      })
+    );
   }
 
   /**
@@ -93,7 +97,7 @@ export class BrowseQuizzes extends Component<{}> {
       }
     });
 
-    console.log(`catfilter filtq: ${filteredQuizzes}`);
+    console.log(`catfilter filtq: ${filteredQuizzes.toString()}`);
 
     if (filteredQuizzes.length == 0) {
       return this.quizzes;
@@ -109,21 +113,19 @@ export class BrowseQuizzes extends Component<{}> {
    * Searches for the title or description of quizzes in the selected categories
    */
   search() {
-    const filteredQuizzes = this.categoryFilter();
-    console.log(`search filtq: ${filteredQuizzes}`);
-    return filteredQuizzes.filter(
-      (quiz) =>
+    const filteredQuizzes: QuizType[] = this.categoryFilter();
+    return (
+      filteredQuizzes.filter((quiz) =>
         quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
-        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase())
+        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase()))
     );
   }
 
   /**
    * Used in the search box input to register the search term
    */
-  editSearchTerm(event) {
+  editSearchTerm(event: SyntheticInputEvent<>) {
     this.searchterm = event.currentTarget.value;
-    console.log(`editst: ${this.searchterm}`);
   }
 
   /**
