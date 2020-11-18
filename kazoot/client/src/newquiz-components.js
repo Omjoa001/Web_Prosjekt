@@ -285,50 +285,70 @@ export class QuizEditor extends Component {
    * TODO: Remove console logs when stable
    */
   createQuiz() {
-    quizService.createQuiz(this.title, this.description, this.categoryId);
+    console.log('createquiz info: ');
+    console.log(`this.title: ${this.title}`);
+    console.log(`this.description: ${this.description}`);
+    console.log(`this.categoryId: ${this.categoryId}`);
 
-    this.state.questions.forEach((question) => {
-      let correct: string[] = [];
-      let incorrect: string[] = [];
-      let answ0: string = '';
-      let answ1: string = '';
-      let answ2: string = '';
-      let answ3: string = '';
+    quizService
+      .createQuiz(this.title, this.description, this.categoryId)
+      .then(() => {
+        this.state.questions.forEach((question) => {
+          let correct: string[] = [];
+          let incorrect: string[] = [];
+          let answ0: string = '';
+          let answ1: string = '';
+          let answ2: string = '';
+          let answ3: string = '';
 
-      question.answers.forEach((answer) => {
-        if (answer.correct) correct.push(answer.answerText);
-        else incorrect.push(answer.answerText);
+          question.answers.forEach((answer) => {
+            if (answer.correct) correct.push(answer.answerText);
+            else incorrect.push(answer.answerText);
+          });
+
+          let numCorrect: number = correct.length;
+          let allAnswers: string[] = correct.concat(incorrect);
+
+          console.log(`correct: ${correct}`);
+          console.log(`incorrect: ${incorrect}`);
+          console.log(`allAnswers: ${allAnswers}`);
+
+          answ0 = allAnswers[0];
+          answ1 = allAnswers[1];
+          answ2 = allAnswers[2];
+          answ3 = allAnswers[3];
+
+          console.log('question creat info:');
+          console.log(`question.quizId: ${question.quizId}`);
+          console.log(`question.questionText: ${question.questionText}`);
+          console.log(`answ0: ${answ0}`);
+          console.log(`answ1: ${answ1}`);
+          console.log(`answ2: ${answ2}`);
+          console.log(`answ3: ${answ3}`);
+          console.log(`numcorrect: ${numCorrect}`);
+
+          questionService
+            .createQuestion(
+              question.quizId,
+              question.questionText,
+              answ0,
+              answ1,
+              answ2,
+              answ3,
+              numCorrect
+            )
+            .then((res) => {
+              Alert.success('Quiz created successfully');
+              history.push('/BrowseQuizzes');
+            })
+            .catch((rej) => {
+              Alert.danger('Quiz creation failed: ' + rej.message);
+            });
+        });
+      })
+      .catch((rej) => {
+        Alert.danger('Quiz creation failed: ' + rej.message);
       });
-
-      let numCorrect: number = correct.length;
-      let allAnswers: string[] = correct.concat(incorrect);
-
-      console.log(`correct: ${correct}`);
-      console.log(`incorrect: ${incorrect}`);
-      console.log(`allAnswers: ${allAnswers}`);
-
-      answ0 = allAnswers[0];
-      answ1 = allAnswers[1];
-      answ2 = allAnswers[2];
-      answ3 = allAnswers[3];
-
-      console.log(`answ0: ${answ0}`);
-      console.log(`answ1: ${answ1}`);
-      console.log(`answ2: ${answ2}`);
-      console.log(`answ3: ${answ3}`);
-      console.log(`numcorrect: ${numCorrect}`);
-
-      questionService.createQuestion(
-        question.quizId,
-        question.questionText,
-        answ0,
-        answ1,
-        answ2,
-        answ3,
-        numCorrect
-      );
-    });
-    history.push('/BrowseQuizzes');
   }
 
   /**
@@ -406,7 +426,7 @@ export class QuizEditor extends Component {
   }
 
   /**
-   * Delete the quiz
+   * Delete the quiz (edit mode)
    */
   deleteQuiz() {
     questionService
