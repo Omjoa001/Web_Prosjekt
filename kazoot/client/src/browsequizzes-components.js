@@ -18,9 +18,9 @@ const history = createHashHistory();
 /**
  * Component which renders the Browse Quizzes page.
  */
-export class BrowseQuizzes extends Component {
-  quizzes: Array<{ id: number, title: string, description: string }> = [];
-  categories: [] = [{ id: 1, name: 'Failed to get categories', checked: false }];
+export class BrowseQuizzes extends Component<{}> {
+  quizzes: QuizType[] = [];
+  categories: CategoryFilterType[] = [{ id: 1, name: 'Failed to get categories', checked: false }];
   categoriesAreLoaded: boolean = false;
   quizzesAreLoaded: boolean = false;
 
@@ -53,12 +53,12 @@ export class BrowseQuizzes extends Component {
    * Handles checkbox state.
    */
   renderCategories() {
-    return this.categories.map((category) => {
+    return this.categories.map((category: CategoryFilterType) => {
       return (
         <>
           <Column>
             <Form.Checkbox
-              onChange={(event) => {
+              onChange={(event):()=>{mixed} => {
                 category.checked = event.target.checked;
                 console.log(`category ${category.category} checked: ${category.checked}`);
               }}
@@ -189,7 +189,7 @@ export class BrowseQuizzes extends Component {
  * Uses a modified Card widget called TileCard.
  * TODO: Make this accept quiz objects instead.
  */
-export class Quiz extends Component {
+export class Quiz extends Component<{}> {
 
   render() {
     return (
@@ -211,6 +211,6 @@ export class Quiz extends Component {
           </Row>
         </TileCard>
       </>
-    );
+    )
   }
 }

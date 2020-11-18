@@ -4,7 +4,7 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3000/api/v2';
 
 export type QuestionType = {
-  id: number,
+  id?: number,
   quizId: number,
   question: string,
   answ0: string,
@@ -20,26 +20,26 @@ export type AnswerType = {
 };
 
 export type QuizType = {
-  id: number,
+  id?: number,
   title: string,
   description: string,
   categoryId: number,
 };
 
 export type CategoryType = {
-  id: number,
+  id?: number,
   category: string,
 };
 
 export type CategoryFilterType = {
   id?: number,
-  category?: string,
+  category: string,
   checked?: boolean,
 };
 
 
 export type Quiz = {
-  id: number,
+  id?: number,
   title: string,
   description: string,
 };
@@ -48,7 +48,7 @@ export type Quiz = {
  * Type used to store question objects in state
  */
 export type StateQuestionType = {
-  id: number,
+  id?: number,
   quizId: number,
   questionText: string,
   answers: AnswerType[],
