@@ -26,7 +26,7 @@ export class NewQuiz extends Component {
   render() {
     return (
       <>
-        <QuizEditor mode="new" />
+        <QuizEditor cardtitle="📣 Creating a new quiz! 📣" mode="new" />
       </>
     );
   }
@@ -52,7 +52,8 @@ export class QuizEditor extends Component {
     };
   }
 
-  title: string = '';
+  title: string = '';       // Title of quiz
+  cardtitle: string = '';   // Title displayed in render
   description: string = '';
   categoryId: number = 0;
   // nextId: number = 0; // new quiz
@@ -63,8 +64,9 @@ export class QuizEditor extends Component {
   quiz: QuizType = {}; // Quiz to edit in 'edit' mode
 
   mounted() {
-    this.title = '';
-    this.id = this.props.id;
+    // this.title = '';
+    // this.id = 0;
+    this.cardtitle = this.props.cardtitle;
     this.mode = this.props.mode;
 
     console.log(`${this.mode} mode`);
@@ -76,18 +78,25 @@ export class QuizEditor extends Component {
         console.log(JSON.stringify(this.quiz));
 
         this.title = q.title;
+        this.description = q.description;
+        this.categoryId = q.categoryId;
 
         questionService.getQuizQuestion(this.id).then((qs) => {
 
           console.log(`questions: ${JSON.stringify(qs)}`);
           let tempQuestions: StateQuestionType[] = [];
-          let answerobjs: AnswerType[] = [];
 
           qs.forEach((q) => {
+            let answerobjs: AnswerType[] = [];
             let tempQuestion: StateQuestionType = {};
+
             tempQuestion.id = q.id;
             tempQuestion.quizId = q.quizId;
             tempQuestion.questionText = q.question;
+
+            console.log(`tempquestion id: ${tempQuestion.id}`);
+            console.log(`tempquestion quizid: ${tempQuestion.quizId}`);
+            console.log(`tempquestion questiontext: ${tempQuestion.questionText}`);
 
             // Stores string value of all answers
             // TODO: Add support for more answers
@@ -99,8 +108,23 @@ export class QuizEditor extends Component {
 
             let correct: string[] = [];
             let incorrect: string[] = [];
-            for (let i = 0; i < q.numCorrect; i++) correct.push(answers[i]);
-            for (let i = q.numCorrect; i < answers.length; i++) correct.push(answers[i]);
+
+            for (let i = 0; i < q.numCorrect; i++) {
+              console.log(i);
+              correct.push(answers[i]);
+              console.log(answers[i]);
+            }
+
+            for (let i = q.numCorrect; i < answers.length; i++) {
+              console.log(i);
+              incorrect.push(answers[i]);
+              console.log(answers[i]);
+            }
+
+            console.log(`numCorrect: ${q.numCorrect}`);
+            console.log(`answers: ${JSON.stringify(answers)}`);
+            console.log(`correct: ${JSON.stringify(correct)}`);
+            console.log(`incorrect: ${JSON.stringify(incorrect)}`);
 
             correct.forEach((ans) => {
               answerobjs.push({
@@ -116,9 +140,13 @@ export class QuizEditor extends Component {
               });
             });
 
+            console.log(`answerobjs: ${JSON.stringify(answerobjs)}`);
+
             tempQuestion.answers = answerobjs;
             tempQuestions.push(tempQuestion);
           });
+
+          console.log(`tempquestions: ${JSON.stringify(tempQuestions)}`);
 
           this.setState({questions: tempQuestions});
 
@@ -129,6 +157,10 @@ export class QuizEditor extends Component {
     }
 
     categoryService.getAllCategories().then((cats) => (this.categories = cats));
+  }
+
+  loadQuiz() {
+
   }
 
   /**
@@ -500,7 +532,7 @@ export class QuizEditor extends Component {
       <>
         <center>
           <Column width={10}>
-            <Card title={this.props.title}>{this.renderQuizInfo()}</Card>
+            <Card title={this.cardtitle}>{this.renderQuizInfo()}</Card>
           </Column>
         </center>
 

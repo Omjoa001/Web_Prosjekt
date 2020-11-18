@@ -34,7 +34,7 @@ export class EditQuiz extends Component<{ match: { params: { id: number } } }> {
   render() {
     return (
       <>
-        <QuizEditor title="Editing Quiz" mode="edit" id={this.id} />
+        <QuizEditor cardtitle="📣 Editing Quiz 📣" mode="edit" id={this.id} />
       </>
     );
   }
