@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 class Hello extends Component {
     render() {
         return (
-         <div>
+         <div>  
             <b>Hello</b>
          </div>
         );
