@@ -32,13 +32,7 @@ router.get('/quizzes/:id', (request, response) => {
 
 router.post('/quizzes', (request, response) => {
   const data = request.body;
-  if (
-    data &&
-    typeof data.title == 'string' &&
-    data.title.length != 0 &&
-    typeof data.description == 'string' &&
-    typeof data.categoryId == 'number'
-  ) {
+  if (data && data.title.length != 0 && data.categoryId != 0) {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)
       .then((id) => response.send({ id: id }))
@@ -74,7 +68,7 @@ router.post('/questions', (request, response) => {
       .then((id) => response.send({ id: id }))
       .catch((error: Error) => response.status(500).send(error));
   } else {
-    response.status(400).send('Missing QUIZ information');
+    response.status(400).send('Missing QUESTION information');
   }
 });
 
@@ -85,7 +79,6 @@ router.delete('/questions/:id', (request, response) => {
     .then((result) => response.send())
     .catch((error: Error) => response.status(500).send(error));
 });
-
 
 // funker
 router.get('/questions', (request, response) => {
@@ -114,20 +107,28 @@ router.put('/quiz/:id', (request, response) => {
   const id = Number(request.params.id);
 
   const data = request.body;
-  if(data && typeof data.title == 'string' && data.title.length != 0 && typeof data.description =='string' && typeof data.categoryId == 'number' ){
+  if (
+    data &&
+    typeof data.title == 'string' &&
+    data.title.length != 0 &&
+    typeof data.description == 'string' &&
+    typeof data.categoryId == 'number'
+  ) {
     quizService
       .updateQuiz(data.title, data.description, data.categoryId, id)
       .then((quiz) => response.send(quiz))
       .catch((error: Error) => response.status(500).send(error));
-    } else {response.status(400).send('Missing QUIZ information');}
+  } else {
+    response.status(400).send('Missing QUIZ information');
+  }
 });
 
 router.delete('/quiz/:id', (request, response) => {
   const id = Number(request.params.id);
   quizService
-  .deleteQuiz(id)
-  .then((result) => response.send())
-  .catch((error: Error) => response.status(500).send(error));
-})
+    .deleteQuiz(id)
+    .then((result) => response.send())
+    .catch((error: Error) => response.status(500).send(error));
+});
 
 export default router;
