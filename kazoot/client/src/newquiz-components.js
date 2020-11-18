@@ -52,8 +52,8 @@ export class QuizEditor extends Component {
     };
   }
 
-  title: string = '';       // Title of quiz
-  cardtitle: string = '';   // Title displayed in render
+  title: string = ''; // Title of quiz
+  cardtitle: string = ''; // Title displayed in render
   description: string = '';
   categoryId: number = 0;
   // nextId: number = 0; // new quiz
@@ -82,7 +82,6 @@ export class QuizEditor extends Component {
         this.categoryId = q.categoryId;
 
         questionService.getQuizQuestion(this.id).then((qs) => {
-
           console.log(`questions: ${JSON.stringify(qs)}`);
           let tempQuestions: StateQuestionType[] = [];
 
@@ -148,8 +147,7 @@ export class QuizEditor extends Component {
 
           console.log(`tempquestions: ${JSON.stringify(tempQuestions)}`);
 
-          this.setState({questions: tempQuestions});
-
+          this.setState({ questions: tempQuestions });
         });
       });
     } else if (this.mode == 'new') {
@@ -159,9 +157,7 @@ export class QuizEditor extends Component {
     categoryService.getAllCategories().then((cats) => (this.categories = cats));
   }
 
-  loadQuiz() {
-
-  }
+  loadQuiz() {}
 
   /**
    * Returns a new, unique question ID.
@@ -343,30 +339,35 @@ export class QuizEditor extends Component {
     console.log('Saved quiz');
     console.log(JSON.stringify(this.quiz));
 
-    if (false) {
-      questionService.deleteQuestions(this.quiz.id);
+    // Deleting the existing quiz
+    //questionService.deleteQuestions(this.quiz.id);
 
-      this.state.questions.forEach((question) => {
-        let correct: string[] = [];
-        let incorrect: string[] = [];
-        let answ0: string = '';
-        let answ1: string = '';
-        let answ2: string = '';
-        let answ3: string = '';
+    this.state.questions.forEach((question) => {
+      let correct: string[] = [];
+      let incorrect: string[] = [];
+      let answ0: string = '';
+      let answ1: string = '';
+      let answ2: string = '';
+      let answ3: string = '';
 
-        // Sort the answers based on correctness
-        question.answers.forEach((answer) => {
-          if (answer.correct) correct.push(answer.answerText);
-          else incorrect.push(answer.answerText);
-        });
-        let numCorrect: number = correct.length;
-        let allAnswers: string[] = correct.concat(incorrect);
-
-        // createQuestion
+      // Sort the answers based on correctness
+      question.answers.forEach((answer) => {
+        if (answer.correct) correct.push(answer.answerText);
+        else incorrect.push(answer.answerText);
       });
 
-      // quizservice update
-    }
+      let numCorrect: number = correct.length;
+      let allAnswers: string[] = correct.concat(incorrect);
+
+      console.log(`correct: ${JSON.stringify(correct)}`);
+      console.log(`incorrect: ${JSON.stringify(incorrect)}`);
+      console.log(`allAnswers: ${JSON.stringify(allAnswers)}`);
+      console.log(`allAnswers: ${JSON.stringify(allAnswers)}`);
+
+      // createQuestion
+    });
+
+    // quizservice update
   }
 
   /**
