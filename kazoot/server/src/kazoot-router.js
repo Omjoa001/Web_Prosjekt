@@ -47,14 +47,14 @@ router.post('/questions', (request, response) => {
   console.log(`from router: ${JSON.stringify(data)}`);
   if (
     data &&
-    typeof data.question == 'string' &&
-    data.question.length != 0 &&
-    typeof data.quizId == 'number' &&
-    typeof data.answ0 == 'string' &&
-    typeof data.answ1 == 'string' &&
-    typeof data.answ2 == 'string' &&
-    typeof data.answ3 == 'string' &&
-    typeof data.numCorrect == 'number'
+    //typeof data.question == 'string' &&
+    data.question.length != 0 //&&
+    // typeof data.quizId == 'number' &&
+    // typeof data.answ0 == 'string' &&
+    // typeof data.answ1 == 'string' &&
+    // typeof data.answ2 == 'string' &&
+    // typeof data.answ3 == 'string' &&
+    // typeof data.numCorrect == 'number'
   ) {
     quizService
       .createQuestions(
