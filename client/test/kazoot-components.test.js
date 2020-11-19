@@ -201,39 +201,39 @@ describe('Alert tests', () => {
     })
   })
 
-  // test('Alert.warning draws correctly', () => {
-  //   const wrapper = shallow(<Alert.warning>text</Alert.warning>)
+  test('Alert.warning draws correctly', () => {
+    const wrapper = shallow(<Alert.warning>text</Alert.warning>)
 
 
-  //   setTimeout(() => {
-  //     expect(wrapper.containsMatchingElement(
+    setTimeout(() => {
+      expect(wrapper.containsMatchingElement(
         
-  //         <div  className={'alert alert-warning'} role="alert">
-  //           text
-  //           <button type="button" className="close" onClick={() => {}}>
-  //             &times;
-  //           </button>
-  //         </div>
-  //     )).toEqual(true)
-  //   })
-  // })
+          <div  className={'alert alert-warning'} role="alert">
+            text
+            <button type="button" onClick={() => {}}>
+              &times;
+            </button>
+          </div>
+      )).toEqual(true)
+    })
+  })
 
-  // test('Alert.danger draws correctly', () => {
-  //   const wrapper = shallow(<Alert.danger>text</Alert.danger>)
+  test('Alert.danger draws correctly', () => {
+    const wrapper = shallow(<Alert.danger>text</Alert.danger>)
 
 
-  //   setTimeout(() => {
-  //     expect(wrapper.containsMatchingElement(
+    setTimeout(() => {
+      expect(wrapper.containsMatchingElement(
         
-  //         <div  className={'alert alert-danger'} role="alert">
-  //           text
-  //           <button type="button" className="close" onClick={() => {}}>
-  //             &times;
-  //           </button>
-  //         </div>
-  //     )).toEqual(true)
-  //   })
-  // })
+          <div  className={'alert alert-danger'} role="alert">
+            text
+            <button type="button" className="close" onClick={() => {}}>
+              &times;
+            </button>
+          </div>
+      )).toEqual(true)
+    });
+  });
 });
 
 
