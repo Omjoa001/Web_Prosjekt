@@ -7,15 +7,15 @@ the code is downloaded.
 Our quiz is dependent on a database which is already created. To connect to the database and get the
 server up and running two files named "config.js" must be created in the following folders:
 
-1. './kazoot/server/src'
-2. './kazoot/server/test'
+1. './server/src'
+2. './server/test'
 
-# Insert this database in '.\kazoot\server\src\config.js'
+# Insert this database in './server/src/config.js'
 
 process.env.MYSQL_HOST = 'mysql.stud.ntnu.no'; process.env.MYSQL_USER = 'stud_gruppefire';
 process.env.MYSQL_PASSWORD = 'Kazoot'; process.env.MYSQL_DATABASE = 'stud_gruppefire_db';
 
-# Insert this database '.\kazoot\server\test\config.js'
+# Insert this database './server/test/config.js'
 
 process.env.MYSQL_HOST = 'mysql.stud.ntnu.no'; process.env.MYSQL_USER = 'stud_gruppefire';
 process.env.MYSQL_PASSWORD = 'Kazoot'; process.env.MYSQL_DATABASE = 'stud_gruppefire_test';
