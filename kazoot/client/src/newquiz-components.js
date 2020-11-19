@@ -84,86 +84,86 @@ export class QuizEditor extends Component {
    * Loads an existing quiz into state.
    */
   loadQuiz() {
-      this.id = this.props.id;
-      this.quizCreated = true;
-      this.questionsCreated = true;
-      quizService.getQuiz(this.id).then((q) => {
-        this.quiz = q;
-        console.log(JSON.stringify(this.quiz));
+    this.id = this.props.id;
+    this.quizCreated = true;
+    this.questionsCreated = true;
+    quizService.getQuiz(this.id).then((q) => {
+      this.quiz = q;
+      console.log(JSON.stringify(this.quiz));
 
-        this.title = q.title;
-        this.description = q.description;
-        this.categoryId = q.categoryId;
+      this.title = q.title;
+      this.description = q.description;
+      this.categoryId = q.categoryId;
 
-        questionService.getQuizQuestion(this.id).then((qs) => {
-          console.log(`questions: ${JSON.stringify(qs)}`);
-          let tempQuestions: StateQuestionType[] = [];
+      questionService.getQuizQuestion(this.id).then((qs) => {
+        console.log(`questions: ${JSON.stringify(qs)}`);
+        let tempQuestions: StateQuestionType[] = [];
 
-          qs.forEach((q) => {
-            let answerobjs: AnswerType[] = [];
-            let tempQuestion: StateQuestionType = {};
+        qs.forEach((q) => {
+          let answerobjs: AnswerType[] = [];
+          let tempQuestion: StateQuestionType = {};
 
-            tempQuestion.id = q.id;
-            tempQuestion.quizId = q.quizId;
-            tempQuestion.questionText = q.question;
+          tempQuestion.id = q.id;
+          tempQuestion.quizId = q.quizId;
+          tempQuestion.questionText = q.question;
 
-            console.log(`tempquestion id: ${tempQuestion.id}`);
-            console.log(`tempquestion quizid: ${tempQuestion.quizId}`);
-            console.log(`tempquestion questiontext: ${tempQuestion.questionText}`);
+          console.log(`tempquestion id: ${tempQuestion.id}`);
+          console.log(`tempquestion quizid: ${tempQuestion.quizId}`);
+          console.log(`tempquestion questiontext: ${tempQuestion.questionText}`);
 
-            // Stores string value of all answers
-            // TODO: Add support for more answers
-            let answers: string[] = [];
-            answers.push(q.answ0);
-            answers.push(q.answ1);
-            answers.push(q.answ2);
-            answers.push(q.answ3);
+          // Stores string value of all answers
+          // TODO: Add support for more answers
+          let answers: string[] = [];
+          answers.push(q.answ0);
+          answers.push(q.answ1);
+          answers.push(q.answ2);
+          answers.push(q.answ3);
 
-            let correct: string[] = [];
-            let incorrect: string[] = [];
+          let correct: string[] = [];
+          let incorrect: string[] = [];
 
-            for (let i = 0; i < q.numCorrect; i++) {
-              console.log(i);
-              correct.push(answers[i]);
-              console.log(answers[i]);
-            }
+          for (let i = 0; i < q.numCorrect; i++) {
+            console.log(i);
+            correct.push(answers[i]);
+            console.log(answers[i]);
+          }
 
-            for (let i = q.numCorrect; i < answers.length; i++) {
-              console.log(i);
-              incorrect.push(answers[i]);
-              console.log(answers[i]);
-            }
+          for (let i = q.numCorrect; i < answers.length; i++) {
+            console.log(i);
+            incorrect.push(answers[i]);
+            console.log(answers[i]);
+          }
 
-            console.log(`numCorrect: ${q.numCorrect}`);
-            console.log(`answers: ${JSON.stringify(answers)}`);
-            console.log(`correct: ${JSON.stringify(correct)}`);
-            console.log(`incorrect: ${JSON.stringify(incorrect)}`);
+          console.log(`numCorrect: ${q.numCorrect}`);
+          console.log(`answers: ${JSON.stringify(answers)}`);
+          console.log(`correct: ${JSON.stringify(correct)}`);
+          console.log(`incorrect: ${JSON.stringify(incorrect)}`);
 
-            correct.forEach((ans) => {
-              answerobjs.push({
-                answerText: ans,
-                correct: true,
-              });
+          correct.forEach((ans) => {
+            answerobjs.push({
+              answerText: ans,
+              correct: true,
             });
-
-            incorrect.forEach((ans) => {
-              answerobjs.push({
-                answerText: ans,
-                correct: false,
-              });
-            });
-
-            console.log(`answerobjs: ${JSON.stringify(answerobjs)}`);
-
-            tempQuestion.answers = answerobjs;
-            tempQuestions.push(tempQuestion);
           });
 
-          console.log(`tempquestions: ${JSON.stringify(tempQuestions)}`);
+          incorrect.forEach((ans) => {
+            answerobjs.push({
+              answerText: ans,
+              correct: false,
+            });
+          });
 
-          this.setState({ questions: tempQuestions });
+          console.log(`answerobjs: ${JSON.stringify(answerobjs)}`);
+
+          tempQuestion.answers = answerobjs;
+          tempQuestions.push(tempQuestion);
         });
+
+        console.log(`tempquestions: ${JSON.stringify(tempQuestions)}`);
+
+        this.setState({ questions: tempQuestions });
       });
+    });
   }
 
   /**
@@ -381,7 +381,6 @@ export class QuizEditor extends Component {
     });
   }
 
-
   /**
    * Delete the quiz (edit mode)
    */
@@ -546,6 +545,33 @@ export class Question extends Component {
     this.answers = this.props.answers;
   }
 
+  render() {
+    return (
+      <>
+        <QuestionCard title={this.title}>
+          <Row>
+            <Column width={2}>Question: {}</Column>
+            <Column>
+              <Form.Input
+                placeholder="Question text"
+                value={this.questionText}
+                onChange={(event) => {
+                  this.questionText = event.currentTarget.value;
+                  this.updateParentState();
+                }}
+              ></Form.Input>
+            </Column>
+            <Column width={1}>
+              <Button.Back onClick={this.removeButton}>X</Button.Back>
+            </Column>
+          </Row>
+          <br></br>
+          {this.renderAnswers()}
+        </QuestionCard>
+      </>
+    );
+  }
+
   /**
    * Callback function to update NewQuiz' state with data from this question
    */
@@ -598,32 +624,5 @@ export class Question extends Component {
     });
 
     return jsx;
-  }
-
-  render() {
-    return (
-      <>
-        <QuestionCard title={this.title}>
-          <Row>
-            <Column width={2}>Question: {}</Column>
-            <Column>
-              <Form.Input
-                placeholder="Question text"
-                value={this.questionText}
-                onChange={(event) => {
-                  this.questionText = event.currentTarget.value;
-                  this.updateParentState();
-                }}
-              ></Form.Input>
-            </Column>
-            <Column width={1}>
-              <Button.Back onClick={this.removeButton}>X</Button.Back>
-            </Column>
-          </Row>
-          <br></br>
-          {this.renderAnswers()}
-        </QuestionCard>
-      </>
-    );
   }
 }
