@@ -33,9 +33,9 @@ export class Home extends Component {
     return (
       <>
         <LayoutCenter title="Welcome">
-          <div class="font-italic">To Kazoot - our Quiz App 🔥 </div> <br></br>
+          <div className="font-italic">To Kazoot - our Quiz App 🔥 </div> <br></br>
           <h4>
-            <small class="font-italic, text-muted">
+            <small className="font-italic, text-muted">
               Browse through playable quizzes <br></br>
               by clicking on "Browse Quiz", <br></br>
               or create a brand new quiz by clicking on "New Quiz"!
@@ -62,6 +62,18 @@ export class Home extends Component {
  * The 'mode' prop _must_ be set to 'edit' or 'new'.
  */
 export class QuizEditor extends Component {
+  cardtitle: string = ''; // Title displayed in render
+  title: string = ''; // Title of quiz
+  id: number = 0; // Quiz id
+  description: string = ''; // Quiz description
+  categoryId: number = 0;
+  nextQuestionId: number = 1; // "local" ID used for indexing
+  categories: CategoryType[] = []; // Categories in combobox
+  mode: string = ''; // 'new' quiz mode or 'edit' quiz mode (mandatory!)
+  quiz: QuizType = {}; // Quiz object to edit in 'edit' mode
+  quizCreated: boolean = false; // Determines which database calls to run
+  questionsCreated: boolean = false; // Determines which database calls to run
+
   // This should make flow happy
   state: {
     questions: StateQuestionType[],
@@ -75,18 +87,6 @@ export class QuizEditor extends Component {
       questions: [],
     };
   }
-
-  cardtitle: string = ''; // Title displayed in render
-  title: string = ''; // Title of quiz
-  id: number = 0; // Quiz id
-  description: string = ''; // Quiz description
-  categoryId: number = 0;
-  nextQuestionId: number = 1; // "local" ID used for indexing
-  categories: CategoryType[] = []; // Categories in combobox
-  mode: string = ''; // 'new' quiz mode or 'edit' quiz mode (mandatory!)
-  quiz: QuizType = {}; // Quiz object to edit in 'edit' mode
-  quizCreated: boolean = false; // Determines which database calls to run
-  questionsCreated: boolean = false; // Determines which database calls to run
 
   mounted() {
     this.cardtitle = this.props.cardtitle;
@@ -111,67 +111,70 @@ export class QuizEditor extends Component {
     this.questionsCreated = true;
 
     // Retrieve quiz from database
-    quizService.getQuiz(this.id).then((quiz) => {
-      this.quiz = quiz;
-      this.title = quiz.title;
-      this.description = quiz.description;
-      this.categoryId = quiz.categoryId;
+    console.log(`this.id before getquiz: ${this.id}`);
+    if (this.id != 0) {
+      quizService.getQuiz(this.id).then((quiz) => {
+        this.quiz = quiz;
+        this.title = quiz.title;
+        this.description = quiz.description;
+        this.categoryId = quiz.categoryId;
 
-      // Retrieve all questions for quiz from database
-      questionService.getQuizQuestion(this.id).then((qs) => {
-        let tempQuestions: StateQuestionType[] = [];
+        // Retrieve all questions for quiz from database
+        questionService.getQuizQuestion(this.id).then((qs) => {
+          let tempQuestions: StateQuestionType[] = [];
 
-        qs.forEach((q) => {
-          let answerobjs: AnswerType[] = [];
-          let tempQuestion: StateQuestionType = {};
+          qs.forEach((q) => {
+            let answerobjs: AnswerType[] = [];
+            let tempQuestion: StateQuestionType = {};
 
-          tempQuestion.id = q.id;
-          tempQuestion.quizId = q.quizId;
-          tempQuestion.questionText = q.question;
+            tempQuestion.id = q.id;
+            tempQuestion.quizId = q.quizId;
+            tempQuestion.questionText = q.question;
 
-          // Stores string value of all answers
-          let answers: string[] = [];
-          answers.push(q.answ0);
-          answers.push(q.answ1);
-          answers.push(q.answ2);
-          answers.push(q.answ3);
+            // Stores string value of all answers
+            let answers: string[] = [];
+            answers.push(q.answ0);
+            answers.push(q.answ1);
+            answers.push(q.answ2);
+            answers.push(q.answ3);
 
-          // Used to sort answer texts based on correctness
-          let correct: string[] = [];
-          let incorrect: string[] = [];
+            // Used to sort answer texts based on correctness
+            let correct: string[] = [];
+            let incorrect: string[] = [];
 
-          // The first 'numCorrect' answer texts are correct
-          for (let i = 0; i < q.numCorrect; i++) {
-            correct.push(answers[i]);
-          }
+            // The first 'numCorrect' answer texts are correct
+            for (let i = 0; i < q.numCorrect; i++) {
+              correct.push(answers[i]);
+            }
 
-          // The rest are incorrect
-          for (let i = q.numCorrect; i < answers.length; i++) {
-            incorrect.push(answers[i]);
-          }
+            // The rest are incorrect
+            for (let i = q.numCorrect; i < answers.length; i++) {
+              incorrect.push(answers[i]);
+            }
 
-          // Create answer objects to be stored in state
-          correct.forEach((ans) => {
-            answerobjs.push({
-              answerText: ans,
-              correct: true,
+            // Create answer objects to be stored in state
+            correct.forEach((ans) => {
+              answerobjs.push({
+                answerText: ans,
+                correct: true,
+              });
             });
+
+            incorrect.forEach((ans) => {
+              answerobjs.push({
+                answerText: ans,
+                correct: false,
+              });
+            });
+
+            tempQuestion.answers = answerobjs;
+            tempQuestions.push(tempQuestion);
           });
 
-          incorrect.forEach((ans) => {
-            answerobjs.push({
-              answerText: ans,
-              correct: false,
-            });
-          });
-
-          tempQuestion.answers = answerobjs;
-          tempQuestions.push(tempQuestion);
+          this.setState({ questions: tempQuestions });
         });
-
-        this.setState({ questions: tempQuestions });
       });
-    });
+    }
   }
 
   /**
@@ -420,14 +423,6 @@ export class QuizEditor extends Component {
                 return <option value={cat.id}>{cat.category}</option>;
               })}
             </select>
-          </Column>
-        </Row>
-        <br></br>
-        <Row>
-          {/* TODO: Remove this?  */}
-          <Column width={3}>Quiz-Id:</Column>
-          <Column>
-            <Form.Input value={this.id} disabled></Form.Input>
           </Column>
         </Row>
         <br></br>
