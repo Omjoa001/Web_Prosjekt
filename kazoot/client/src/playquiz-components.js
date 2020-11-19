@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
 import { Card, CenterCard, AnswerCard, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
-import { BrowseQuizzes, QuizTileGrid, Quiz } from './browsequizzes-components';
+import { BrowseQuizzes, Quiz } from './browsequizzes-components';
 import {
   type QuizType,
   type CategoryType,
@@ -18,7 +18,7 @@ const history = createHashHistory();
 export class PlayQuiz extends Component {
 
   id: number = 0;
-  quizzes: QuizType = [];
+  quizzes: QuizType[] = []
   questions: QuestionType[] = [];
   categories: CategoryType[] = [];
   quiz: QuizType = {};
