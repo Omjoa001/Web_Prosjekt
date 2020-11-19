@@ -46,14 +46,14 @@ router.post('/questions', (request, response) => {
   const data = request.body;
   if (
     data &&
-    typeof data.question == 'string' &&
-    data.question.length != 0 &&
-    typeof data.quizId == 'number' &&
-    typeof data.answ0 == 'string' &&
-    typeof data.answ1 == 'string' &&
-    typeof data.answ2 == 'string' &&
-    typeof data.answ3 == 'string' &&
-    typeof data.numCorrect == 'number'
+    //typeof data.question == 'string' &&
+    data.question.length != 0 //&&
+    // typeof data.quizId == 'number' &&
+    // typeof data.answ0 == 'string' &&
+    // typeof data.answ1 == 'string' &&
+    // typeof data.answ2 == 'string' &&
+    // typeof data.answ3 == 'string' &&
+    // typeof data.numCorrect == 'number'
   ) {
     quizService
       .createQuestions(
@@ -69,6 +69,7 @@ router.post('/questions', (request, response) => {
       .catch((error: Error) => response.status(500).send(error));
   } else {
     response.status(400).send('Missing QUESTION information');
+    console.log('from router post question' + JSON.stringify(data));
   }
 });
 
