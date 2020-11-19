@@ -45,43 +45,23 @@ export class BrowseQuizzes extends Component<{}> {
    * Renders category names with checkboxes.
    * Handles checkbox state.
    */
-  // renderCategories() {
-  //   return this.categories.map<mixed>((category: CategoryFilterType) => {
-  //     return (
-  //       <>
-  //         <Column>
-  //           <Form.Checkbox
-  //             onChange={(event: SyntheticEvent<HTMLInputElement>) => {
-  //               category.checked = event.target.checked;
-  //             }}
-  //           />
-  //           &nbsp;&nbsp;&nbsp;
-  //           {category.category}
-  //         </Column>
-  //       </>
-  //     );
-  //   });
-  // }
-
   renderCategories() {
-    let ret: [] = [];
-
-    this.categories.forEach((category) => {
-      ret.push(
-        <Column>
-          <Form.Checkbox
-            onChange={(event) => {
-              category.checked = event.target.checked;
-              this.forceUpdate();
-            }}
-          />
-          &nbsp;&nbsp;&nbsp;
-          {category.category}
-        </Column>
+    return this.categories.map<mixed>((category: CategoryFilterType) => {
+      return (
+        <>
+          <Column>
+            <Form.Checkbox
+              onChange={(event: SyntheticEvent<HTMLInputElement>) => {
+                category.checked = event.target.checked;
+                this.forceUpdate();
+              }}
+            />
+            &nbsp;&nbsp;&nbsp;
+            {category.category}
+          </Column>
+        </>
       );
     });
-
-    return ret;
   }
 
   /**
@@ -144,7 +124,7 @@ export class BrowseQuizzes extends Component<{}> {
       quizzes.forEach((quiz) => {
         if (quiz) {
           elements.push(
-            <Column>
+            <Column key={quiz.id}>
               <Quiz quiz={quiz}></Quiz>
             </Column>
           );
@@ -161,7 +141,7 @@ export class BrowseQuizzes extends Component<{}> {
           <CardSmaller title="Browse Quizzes 🧐">S</CardSmaller>
 
           <Card title="Categories">
-            <div>{this.renderCategories()}</div>
+            {this.renderCategories()}
           </Card>
 
           <Card title="Search">
