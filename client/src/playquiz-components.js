@@ -63,7 +63,6 @@ export class PlayQuiz extends Component {
     });
     let i = array.length - 1;
     for (i; i >= 0; i--) {
-<<<<<<< HEAD:kazoot/client/src/playquiz-components.js
       let answOrder = [];
       answOrder.push(
         [array[i].answ0, 0],
@@ -71,11 +70,6 @@ export class PlayQuiz extends Component {
         [array[i].answ2, 0],
         [array[i].answ3, 0]
       );
-=======
-
-      let answOrder: Array<[string, number]>  = []
-      answOrder.push([array[i].answ0, 0], [array[i].answ1, 0], [array[i].answ2, 0], [array[i].answ3, 0])
->>>>>>> b6687c6cc0b4552c6d2478f1c7125b4b9419924c:client/src/playquiz-components.js
       for (let x = 0; x < array[i].numCorrect; x++) {
         answOrder[x].splice(1, 1, 1);
       }
@@ -283,7 +277,6 @@ export class AnswerCardComp extends Component {
             onClick={() => {
               ans.clicked = !ans.clicked;
             }}
-<<<<<<< HEAD:kazoot/client/src/playquiz-components.js
             buttonclass={buttonclass}
           ></Button.Custom>
         </>
@@ -299,13 +292,6 @@ export class AnswerCardComp extends Component {
             {this.renderAnswers()}
             <Button.Success>Test</Button.Success>
           </Card>
-=======
-          >
-            SUBMIT ANSWERS 🎉 
-          </Button.Submit>
-          <br></br>  
-          <Card title={this.resultText}></Card>
->>>>>>> b6687c6cc0b4552c6d2478f1c7125b4b9419924c:client/src/playquiz-components.js
         </center>
       </>
     );
