@@ -171,7 +171,8 @@ export class BrowseQuizzes extends Component<{}> {
     if (this.quizzesAreLoaded && this.categoriesAreLoaded) {
       return (
         <>
-          <CardSmaller title="Browse Quiz 🧐">S</CardSmaller>
+
+          <CardSmaller title="Browse Quizzes 🧐">S</CardSmaller>
 
           <Card title="Categories">
             <div>{this.renderCategories()}</div>
