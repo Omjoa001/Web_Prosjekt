@@ -1,0 +1,65 @@
+image: node:latest # Use a docker image from https://hub.docker.com with latest Node.js already installed
+
+variables:
+  # Configure server/src/mysql-pool.js
+  MYSQL_HOST: localhost
+  MYSQL_USER: root # Docker commands are run as root
+  MYSQL_PASSWORD: '' # Default root password is empty string
+  MYSQL_DATABASE: 'stud_gruppefire_db'
+
+stages:
+  - build # Jobs placed in build stage will run first
+  - test # Jobs placed in test stage will run after build-jobs
+
+install:
+  stage: build
+  script:
+    - cd server
+    - npm install
+    - cd ../client
+    - npm install
+  artifacts: # Keep node_modules folder for the following stages
+    paths:
+      - server/node_modules
+      - client/node_modules
+
+prettier:
+  stage: test # The prettier job will run in parallel with the flow and test jobs
+  script:
+    - cd server
+    - ./node_modules/.bin/prettier --check src/* test/*
+    - cd ../server
+    - ./node_modules/.bin/prettier --check src/* test/*
+
+flow:
+  stage: test # The flow job will run in parallel with the prettier and test jobs
+  script:
+    - cd server
+    - ./node_modules/.bin/flow check
+    - cd ../client
+    - ./node_modules/.bin/flow check
+
+test:
+  stage: test # The test job will run in parallel with the prettier and flow jobs
+  script:
+    - apt-get update
+    - apt-get -y upgrade
+    - apt-get -y install mysql-server
+    - service mysql start
+    # Workaround from https://github.com/mysqljs/mysql/issues/1507#issuecomment-242885003
+    - echo "UPDATE user SET authentication_string=password(''), plugin='mysql_native_password' WHERE
+      user='root';" | mysql mysql
+    - mysqladmin create $MYSQL_DATABASE
+    # Create database table
+    - echo "CREATE TABLE Categories (id int(11) NOT NULL,category text NOT NULL);" | mysql
+      $MYSQL_DATABASE
+    - echo "CREATE TABLE Questions (id int(11) NOT NULL,quizId int(11) DEFAULT 0,question
+      text NOT NULL,answ0 text NOT NULL,answ1 text NOT NULL,answ2 text NOT NULL,answ3 text
+      NOT NULL,numCorrect int(11) DEFAULT NULL);" | mysql $MYSQL_DATABASE
+    - echo "CREATE TABLE Quizzes ( id int(11) NOT NULL, title text NOT NULL, description
+      text, categoryId int(11) NOT NULL);"  | mysql $MYSQL_DATABASE
+    - cd server
+    - echo "" > test/config.js # Create empty config.js to avoid error on npm test
+    - npm test
+    - cd ../client
+    - npm test

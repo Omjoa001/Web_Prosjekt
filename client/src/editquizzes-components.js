@@ -43,4 +43,3 @@ export class EditQuiz extends Component<{ match: { params: { id: number } } }> {
     );
   }
 }
-

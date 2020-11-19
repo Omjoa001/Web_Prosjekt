@@ -84,11 +84,9 @@ describe('PlayQuiz-Component tests', () => {
   test('PlayQuiz-Component draws correctly', (done) => {
     const wrapper = shallow(<PlayQuiz match={{ params: { id: 2 } }} />);
 
-    console.log(wrapper.debug())
     setTimeout(() => {
-      console.log(wrapper.debug());
-      expect(wrapper.containsMatchingElement([]));
+      expect(wrapper).toMatchSnapshot();
+      done();
     });
-    done();
   });
 });

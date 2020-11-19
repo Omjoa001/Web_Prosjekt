@@ -85,12 +85,10 @@ describe('NewQuiz-Component tests', () => {
   test('New quiz draws correctly', (done) => {
     const wrapper = shallow(<NewQuiz />);
 
-    expect(
-      wrapper.containsMatchingElement(
-        <QuizEditor cardtitle="📣 Creating a new quiz! 📣" mode="new" />
-      )
-    );
-    done();
+    setTimeout(() => {
+      expect(wrapper).toMatchSnapshot();
+      done();
+    })
   });
 });
 
