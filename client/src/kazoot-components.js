@@ -92,8 +92,6 @@ export class QuizEditor extends Component {
     this.cardtitle = this.props.cardtitle;
     this.mode = this.props.mode;
 
-    console.log(`${this.mode} mode`);
-
     if (this.mode == 'edit') {
       this.loadQuiz();
     } else if (this.mode == 'new') {
@@ -212,8 +210,6 @@ export class QuizEditor extends Component {
       newarray[index].id = id;
       newarray[index].answers = answers;
       this.setState({ questions: newarray });
-    } else {
-      console.log(`sendData: Question with id ${id} not found`);
     }
   }
 
@@ -227,8 +223,6 @@ export class QuizEditor extends Component {
     let newQuestions = this.state.questions;
     if (index != -1) {
       newQuestions.splice(index, 1);
-    } else {
-      console.log(`removeQuestion: Could not remove question with id ${id}`);
     }
 
     this.setState({ questions: newQuestions });
@@ -314,7 +308,7 @@ export class QuizEditor extends Component {
       } else {
         if (this.mode == 'edit') {
           quizService
-            .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
+            .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.categoryId)
             .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
         } else if (this.mode == 'new') {
           quizService
@@ -415,7 +409,10 @@ export class QuizEditor extends Component {
             <select
               name="Category"
               value={this.categoryId}
-              onChange={(event) => (this.categoryId = event.currentTarget.value)}
+              onChange={(event) => {
+                this.categoryId = parseInt(event.currentTarget.value);
+                this.forceUpdate();
+              }}
             >
               <option value="0">Choose a category</option>
               {this.categories.map((cat) => {
@@ -596,7 +593,6 @@ export class Question extends Component {
               onChange={(event) => {
                 answer.correct = event.target.checked;
                 this.updateParentState();
-                console.log(`answer.correct set to ${answer.correct}`);
               }}
             ></Form.Checkbox>
           </Column>
