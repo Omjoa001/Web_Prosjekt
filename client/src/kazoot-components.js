@@ -73,6 +73,7 @@ export class QuizEditor extends Component {
   quiz: QuizType = {}; // Quiz object to edit in 'edit' mode
   quizCreated: boolean = false; // Determines which database calls to run
   questionsCreated: boolean = false; // Determines which database calls to run
+  safeToSave: boolean = false; // Prevents the user from saving if necessary information is missing
 
   // This should make flow happy
   state: {
@@ -308,6 +309,7 @@ export class QuizEditor extends Component {
           .createQuiz(this.title, this.description, this.categoryId)
           .then((res) => {
             this.quizCreated = true;
+            this.safeToSave = true;
           })
           .catch((error) => {
             Alert.danger('Error: ' + error.message);
@@ -316,10 +318,12 @@ export class QuizEditor extends Component {
         if (this.mode == 'edit') {
           quizService
             .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
+            .then(() => {this.safeToSave = true;})
             .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
         } else if (this.mode == 'new') {
           quizService
             .updateQuiz(this.id, this.title, this.description, this.categoryId)
+            .then(() => {this.safeToSave = true;})
             .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
         }
       }
@@ -351,7 +355,8 @@ export class QuizEditor extends Component {
       let quizId: number = question.quizId;
       if (this.mode == 'edit') quizId = this.quiz.id;
 
-      let myPromise = new Promise((resolve, reject) => {
+      // Kind of ugly, but it forces the program to wait for the questions to be deleted
+      let waitForDeletion = new Promise((resolve, reject) => {
         if (this.questionsCreated) {
           questionService.deleteQuestions(this.id).then(resolve());
         } else {
@@ -359,17 +364,19 @@ export class QuizEditor extends Component {
         }
       });
 
-      myPromise.then(() => {
+      waitForDeletion.then(() => {
         if (numCorrect > 0) {
-          questionService
-            .createQuestion(quizId, question.questionText, answ0, answ1, answ2, answ3, numCorrect)
-            .then(() => {
-              Alert.success('Quiz saved successfully');
-              history.push('/BrowseQuizzes');
-            })
-            .catch((error) => {
-              Alert.danger('Error: ' + error.message);
-            });
+          if (this.quizCreated) {
+            questionService
+              .createQuestion(quizId, question.questionText, answ0, answ1, answ2, answ3, numCorrect)
+              .then(() => {
+                Alert.success('Quiz saved successfully');
+                history.push('/BrowseQuizzes');
+              })
+              .catch((error) => {
+                Alert.danger('Error: ' + error.message);
+              });
+          }
         } else {
           Alert.danger('Please add at least one correct answer for each question');
         }
@@ -404,7 +411,10 @@ export class QuizEditor extends Component {
               placeholder="Quiz title"
               type="text"
               value={this.title}
-              onChange={(event) => (this.title = event.currentTarget.value)}
+              onChange={(event) => {
+                this.title = event.currentTarget.value;
+                this.forceUpdate();
+              }
             ></Form.Input>
           </Column>
         </Row>
