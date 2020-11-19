@@ -65,7 +65,7 @@ describe('Alert tests', () => {
     expect(wrapper.matchesElement(<></>)).toEqual(true);
   });
 
-  test('Show alert message', (done) => {
+  test.skip('Show alert message', (done) => {
     const wrapper = shallow(<Alert />);
 
     Alert.danger('test');
