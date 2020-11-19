@@ -13,7 +13,7 @@ import { EditQuiz } from './editquizzes-components.js';
 import { PlayQuiz } from './playquiz-components';
 import { ListQuizzes } from './listquizzes-components.js';
 
-class Menu extends Component {
+class Menu extends Component<{}> {
   render() {
     return (
       <nav class="navbar sticky-top bg-dark">

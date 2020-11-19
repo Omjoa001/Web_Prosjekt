@@ -44,7 +44,6 @@ router.post('/quizzes', (request, response) => {
 
 router.post('/questions', (request, response) => {
   const data = request.body;
-  console.log(`from router: ${JSON.stringify(data)}`);
   if (
     data &&
     //typeof data.question == 'string' &&
