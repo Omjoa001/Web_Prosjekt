@@ -321,7 +321,7 @@ class ButtonBack extends Component<{
     return (
       <button
         type="button"
-        class="btn btn-outline-danger btn-large btn-block"
+        className="btn btn-outline-danger btn-large btn-block"
         onClick={this.props.onClick}
       >
         {this.props.children}{' '}
@@ -352,7 +352,7 @@ class ButtonSubmit extends Component<{
       >
         <button
           type="button"
-          class="btn btn-outline-primary btn-large btn-block"
+          className="btn btn-outline-primary btn-large btn-block"
           onClick={this.props.onClick}
         >
           {this.props.children}{' '}
@@ -386,7 +386,7 @@ class ButtonAnswer extends Component<{
         type="button"
         style={this.props.style}
         onClick={this.props.onClick}
-        class={ButtonClass}
+        className={ButtonClass}
       >
         {this.props.children}
       </button>
@@ -415,7 +415,11 @@ class ButtonStart extends Component<{
           flexDirection: 'column',
         }}
       >
-        <button type="button" class="btn btn-success btn-lg btn-block" onClick={this.props.onClick}>
+        <button
+          type="button"
+          className="btn btn-success btn-lg btn-block"
+          onClick={this.props.onClick}
+        >
           {this.props.children}{' '}
         </button>
       </div>

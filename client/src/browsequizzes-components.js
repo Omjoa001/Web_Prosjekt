@@ -26,18 +26,14 @@ export class BrowseQuizzes extends Component<{}> {
   categoriesAreLoaded: boolean = false; // Program waits until true
   quizzesAreLoaded: boolean = false; // Program waits until true
 
-  mounted() {
-    categoryService
-      .getAllCategories()
-      .then((c: CategoryType[]) => {
-        this.categories = c;
-        this.categoriesAreLoaded = true;
-      })
-      .then(() => {
-        this.categories.map((cat) => {
-          cat.checked = false;
-        });
+  mounted(): void {
+    categoryService.getAllCategories().then((c: CategoryType[]) => {
+      this.categories = c;
+      this.categoriesAreLoaded = true;
+      this.categories.map((cat) => {
+        cat.checked = false;
       });
+    });
 
     quizService.getAllQuizzes().then((q) => {
       this.quizzes = q;
@@ -49,43 +45,23 @@ export class BrowseQuizzes extends Component<{}> {
    * Renders category names with checkboxes.
    * Handles checkbox state.
    */
-  // renderCategories() {
-  //   return this.categories.map<mixed>((category: CategoryFilterType) => {
-  //     return (
-  //       <>
-  //         <Column>
-  //           <Form.Checkbox
-  //             onChange={(event: SyntheticEvent<HTMLInputElement>) => {
-  //               category.checked = event.target.checked;
-  //             }}
-  //           />
-  //           &nbsp;&nbsp;&nbsp;
-  //           {category.category}
-  //         </Column>
-  //       </>
-  //     );
-  //   });
-  // }
-
   renderCategories() {
-    let ret: [] = [];
-
-    this.categories.forEach((category) => {
-      ret.push(
-        <Column>
-          <Form.Checkbox
-            onChange={(event) => {
-              category.checked = event.target.checked;
-              this.forceUpdate();
-            }}
-          />
-          &nbsp;&nbsp;&nbsp;
-          {category.category}
-        </Column>
+    return this.categories.map<mixed>((category: CategoryFilterType) => {
+      return (
+        <>
+          <Column>
+            <Form.Checkbox
+              onChange={(event: SyntheticEvent<HTMLInputElement>) => {
+                category.checked = event.target.checked;
+                this.forceUpdate();
+              }}
+            />
+            &nbsp;&nbsp;&nbsp;
+            {category.category}
+          </Column>
+        </>
       );
     });
-
-    return ret;
   }
 
   /**
@@ -96,8 +72,6 @@ export class BrowseQuizzes extends Component<{}> {
   categoryFilter() {
     let filteredQuizzes: QuizType[] = [];
 
-    console.log(`catfilt this.cats: ${JSON.stringify(this.categories)}`);
-
     this.categories.forEach((category) => {
       if (category.checked) {
         this.quizzes.forEach((quiz) => {
@@ -105,12 +79,8 @@ export class BrowseQuizzes extends Component<{}> {
             filteredQuizzes.push(quiz);
           }
         });
-      } else {
-        console.log(`cat not checked: ${category.category} checked: ${category.checked}`);
       }
     });
-
-    console.log(`catfilter filtq: ${filteredQuizzes.toString()}`);
 
     if (filteredQuizzes.length == 0) {
       return this.quizzes;
@@ -147,9 +117,6 @@ export class BrowseQuizzes extends Component<{}> {
   quizTileGrid() {
     let quizzes = this.search();
 
-    console.log(this.search());
-    console.log(`wack: ${JSON.stringify(quizzes)}`);
-
     if (quizzes.length == 0) {
       return <div>No quizzes matched the combination of categories and search 😢</div>;
     } else {
@@ -157,7 +124,7 @@ export class BrowseQuizzes extends Component<{}> {
       quizzes.forEach((quiz) => {
         if (quiz) {
           elements.push(
-            <Column>
+            <Column key={quiz.id}>
               <Quiz quiz={quiz}></Quiz>
             </Column>
           );
@@ -171,11 +138,10 @@ export class BrowseQuizzes extends Component<{}> {
     if (this.quizzesAreLoaded && this.categoriesAreLoaded) {
       return (
         <>
-
           <CardSmaller title="Browse Quizzes 🧐">S</CardSmaller>
 
           <Card title="Categories">
-            <div>{this.renderCategories()}</div>
+            {this.renderCategories()}
           </Card>
 
           <Card title="Search">
