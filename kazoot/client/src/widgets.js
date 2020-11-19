@@ -437,7 +437,7 @@ class ButtonCustom extends Component<{
   width?: number,
   onClick?: () => Mixed,
   children?: React.Node,
-  buttonclass?: string,
+  buttonclass: string,
   onClick: () => mixed,
 }> {
   render() {

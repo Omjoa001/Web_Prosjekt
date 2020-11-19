@@ -238,11 +238,19 @@ export class PlayQuiz extends Component {
 }
 
 export class AnswerCardComp extends Component {
-  question: StateQuestionType = {};
   show: boolean = false;
+
+  question: StateQuestionType = {
+    id: 0,
+    quizId: 0,
+    questionText: '',
+    answers: [],
+  };
+
 
   mounted() {
     this.question = this.props.question; // TODO: Change this
+    this.show = this.props.show;
     console.log(`acc question: ${JSON.stringify(this.question)}`);
     this.question.answers.forEach((ans) => {
       ans.clicked = false;
@@ -250,9 +258,9 @@ export class AnswerCardComp extends Component {
   }
 
   renderAnswers() {
-    question.answers.forEach((ans) => {
+    this.question.answers.forEach((ans) => {
       let buttonclass: string = '';
-      if (show) {
+      if (this.show) {
         let value = this.props.correct ? 'success' : 'danger';
         buttonclass = 'btn btn-' + value + 'btn btn-outline-primary btn-lg btn-block';
       } else {
@@ -262,6 +270,7 @@ export class AnswerCardComp extends Component {
           buttonclass = 'btn btn-outline-primary';
         }
       }
+
       return (
         <>
           <Button.Custom
@@ -280,7 +289,7 @@ export class AnswerCardComp extends Component {
       <>
         <center>
           <Card title={this.props.question.questionText}>
-            {this.renderAnswers}
+            {this.renderAnswers()}
             <Button.Success>Test</Button.Success>
           </Card>
         </center>
