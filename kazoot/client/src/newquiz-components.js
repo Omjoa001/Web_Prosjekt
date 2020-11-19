@@ -96,7 +96,6 @@ export class QuizEditor extends Component {
       this.categoryId = q.categoryId;
 
       questionService.getQuizQuestion(this.id).then((qs) => {
-        console.log(`questions: ${JSON.stringify(qs)}`);
         let tempQuestions: StateQuestionType[] = [];
 
         qs.forEach((q) => {
@@ -106,10 +105,6 @@ export class QuizEditor extends Component {
           tempQuestion.id = q.id;
           tempQuestion.quizId = q.quizId;
           tempQuestion.questionText = q.question;
-
-          console.log(`tempquestion id: ${tempQuestion.id}`);
-          console.log(`tempquestion quizid: ${tempQuestion.quizId}`);
-          console.log(`tempquestion questiontext: ${tempQuestion.questionText}`);
 
           // Stores string value of all answers
           // TODO: Add support for more answers
@@ -134,11 +129,6 @@ export class QuizEditor extends Component {
             console.log(answers[i]);
           }
 
-          console.log(`numCorrect: ${q.numCorrect}`);
-          console.log(`answers: ${JSON.stringify(answers)}`);
-          console.log(`correct: ${JSON.stringify(correct)}`);
-          console.log(`incorrect: ${JSON.stringify(incorrect)}`);
-
           correct.forEach((ans) => {
             answerobjs.push({
               answerText: ans,
@@ -153,13 +143,9 @@ export class QuizEditor extends Component {
             });
           });
 
-          console.log(`answerobjs: ${JSON.stringify(answerobjs)}`);
-
           tempQuestion.answers = answerobjs;
           tempQuestions.push(tempQuestion);
         });
-
-        console.log(`tempquestions: ${JSON.stringify(tempQuestions)}`);
 
         this.setState({ questions: tempQuestions });
       });
@@ -303,18 +289,10 @@ export class QuizEditor extends Component {
           });
       } else {
         if (this.mode == 'edit') {
-          console.log(`this.quiz.id: ${this.quiz.id}`);
-          console.log(`this.quiz.title: ${this.quiz.title}`);
-          console.log(`this.quiz.description: ${this.quiz.description}`);
-          console.log(`this.quiz.categoryId: ${this.quiz.categoryId}`);
           quizService
             .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
             .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
         } else if (this.mode == 'new') {
-          console.log(`this.id: ${this.id}`);
-          console.log(`this.title: ${this.title}`);
-          console.log(`this.description: ${this.description}`);
-          console.log(`this.categoryId: ${this.categoryId}`);
           quizService
             .updateQuiz(this.id, this.title, this.description, this.categoryId)
             .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
@@ -346,25 +324,18 @@ export class QuizEditor extends Component {
       answ3 = allAnswers[3];
 
       let quizId: number = question.quizId;
-      console.log(`bef if edit quizId: ${quizId}`);
       if (this.mode == 'edit') quizId = this.quiz.id;
-      console.log(`this.quiz.quizId: ${this.quiz.id}`);
-      console.log(`after if edit quizId: ${quizId}`);
 
       let myPromise = new Promise((resolve, reject) => {
-        console.log('myPromise ran');
         if (this.questionsCreated) {
-          console.log('it ran the if');
           questionService.deleteQuestions(this.id).then(resolve());
         } else {
-          console.log('it got to the else');
           resolve();
         }
       });
 
       myPromise.then(() => {
         if (numCorrect > 0) {
-          console.log('quiz id in myprmoise: ' + quizId);
           questionService
             .createQuestion(quizId, question.questionText, answ0, answ1, answ2, answ3, numCorrect)
             .then(() => {
