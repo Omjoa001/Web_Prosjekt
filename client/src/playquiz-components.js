@@ -26,6 +26,9 @@ import {
 
 const history = createHashHistory();
 
+/**
+ * Renders the Play Quiz page
+ */
 export class PlayQuiz extends Component {
   id: number = 0;
   quizzes: QuizType[] = [];

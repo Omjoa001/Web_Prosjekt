@@ -73,6 +73,7 @@ export class QuizEditor extends Component {
   quiz: QuizType = {}; // Quiz object to edit in 'edit' mode
   quizCreated: boolean = false; // Determines which database calls to run
   questionsCreated: boolean = false; // Determines which database calls to run
+  safeToSave: boolean = false; // Prevents the user from saving if necessary information is missing
 
   // This should make flow happy
   state: {
@@ -107,8 +108,6 @@ export class QuizEditor extends Component {
    */
   loadQuiz() {
     this.id = this.props.id;
-    this.quizCreated = true;
-    this.questionsCreated = true;
 
     // Retrieve quiz from database
     console.log(`this.id before getquiz: ${this.id}`);
@@ -172,6 +171,8 @@ export class QuizEditor extends Component {
           });
 
           this.setState({ questions: tempQuestions });
+          this.quizCreated = true;
+          this.questionsCreated = true;
         });
       });
     }
@@ -298,33 +299,41 @@ export class QuizEditor extends Component {
   }
 
   /**
-   * Create a new quiz.
-   * Displayed if mode is set to 'new'
+   * Create a new quiz or save an existing one.
+   * Behavior is determined by mode and other factors.
    */
   saveQuiz() {
-    if (this.state.questions.length > 0) {
-      if (!this.quizCreated) {
-        quizService
-          .createQuiz(this.title, this.description, this.categoryId)
-          .then((res) => {
-            this.quizCreated = true;
-          })
-          .catch((error) => {
-            Alert.danger('Error: ' + error.message);
-          });
-      } else {
-        if (this.mode == 'edit') {
+    console.log(`savequiz this.title: ${this.title}`);
+    console.log(`savequiz this.description: ${this.description}`);
+    console.log(`savequiz this.categoryId: ${this.categoryId}`);
+
+    if (this.title != '' && this.categoryId != 0) {
+      if (this.state.questions.length > 0) {
+        if (!this.quizCreated) {
           quizService
-            .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
-            .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
-        } else if (this.mode == 'new') {
+            .createQuiz(this.title, this.description, this.categoryId)
+            .then((res) => {
+              this.quizCreated = true;
+              this.safeToSave = true;
+            })
+            .catch((error) => {
+              Alert.danger('Error: ' + error.message);
+            });
+        } else {
           quizService
             .updateQuiz(this.id, this.title, this.description, this.categoryId)
-            .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
+            .then(() => (this.safeToSave = true))
+            .catch((error: Error) =>
+              Alert.danger(
+                'Error ' + (mode == 'edit') ? 'editing' : 'creating' + ' Quiz: ' + error.message
+              )
+            );
         }
+      } else {
+        Alert.danger('Quiz contains no questions');
       }
     } else {
-      Alert.danger('Quiz contains no questions');
+      Alert.danger('Quiz is missing title or category');
     }
 
     this.state.questions.forEach((question) => {
@@ -351,7 +360,8 @@ export class QuizEditor extends Component {
       let quizId: number = question.quizId;
       if (this.mode == 'edit') quizId = this.quiz.id;
 
-      let myPromise = new Promise((resolve, reject) => {
+      // Kind of ugly, but it forces the program to wait for the questions to be deleted
+      let waitForDeletion = new Promise((resolve, reject) => {
         if (this.questionsCreated) {
           questionService.deleteQuestions(this.id).then(resolve());
         } else {
@@ -359,17 +369,31 @@ export class QuizEditor extends Component {
         }
       });
 
-      myPromise.then(() => {
+      waitForDeletion.then(() => {
         if (numCorrect > 0) {
-          questionService
-            .createQuestion(quizId, question.questionText, answ0, answ1, answ2, answ3, numCorrect)
-            .then(() => {
-              Alert.success('Quiz saved successfully');
-              history.push('/BrowseQuizzes');
-            })
-            .catch((error) => {
-              Alert.danger('Error: ' + error.message);
-            });
+          if (question.questionText != '') {
+            if (this.quizCreated && this.safeToSave) {
+              questionService
+                .createQuestion(
+                  quizId,
+                  question.questionText,
+                  answ0,
+                  answ1,
+                  answ2,
+                  answ3,
+                  numCorrect
+                )
+                .then(() => {
+                  Alert.success('Quiz saved successfully');
+                  history.push('/BrowseQuizzes');
+                })
+                .catch((error) => {
+                  Alert.danger('Error: ' + error.message);
+                });
+            }
+          } else {
+            Alert.danger('A question is missing its text');
+          }
         } else {
           Alert.danger('Please add at least one correct answer for each question');
         }
@@ -404,7 +428,10 @@ export class QuizEditor extends Component {
               placeholder="Quiz title"
               type="text"
               value={this.title}
-              onChange={(event) => (this.title = event.currentTarget.value)}
+              onChange={(event) => {
+                this.title = event.currentTarget.value;
+                this.forceUpdate();
+              }}
             ></Form.Input>
           </Column>
         </Row>
@@ -416,7 +443,10 @@ export class QuizEditor extends Component {
             <select
               name="Category"
               value={this.categoryId}
-              onChange={(event) => (this.categoryId = event.currentTarget.value)}
+              onChange={(event) => {
+                this.categoryId = parseInt(event.currentTarget.value);
+                this.forceUpdate();
+              }}
             >
               <option value="0">Choose a category</option>
               {this.categories.map((cat) => {
@@ -433,7 +463,10 @@ export class QuizEditor extends Component {
               placeholder="Quiz description"
               type="text"
               value={this.description}
-              onChange={(event) => (this.description = event.currentTarget.value)}
+              onChange={(event) => {
+                this.description = event.currentTarget.value;
+                this.forceUpdate();
+              }}
               row={10}
             ></Form.Textarea>
           </Column>
