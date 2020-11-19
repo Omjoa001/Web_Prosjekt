@@ -124,12 +124,20 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
 export class AnswerCard extends Component<{
   title?: string,
   children?: React.Node,
+<<<<<<< HEAD:kazoot/client/src/widgets.js
   class?: string,
   // answ0?: Array<mixed>,
   // answ1?: Array<mixed>,
   // answ2?: Array<mixed>,
   // answ3?: Array<mixed>,
   // numCorrect?: number,
+=======
+  answ0?:  Array<[string, number]>,
+  answ1?:  Array<[string, number]>,
+  answ2?:  Array<[string, number]>,
+  answ3?:  Array<[string, number]>,
+  numCorrect?: number,
+>>>>>>> b6687c6cc0b4552c6d2478f1c7125b4b9419924c:client/src/widgets.js
   show?: boolean,
   parentCallback: any,
 }> {
@@ -235,6 +243,19 @@ export class LayoutCenter extends Component<{ title?: React.Node, children?: Rea
     );
   }
 }
+
+export class CardSmaller extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card">
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '5vh', marginBottom: '5vh'}}>
+          <h1 className="card-title">{this.props.title}</h1>
+          </div>
+      </div>
+    );
+  }
+}
+
 
 /**
  * Renders a card with a smaller width than normal

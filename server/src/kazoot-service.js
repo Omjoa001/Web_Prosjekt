@@ -3,14 +3,14 @@
 import pool from './mysql-pool';
 
 export type QuestionType = {
-  id: number,
+  id?: number,
   quizId: number,
   question: string,
   answ0: string,
   answ1: string,
   answ2: string,
   answ3: string,
-  numCorrect: number,
+  numCorrect: any,
 };
 
 export type QuizType = {
