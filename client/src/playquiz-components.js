@@ -41,7 +41,7 @@ export class PlayQuiz extends Component {
   sendPoints(pnt: number) {
     this.points += pnt;
   }
-
+  //This randomizes the order of the answers in a given array of questions
   randomizeOrder(array: QuestionType[]) {
     this.questions.map((q) => {
       this.totalPoints += q.numCorrect;
@@ -58,6 +58,7 @@ export class PlayQuiz extends Component {
       for (let x = 0; x < array[i].numCorrect; x++) {
         answOrder[x].splice(1, 1, 1);
       }
+
       this.randomizeAnswerArr(answOrder);
 
       let tempQuestionObject = {
@@ -74,6 +75,7 @@ export class PlayQuiz extends Component {
     }
   }
 
+  //This function randomizes the elements in any array.
   randomizeAnswerArr(array: []) {
     let i = array.length - 1;
     for (i; i > 0; i--) {
@@ -84,6 +86,7 @@ export class PlayQuiz extends Component {
     }
     return array;
   }
+
 
   submit() {
   if (this.show) {
