@@ -76,7 +76,7 @@ describe('Alert tests', () => {
         wrapper.matchesElement(
           <>
             <div>
-              test<button>&times;</button>
+              test<button>x</button>
             </div>
           </>
         )
@@ -96,7 +96,7 @@ describe('Alert tests', () => {
         wrapper.matchesElement(
           <>
             <div>
-              test<button>&times;</button>
+              test<button>×</button>
             </div>
           </>
         )
@@ -110,9 +110,50 @@ describe('Alert tests', () => {
     });
   });
 
-  test('Alert.Success Draws corecctly', () => {
-    
-  })
+
+  test('Open 3 alert messages, and close the second alert message', (done) => {
+    const wrapper = shallow(<Alert />);
+
+    Alert.danger('test1');
+    Alert.danger('test2');
+    Alert.danger('test3');
+
+    // Wait for events to complete
+    setTimeout(() => {
+      expect(
+        wrapper.matchesElement(
+          <>
+            <div>
+              test1<button>×</button>
+            </div>
+            <div>
+              test2<button>×</button>
+            </div>
+            <div>
+              test3<button>×</button>
+            </div>
+          </>
+        )
+      ).toEqual(true);
+
+      wrapper.find('button.close').at(1).simulate('click');
+
+      expect(
+        wrapper.matchesElement(
+          <>
+            <div>
+              test1<button>×</button>
+            </div>
+            <div>
+              test3<button>×</button>
+            </div>
+          </>
+        )
+      ).toEqual(true);
+
+      done();
+    });
+  });
 });
 
 describe('Column Widgets tests', () => {
@@ -642,7 +683,7 @@ describe('Browsequizzes-Component tests', () => {
 
 describe('NewQuiz-Component tests', () => {
 
-  test('New quiz draws correctly', () => {
+  test.skip('New quiz draws correctly', () => {
     const wrapper = shallow(<NewQuiz />)
     console.log(wrapper.debug())
 
