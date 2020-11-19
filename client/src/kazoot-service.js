@@ -37,7 +37,6 @@ export type CategoryFilterType = {
   checked?: boolean,
 };
 
-
 export type Quiz = {
   id?: number,
   title: string,
@@ -76,7 +75,7 @@ class QuestionService {
    * Get questions with given quizId
    */
   getQuizQuestion(id: number) {
-    console.log('1')
+    console.log('1');
     return axios.get<QuestionType[]>('/quizQuestions/' + id).then((response) => response.data);
   }
 
@@ -106,7 +105,7 @@ class QuestionService {
       .then((response) => response.data.id);
   }
 
-  deleteQuestions(id: number){
+  deleteQuestions(id: number) {
     return axios.delete<void>('/questions/' + id).then((response) => response.data);
   }
 }
@@ -150,11 +149,10 @@ class QuizService {
       .then((response) => response.data.id);
   }
 
-
-  updateQuiz(id: number, title: string, description: string, categoryId: number){
-    console.log(categoryId)
+  updateQuiz(id: number, title: string, description: string, categoryId: number) {
+    console.log(categoryId);
     return axios
-      .put<{}, {id: number, categoryId: number}>('/quiz/' + id, {
+      .put<{}, { id: number, categoryId: number }>('/quiz/' + id, {
         id: id,
         title: title,
         description: description,
@@ -167,7 +165,6 @@ class QuizService {
     return axios.delete<void>('/quiz/' + id).then((response) => response.data);
   }
 }
- 
 
 /**
  * Service to manage categories
