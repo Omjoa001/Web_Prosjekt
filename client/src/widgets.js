@@ -139,54 +139,7 @@ export class AnswerCard extends Component<{
           <div className="card-body" align="center">
             <h5 className="card-title">{this.props.title}</h5>
             <hr />
-            <div className="card-text">
-              {this.props.children}
-              {/*
-              <Button.Answer
-                style={this.selectStyle[0]}
-                onClick={this.stil.bind(this, 1, this.answ0[1])}
-                show={this.show}
-                correct={this.answ0[1]}
-              >
-                {this.props.answ0[0]}
-              </Button.Answer>
-              <Button.Answer
-                style={this.selectStyle[0]}
-                onClick={this.stil.bind(this, 1, this.answ0[1])}
-                show={this.show}
-                correct={this.answ0[1]}
-              >
-                {this.answ0[0]}
-              </Button.Answer>
-                &nbsp;&nbsp;&nbsp;
-                <Button.Answer
-                style={this.selectStyle[1]}
-                onClick={this.stil.bind(this, 2, this.answ1[1])}
-                show={this.show}
-                correct={this.answ1[1]}
-              >
-                {this.answ1[0]}
-              </Button.Answer>
-                &nbsp;&nbsp;&nbsp;
-                <Button.Answer
-                style={this.selectStyle[2]}
-                onClick={this.stil.bind(this, 3, this.answ2[1])}
-                show={this.show}
-                correct={this.answ2[1]}
-              >
-                {this.answ2[0]}
-              </Button.Answer>
-                &nbsp;&nbsp;&nbsp;
-                <Button.Answer
-                style={this.selectStyle[3]}
-                onClick={this.stil.bind(this, 4, this.answ3[1])}
-                show={this.show}
-                correct={this.answ3[1]}
-              >
-                {this.answ3[0]}
-              </Button.Answer>
-              */}
-            </div>
+            <div className="card-text">{this.props.children}</div>
           </div>
         </div>
       </center>

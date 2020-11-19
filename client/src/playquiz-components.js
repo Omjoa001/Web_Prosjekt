@@ -50,11 +50,12 @@ export class PlayQuiz extends Component {
     let i = array.length - 1;
     for (i; i >= 0; i--) {
       let answOrder: Array<[string, number]> = [];
+      //pushes the following variables: answer string, whether it is correct (boolean), and setStyle bool
       answOrder.push(
-        [array[i].answ0, 0],
-        [array[i].answ1, 0],
-        [array[i].answ2, 0],
-        [array[i].answ3, 0]
+        [array[i].answ0, 0, false],
+        [array[i].answ1, 0, false],
+        [array[i].answ2, 0, false],
+        [array[i].answ3, 0, false]
       );
       for (let x = 0; x < array[i].numCorrect; x++) {
         answOrder[x].splice(1, 1, 1);
@@ -89,10 +90,12 @@ export class PlayQuiz extends Component {
   points: number = 0;
 
   selectStyle = [{}, {}, {}, {}];
-
-  stil(num: number, corr: boolean) {
+  //Funksjon som plusser på en variabel, som blir pusha til en array for hver button. Da har vi en liste med unik identifikator på hver svar. Det kan stil sjekke før den setter verdi, og onclick flipper verdien.
+  stil(num: number, corr: boolean, style: boolean) {
+    style = !style;
     if (corr) {
-      this.points;
+      console.log('haei');
+      this.points++;
     }
     for (let i = 1; i <= this.selectStyle.length; i++) {
       if (num == i) {
@@ -100,13 +103,12 @@ export class PlayQuiz extends Component {
       }
     }
   }
-
+  styleBools = [];
   render() {
     return (
       <>
         <CenterCard title={this.quiz.title}>
           {this.quiz.description}
-
           <br></br>
           <br></br>
         </CenterCard>
@@ -114,28 +116,21 @@ export class PlayQuiz extends Component {
         <div>
           {this.shuffledQuestions.map((a) => (
             <div key={a.id}>
-              <AnswerCard
-                title={a.question}
-                answ0={a.answ0}
-                answ1={a.answ1}
-                answ2={a.answ2}
-                answ3={a.answ3}
-                parentCallback={this.sendPoints}
-              >
+              <AnswerCard title={a.question}>
                 <div title={a.question}>
                   Correct answers: {a.numCorrect}
                   <br></br>
                 </div>
                 <Button.Answer
-                  style={this.selectStyle[0]}
                   onClick={this.stil.bind(this, 1, a.answ0[1])}
+                  style={a.answ0[2] ? { border: '3px solid navy' } : { border: '3px solid red' }}
                   correct={a.answ0[1]}
                   show={this.show}
                 >
                   {a.answ0[0]}
                 </Button.Answer>
                 <Button.Answer
-                  style={this.selectStyle[1]}
+                  style={a.answ1[2] ? { border: '3px solid navy' } : { border: '3px solid red' }}
                   onClick={this.stil.bind(this, 2, a.answ1[1])}
                   correct={a.answ1[1]}
                   show={this.show}
