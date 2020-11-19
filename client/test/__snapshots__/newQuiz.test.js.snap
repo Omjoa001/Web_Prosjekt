@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewQuiz-Component tests New quiz draws correctly 1`] = `
+<Fragment>
+  <QuizEditor
+    cardtitle="📣 Creating a new quiz! 📣"
+    mode="new"
+  />
+</Fragment>
+`;
