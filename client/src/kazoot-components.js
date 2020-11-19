@@ -203,8 +203,8 @@ export class QuizEditor extends Component {
    * back to the NewQuiz comp and changes NewQuiz' state.
    * NewQuiz needs this information to make database calls to create a new quiz.
    */
-  sendData(id, quizId, questionText, answers) {
-    let newarray = this.state.questions;
+  sendData(id: number, quizId: number, questionText: string, answers: AnswerType[]) {
+    let newarray: StateQuestionType[] = this.state.questions;
     let index = this.findIndexOfQuestion(id);
     if (index != -1) {
       newarray[index].questionText = questionText;
