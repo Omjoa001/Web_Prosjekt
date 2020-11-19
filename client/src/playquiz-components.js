@@ -292,6 +292,12 @@ export class AnswerCardComp extends Component {
             {this.renderAnswers()}
             <Button.Success>Test</Button.Success>
           </Card>
+          <Button.Custom
+            onClick={() => {
+              ans.clicked = !ans.clicked;
+            }}
+            buttonclass={'btn btn-outline-primary'}
+          >Yoyoyo</Button.Custom>
         </center>
       </>
     );
