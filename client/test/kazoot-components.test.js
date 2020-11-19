@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Alert, Column, Button, Form, Card, CenterCard, AnswerCard, LayoutCenter, TileCard, QuestionCard, Row, NavBar } from '../src/widgets.js';
 import { Component } from 'react-simplified';
 import {BrowseQuizzes} from '../src/browsequizzes-components'
-import { Home } from '../src/kazoot-components';
+import { Home, QuizEditor } from '../src/kazoot-components';
 import { EditQuiz } from '../src/editquizzes-components';
 import { NewQuiz } from '../src/newquiz-components';
 import { PlayQuiz } from '../src/playquiz-components';
@@ -675,17 +675,30 @@ describe('Home tests', () => {
   });
 });
 
+
+
 describe('Browsequizzes-Component tests', () => {
   test('BrowseQuiz-Component draws correctly', () => {
+    const wrapper = shallow(<BrowseQuizzes />)
 
+    console.log(wrapper.debug())
+
+    setTimeout(() => {
+    expect(wrapper.containsMatchingElement(
+
+
+        
+      ))
+    })
   })
 })
 
+
+
 describe('NewQuiz-Component tests', () => {
 
-  test.skip('New quiz draws correctly', () => {
+  test('New quiz draws correctly', () => {
     const wrapper = shallow(<NewQuiz />)
-    console.log(wrapper.debug())
 
     expect(
       wrapper.containsMatchingElement(
