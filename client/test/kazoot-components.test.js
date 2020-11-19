@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { Alert, Column, Button, Form, Card, CenterCard, AnswerCard, LayoutCenter, TileCard, QuestionCard, Row, NavBar } from '../src/widgets.js';
 import { Component } from 'react-simplified';
-import {BrowseQuizzes} from '../src/browsequizzes-components'
-import { Home } from '../src/kazoot-components';
+import { BrowseQuizzes} from '../src/browsequizzes-components'
+import { Home, Question, QuizEditor } from '../src/kazoot-components';
 import { EditQuiz } from '../src/editquizzes-components';
 import { NewQuiz } from '../src/newquiz-components';
 import { PlayQuiz } from '../src/playquiz-components';
@@ -18,8 +18,8 @@ jest.mock('../src/kazoot-service', () => {
   class QuizService {
     getAllQuizzes(): Promise<QuizType[]> {
       return Promise.resolve([
-        {id: 6, title: 'Hva er tall??', description: 'Vi omgås tall. Hva er tall?', categoryId: 2},
-        {id: 77, title: 'Matte #1', description: 'Sjekk kunnskapen din i grunnleggende matte!', categoryId: 1}
+        {id: 1, title: 'Hva er tall??', description: 'Vi omgås tall. Hva er tall?', categoryId: 2},
+        {id: 2, title: 'Matte #1', description: 'Sjekk kunnskapen din i grunnleggende matte!', categoryId: 1}
       ]);
     }
   }
@@ -28,12 +28,17 @@ jest.mock('../src/kazoot-service', () => {
     getAllQuestions(): Promise<QuestionType[]> {
       return Promise.resolve([
         {id: 6, quizId: 1, question: 'Hva er tall??', answ0: 'Vi omgås tall. Hva er tall?', answ1: 'Vi omgås tall. Hva er tall?', answ2: 'Vi omgås tall. Hva er tall?', answ3: 'Vi omgås tall. Hva er tall?', numCorrect: 2},
-        {id: 2, quizId: 1, question: 'Hva er tall??', answ0: 'Vi omgås tall. Hva er tall?', answ1: 'Vi omgås tall. Hva er tall?', answ2: 'Vi omgås tall. Hva er tall?', answ3: 'Vi omgås tall. Hva er tall?', numCorrect: 2},
+        {id: 2, quizId: 2, question: 'Hva er tall??', answ0: 'Vi omgås tall. Hva er tall?', answ1: 'Vi omgås tall. Hva er tall?', answ2: 'Vi omgås tall. Hva er tall?', answ3: 'Vi omgås tall. Hva er tall?', numCorrect: 2},
+      ]);
+    }
+
+    getQuiz(id: number): Promise<QuizType> {
+      return Promise.resolve([
+        {id: 2, title: 'Matte #1', description: 'Sjekk kunnskapen din i grunnleggende matte!', categoryId: 1}
       ]);
     }
   }
    
-
   class CategoryService {
     getAllCategories(): Promise<CategoryType[]> {
       return Promise.resolve([
@@ -43,7 +48,8 @@ jest.mock('../src/kazoot-service', () => {
     }
   }
 
-  return (new QuizService(), new QuestionService(), new CategoryService());
+  
+  return QuizService, QuestionService, CategoryService;
 });
 
 /**
@@ -675,28 +681,78 @@ describe('Home tests', () => {
   });
 });
 
-describe('Browsequizzes-Component tests', () => {
-  test('BrowseQuiz-Component draws correctly', () => {
+describe('QuizEditor tests', () => {
+  test('QuizEditor draws correctly', (done) => {
+    const wrapper = shallow(<QuizEditor />);
 
+    console.log(wrapper.debug())
+    expect(wrapper.containsMatchingElement(
+      <Card></Card>
+    ))
   })
 })
 
+
+
+describe('Browsequizzes-Component tests', () => {
+  test('BrowseQuiz-Component draws correctly', () => {
+    const wrapper = shallow(<BrowseQuizzes />)
+
+    console.log(wrapper.debug())
+
+    setTimeout(() => {
+    expect(wrapper.containsMatchingElement(
+      <>
+        <CardSmaller title="Browse Quiz 🧐">S
+        </CardSmaller>
+
+          <Card title="Categories"> 
+            <div>{this.renderCategories()}</div>
+          </Card>
+
+          <Card title="Search">
+            <Row>
+              <div style={{ width: '50%' }}>
+                <Form.Input
+                  type="text"
+                  placeholder="🔎 Search for the title or description of a quiz"
+                  value={this.searchterm}
+                  onChange={this.editSearchTerm}
+                ></Form.Input>
+              </div>
+            </Row>
+          </Card>
+
+          <Card title="Quizzes">{this.quizTileGrid()}</Card>
+        </>
+      ))
+    });
+  });
+})
+
+
+
 describe('NewQuiz-Component tests', () => {
 
-  test.skip('New quiz draws correctly', () => {
+  test('New quiz draws correctly', (done) => {
     const wrapper = shallow(<NewQuiz />)
-    console.log(wrapper.debug())
 
     expect(
       wrapper.containsMatchingElement(
         <QuizEditor cardtitle='📣 Creating a new quiz! 📣' mode='new'/>
       ))
+    done();
   });
 });
 
 describe('EditQuiz-Component tests', () => {
-  test('Edit Quiz draws correctly', () => {
+  test('Edit Quiz draws correctly', (done) => {
+    const wrapper = shallow(<EditQuiz match={{ params: { id: 2 } }}/>)
 
+    expext(wrapper.containsMatchingElement(
+      <QuizEditor cardtitle="📣 Editing Quiz 📣" mode="edit" id={2} />
+    ))
+    done();
   })
 })
 
