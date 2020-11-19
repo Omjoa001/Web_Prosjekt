@@ -11,7 +11,6 @@ import { BrowseQuizzes } from './browsequizzes-components';
 import { NewQuiz } from './newquiz-components';
 import { EditQuiz } from './editquizzes-components.js';
 import { PlayQuiz } from './playquiz-components';
-import { ListQuizzes } from './listquizzes-components.js';
 
 class Menu extends Component<{}> {
   render() {
@@ -20,8 +19,6 @@ class Menu extends Component<{}> {
       <NavBar brand="Kazoot"> 
         <NavBar.Link to="/BrowseQuizzes">Browse Quizzes</NavBar.Link>
         <NavBar.Link to="/quiz/new">New quiz</NavBar.Link>
-        <NavBar.Link to={"/editQuiz/" + 2}>TESTING: Endre quiz</NavBar.Link>
-        <NavBar.Link to="/listQuizzes">TESTING: Kviss</NavBar.Link>
       </NavBar>
       </nav>
     );
@@ -40,7 +37,6 @@ ReactDOM.render(
       <Route exact path="/BrowseQuizzes" component={BrowseQuizzes}></Route>
       <Route exact path="/quiz/new" component={NewQuiz}></Route>
       <Route exact path="/editQuiz/:id(\d+)" component={EditQuiz}></Route>
-      <Route exact path="/listQuizzes" component={ListQuizzes}></Route>
       <Route exact path="/playQuiz/:id(\d+)" component={PlayQuiz}></Route>
     </div>
   </HashRouter>,
