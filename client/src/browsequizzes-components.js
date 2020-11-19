@@ -26,7 +26,7 @@ export class BrowseQuizzes extends Component<{}> {
   categoriesAreLoaded: boolean = false; // Program waits until true
   quizzesAreLoaded: boolean = false; // Program waits until true
 
-  mounted() {
+  mounted(): void {
     categoryService.getAllCategories().then((c: CategoryType[]) => {
       this.categories = c;
       this.categoriesAreLoaded = true;
@@ -92,8 +92,6 @@ export class BrowseQuizzes extends Component<{}> {
   categoryFilter() {
     let filteredQuizzes: QuizType[] = [];
 
-    console.log(`catfilt this.cats: ${JSON.stringify(this.categories)}`);
-
     this.categories.forEach((category) => {
       if (category.checked) {
         this.quizzes.forEach((quiz) => {
@@ -101,12 +99,8 @@ export class BrowseQuizzes extends Component<{}> {
             filteredQuizzes.push(quiz);
           }
         });
-      } else {
-        console.log(`cat not checked: ${category.category} checked: ${category.checked}`);
       }
     });
-
-    console.log(`catfilter filtq: ${filteredQuizzes.toString()}`);
 
     if (filteredQuizzes.length == 0) {
       return this.quizzes;
@@ -142,9 +136,6 @@ export class BrowseQuizzes extends Component<{}> {
    */
   quizTileGrid() {
     let quizzes = this.search();
-
-    console.log(this.search());
-    console.log(`wack: ${JSON.stringify(quizzes)}`);
 
     if (quizzes.length == 0) {
       return <div>No quizzes matched the combination of categories and search 😢</div>;
