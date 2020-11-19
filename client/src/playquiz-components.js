@@ -39,9 +39,9 @@ export class PlayQuiz extends Component {
   resultText: string = '';
 
   //sendPoints is used so childcomponents have a parentCallback for addign points
-  sendPoints(pnt) {
-    this.points += pnt;
-  }
+  /*sendPoints() {
+    this.points += 1;
+  }*/
 
   randomizeOrder(array: QuestionType[]) {
     this.questions.map((q) => {
@@ -86,6 +86,21 @@ export class PlayQuiz extends Component {
     return array;
   }
 
+  points: number = 0;
+
+  selectStyle = [{}, {}, {}, {}];
+
+  stil(num: number, corr: boolean) {
+    if (corr) {
+      this.points;
+    }
+    for (let i = 1; i <= this.selectStyle.length; i++) {
+      if (num == i) {
+        this.selectStyle[i - 1] = { border: '3px solid navy' };
+      }
+    }
+  }
+
   render() {
     return (
       <>
@@ -105,13 +120,44 @@ export class PlayQuiz extends Component {
                 answ1={a.answ1}
                 answ2={a.answ2}
                 answ3={a.answ3}
-                show={this.show}
                 parentCallback={this.sendPoints}
               >
                 <div title={a.question}>
                   Correct answers: {a.numCorrect}
                   <br></br>
                 </div>
+                <Button.Answer
+                  style={this.selectStyle[0]}
+                  onClick={this.stil.bind(this, 1, a.answ0[1])}
+                  correct={a.answ0[1]}
+                  show={this.show}
+                >
+                  {a.answ0[0]}
+                </Button.Answer>
+                <Button.Answer
+                  style={this.selectStyle[1]}
+                  onClick={this.stil.bind(this, 2, a.answ1[1])}
+                  correct={a.answ1[1]}
+                  show={this.show}
+                >
+                  {a.answ1[0]}
+                </Button.Answer>
+                <Button.Answer
+                  style={this.selectStyle[2]}
+                  onClick={this.stil.bind(this, 3, a.answ2[1])}
+                  correct={a.answ2[1]}
+                  show={this.show}
+                >
+                  {a.answ2[0]}
+                </Button.Answer>
+                <Button.Answer
+                  style={this.selectStyle[3]}
+                  onClick={this.stil.bind(this, 4, a.answ3[1])}
+                  correct={a.answ3[1]}
+                  show={this.show}
+                >
+                  {a.answ3[0]}
+                </Button.Answer>
               </AnswerCard>
               <br></br>
               <br></br>
