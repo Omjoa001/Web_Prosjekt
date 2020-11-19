@@ -29,7 +29,8 @@ jest.mock('../src/kazoot-service', () => {
     }
   }
   
-  return new QuizService();
+  return new QuizService;
+
 });
 
 
@@ -94,6 +95,7 @@ describe('Alert tests', () => {
       done();
     });
   });
+
 
   test('Close alert message', (done) => {
     const wrapper = shallow(<Alert />);
@@ -160,11 +162,81 @@ describe('Alert tests', () => {
           </>
         )
       ).toEqual(true);
-
       done();
     });
   });
+
+  test('Alert.success draws correctly', () => {
+    const wrapper = shallow(<Alert.success>text</Alert.success>)
+
+
+    setTimeout(() => {
+      expect(wrapper.containsMatchingElement(
+        
+          <div  className={'alert alert-success'} role="alert">
+            text
+            <button type="button" className="close" onClick={() => {}}>
+              &times;
+            </button>
+          </div>
+      )).toEqual(true)
+    })
+  })
+
+
+  test('Alert.info draws correctly', () => {
+    const wrapper = shallow(<Alert.info>text</Alert.info>)
+
+
+    setTimeout(() => {
+      expect(wrapper.containsMatchingElement(
+        
+          <div  className={'alert alert-info'} role="alert">
+            text
+            <button type="button" className="close" onClick={() => {}}>
+              &times;
+            </button>
+          </div>
+      )).toEqual(true)
+    })
+  })
+
+  // test('Alert.warning draws correctly', () => {
+  //   const wrapper = shallow(<Alert.warning>text</Alert.warning>)
+
+
+  //   setTimeout(() => {
+  //     expect(wrapper.containsMatchingElement(
+        
+  //         <div  className={'alert alert-warning'} role="alert">
+  //           text
+  //           <button type="button" className="close" onClick={() => {}}>
+  //             &times;
+  //           </button>
+  //         </div>
+  //     )).toEqual(true)
+  //   })
+  // })
+
+  // test('Alert.danger draws correctly', () => {
+  //   const wrapper = shallow(<Alert.danger>text</Alert.danger>)
+
+
+  //   setTimeout(() => {
+  //     expect(wrapper.containsMatchingElement(
+        
+  //         <div  className={'alert alert-danger'} role="alert">
+  //           text
+  //           <button type="button" className="close" onClick={() => {}}>
+  //             &times;
+  //           </button>
+  //         </div>
+  //     )).toEqual(true)
+  //   })
+  // })
 });
+
+
 
 describe('Column Widgets tests', () => {
   test('Column Widget draws correctly', () => {
