@@ -39,7 +39,7 @@ export class PlayQuiz extends Component {
     let i = array.length - 1;
     for (i; i >= 0; i--) {
 
-      let answOrder = []
+      let answOrder: Array<[string, number]>  = []
       answOrder.push([array[i].answ0, 0], [array[i].answ1, 0], [array[i].answ2, 0], [array[i].answ3, 0])
       for (let x = 0; x < array[i].numCorrect; x++) {
           answOrder[x].splice(1,1,1)
