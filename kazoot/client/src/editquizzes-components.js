@@ -17,6 +17,9 @@ import {
 
 const history = createHashHistory();
 
+/**
+ * Edit quiz page component.
+ */
 export class EditQuiz extends Component<{ match: { params: { id: number } } }> {
   id: number = 0;
   questions: QuestionType[] = [];
