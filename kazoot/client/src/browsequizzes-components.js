@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { NavLink } from 'react-router-dom';
 import { createHashHistory } from 'history';
-import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar } from './widgets';
+import { Card, TileCard, Row, Button, Form, Column, Alert, NavBar, CardSmaller } from './widgets';
 import { quizService, questionService, categoryService } from './kazoot-service';
 import {
   type QuizType,
@@ -159,7 +159,10 @@ export class BrowseQuizzes extends Component<{}> {
       console.log(`render quizzes: ${this.quizzes}`);
       return (
         <>
-          <Card title="Categories">
+        <CardSmaller title="Browse Quiz 🧐">S
+        </CardSmaller>
+
+          <Card title="Categories"> 
             <div>{this.renderCategories()}</div>
           </Card>
 

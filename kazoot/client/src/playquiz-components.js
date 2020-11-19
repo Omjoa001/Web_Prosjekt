@@ -111,7 +111,7 @@ export class PlayQuiz extends Component {
               this.resultText = `You got ${this.points}/${this.totalPoints} correct answers`
             }}
           >
-            SUBMIT ANSWERS
+            SUBMIT ANSWERS 🎉 
           </Button.Submit>
           <br></br>  
           <Card title={this.resultText}></Card>
