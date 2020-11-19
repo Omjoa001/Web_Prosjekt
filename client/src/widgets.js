@@ -458,7 +458,7 @@ class ButtonCustom extends Component<{
       <button
         type="button"
         onClick={this.props.onClick}
-        class={buttonclass}
+      class={this.props.buttonclass}
       >
         {this.props.children}
       </button>

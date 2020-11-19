@@ -162,7 +162,6 @@ export class PlayQuiz extends Component {
   mounted() {
     this.id = this.props.match.params.id;
     this.loadQuiz();
-
     //quizService.getNextId().then((next) => (this.nextId = next.AUTO_INCREMENT));
   }
 
