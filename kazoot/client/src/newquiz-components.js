@@ -290,7 +290,7 @@ export class QuizEditor extends Component {
    * Create a new quiz.
    * Displayed if mode is set to 'new'
    */
-  createQuiz() {
+  saveQuiz() {
     if (this.state.questions.length > 0) {
       if (!this.quizCreated) {
         quizService
@@ -502,7 +502,7 @@ export class QuizEditor extends Component {
         <Row>
           <Button.Submit
             onClick={() => {
-              this.createQuiz();
+              this.saveQuiz();
             }}
           >
             🔥 Create Quiz 🔥
@@ -515,7 +515,7 @@ export class QuizEditor extends Component {
           <Row>
             <Button.Submit
               onClick={() => {
-                this.createQuiz();
+                this.saveQuiz();
               }}
             >
               🔥 Save Quiz 🔥
