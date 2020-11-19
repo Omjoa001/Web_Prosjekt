@@ -307,33 +307,33 @@ export class QuizEditor extends Component {
     console.log(`savequiz this.description: ${this.description}`);
     console.log(`savequiz this.categoryId: ${this.categoryId}`);
 
-    if (this.state.questions.length > 0) {
-      if (!this.quizCreated) {
-        quizService
-          .createQuiz(this.title, this.description, this.categoryId)
-          .then((res) => {
-            this.quizCreated = true;
-            this.safeToSave = true;
-          })
-          .catch((error) => {
-            Alert.danger('Error: ' + error.message);
-          });
+    if (this.title != '' && this.categoryId != 0) {
+      if (this.state.questions.length > 0) {
+        if (!this.quizCreated) {
+          quizService
+            .createQuiz(this.title, this.description, this.categoryId)
+            .then((res) => {
+              this.quizCreated = true;
+              this.safeToSave = true;
+            })
+            .catch((error) => {
+              Alert.danger('Error: ' + error.message);
+            });
+        } else {
+          quizService
+            .updateQuiz(this.id, this.title, this.description, this.categoryId)
+            .then(() => (this.safeToSave = true))
+            .catch((error: Error) =>
+              Alert.danger(
+                'Error ' + (mode == 'edit') ? 'editing' : 'creating' + ' Quiz: ' + error.message
+              )
+            );
+        }
       } else {
-        console.log(`savequiz edit this.categoryId: ${this.categoryId}`);
-        quizService
-        // change quiz id
-          .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
-          .then(() => {
-            this.safeToSave = true;
-          })
-          .catch((error: Error) =>
-            Alert.danger(
-              'Error ' + (mode == 'edit') ? 'editing' : 'creating' + ' Quiz: ' + error.message
-            )
-          );
+        Alert.danger('Quiz contains no questions');
       }
     } else {
-      Alert.danger('Quiz contains no questions');
+      Alert.danger('Quiz is missing title or category');
     }
 
     this.state.questions.forEach((question) => {
@@ -371,16 +371,28 @@ export class QuizEditor extends Component {
 
       waitForDeletion.then(() => {
         if (numCorrect > 0) {
-          if (this.quizCreated) {
-            questionService
-              .createQuestion(quizId, question.questionText, answ0, answ1, answ2, answ3, numCorrect)
-              .then(() => {
-                Alert.success('Quiz saved successfully');
-                history.push('/BrowseQuizzes');
-              })
-              .catch((error) => {
-                Alert.danger('Error: ' + error.message);
-              });
+          if (question.questionText != '') {
+            if (this.quizCreated && this.safeToSave) {
+              questionService
+                .createQuestion(
+                  quizId,
+                  question.questionText,
+                  answ0,
+                  answ1,
+                  answ2,
+                  answ3,
+                  numCorrect
+                )
+                .then(() => {
+                  Alert.success('Quiz saved successfully');
+                  history.push('/BrowseQuizzes');
+                })
+                .catch((error) => {
+                  Alert.danger('Error: ' + error.message);
+                });
+            }
+          } else {
+            Alert.danger('A question is missing its text');
           }
         } else {
           Alert.danger('Please add at least one correct answer for each question');
