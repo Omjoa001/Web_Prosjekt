@@ -299,8 +299,8 @@ export class QuizEditor extends Component {
   }
 
   /**
-   * Create a new quiz.
-   * Displayed if mode is set to 'new'
+   * Create a new quiz or save an existing one.
+   * Behavior is determined by mode and other factors.
    */
   saveQuiz() {
     console.log(`savequiz this.title: ${this.title}`);
