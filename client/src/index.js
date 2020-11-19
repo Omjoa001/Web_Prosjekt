@@ -15,7 +15,7 @@ import { PlayQuiz } from './playquiz-components';
 class Menu extends Component<{}> {
   render() {
     return (
-      <nav class="navbar sticky-top bg-dark">
+      <nav className="navbar sticky-top bg-dark">
       <NavBar brand="Kazoot"> 
         <NavBar.Link to="/BrowseQuizzes">Browse Quizzes</NavBar.Link>
         <NavBar.Link to="/quiz/new">New quiz</NavBar.Link>
