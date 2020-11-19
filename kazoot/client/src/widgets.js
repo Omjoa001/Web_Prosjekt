@@ -92,11 +92,27 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
     return (
       <div className="card">
         <div className="card-body">
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10vh', marginBottom: '1vh' }}>
-          <h3 className="card-title">{this.props.title}</h3>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '10vh',
+              marginBottom: '1vh',
+            }}
+          >
+            <h3 className="card-title">{this.props.title}</h3>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1vh', marginBottom: '10vh' }}>
-          <div className="card-text">{this.props.children}</div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '1vh',
+              marginBottom: '10vh',
+            }}
+          >
+            <div className="card-text">{this.props.children}</div>
           </div>
         </div>
       </div>
@@ -108,17 +124,18 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
 export class AnswerCard extends Component<{
   title?: string,
   children?: React.Node,
-  answ0?: Array<mixed>,
-  answ1?: Array<mixed>,
-  answ2?: Array<mixed>,
-  answ3?: Array<mixed>,
-  numCorrect?: number,
+  class?: string,
+  // answ0?: Array<mixed>,
+  // answ1?: Array<mixed>,
+  // answ2?: Array<mixed>,
+  // answ3?: Array<mixed>,
+  // numCorrect?: number,
   show?: boolean,
   parentCallback: any,
 }> {
   points: number = 0;
 
-  selectStyle = [{}, {}, {}, {}]
+  selectStyle = [{}, {}, {}, {}];
 
   stil(num: number, corr: boolean) {
     if (corr) {
@@ -129,7 +146,7 @@ export class AnswerCard extends Component<{
     }
     for (let i = 1; i <= this.selectStyle.length; i++) {
       if (num == i) {
-        this.selectStyle[i - 1] = { border: '3px solid navy' }
+        this.selectStyle[i - 1] = { border: '3px solid navy' };
       }
     }
   }
@@ -191,11 +208,27 @@ export class LayoutCenter extends Component<{ title?: React.Node, children?: Rea
     return (
       <div className="card">
         <div className="card-body">
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10vh', marginBottom: '1vh'}}>
-          <h1 className="card-title">{this.props.title}</h1>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '10vh',
+              marginBottom: '1vh',
+            }}
+          >
+            <h1 className="card-title">{this.props.title}</h1>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1vh', marginBottom: '10vh'}}>
-          <h3 className="card-text">{this.props.children}</h3>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '1vh',
+              marginBottom: '10vh',
+            }}
+          >
+            <h3 className="card-text">{this.props.children}</h3>
           </div>
         </div>
       </div>
@@ -233,8 +266,6 @@ export class QuestionCard extends Component<{ title?: React.Node, children?: Rea
   }
 }
 
-
-
 /**
  * Renders a row using Bootstrap classes.
  */
@@ -247,7 +278,12 @@ export class Row extends Component<{ children?: React.Node }> {
 /**
  * Renders a column with specified width using Bootstrap classes.
  */
-export class Column extends Component<{ width?: number, right?: boolean, left?: boolean, children?: React.Node }> {
+export class Column extends Component<{
+  width?: number,
+  right?: boolean,
+  left?: boolean,
+  children?: React.Node,
+}> {
   render() {
     return (
       <div
@@ -264,8 +300,6 @@ export class Column extends Component<{ width?: number, right?: boolean, left?: 
   }
 }
 
-
-
 /**
  * Renders a success button using Bootstrap styles.
  */
@@ -277,9 +311,11 @@ class ButtonSuccess extends Component<{
 }> {
   render() {
     return (
-      <button type="button"
+      <button
+        type="button"
         className={'btn btn-success' + (this.props.small ? ' btn-sm py-0' : '')}
-        onClick={this.props.onClick}>
+        onClick={this.props.onClick}
+      >
         {this.props.children}
       </button>
     );
@@ -297,12 +333,13 @@ class ButtonSave extends Component<{
 }> {
   render() {
     return (
-
-      <button 
-      type="button" class="btn btn-outline-success btn-large btn-block"
-      onClick={this.props.onClick}>
-       {this.props.children} </button>
-     
+      <button
+        type="button"
+        class="btn btn-outline-success btn-large btn-block"
+        onClick={this.props.onClick}
+      >
+        {this.props.children}{' '}
+      </button>
     );
   }
 }
@@ -318,12 +355,13 @@ class ButtonBack extends Component<{
 }> {
   render() {
     return (
-
-      <button 
-      type="button" class="btn btn-outline-danger btn-large btn-block"
-      onClick={this.props.onClick}>
-       {this.props.children} </button>
-     
+      <button
+        type="button"
+        class="btn btn-outline-danger btn-large btn-block"
+        onClick={this.props.onClick}
+      >
+        {this.props.children}{' '}
+      </button>
     );
   }
 }
@@ -339,39 +377,78 @@ class ButtonSubmit extends Component<{
 }> {
   render() {
     return (
-
-      <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
-      <button 
-      type="button" class="btn btn-outline-primary btn-large btn-block"
-      onClick={this.props.onClick}>
-       {this.props.children} </button>
-       </div>
-     
+      <div
+        style={{
+          width: '100vh',
+          marginLeft: '25%',
+          marginRight: '25%',
+          flex: '1',
+          flexDirection: 'column',
+        }}
+      >
+        <button
+          type="button"
+          class="btn btn-outline-primary btn-large btn-block"
+          onClick={this.props.onClick}
+        >
+          {this.props.children}{' '}
+        </button>
+      </div>
     );
   }
 }
 
-
+/**
+ * Renders a blue block-button using Bootstrap styles.
+ */
+class ButtonAnswer extends Component<{
+  width?: number,
+  onClick?: () => Mixed,
+  small?: Boolean,
+  children?: React.Node,
+  correct?: Boolean,
+  show?: boolean,
+  style: { border: string },
+  buttonclass?: string,
+  onClick: () => mixed,
+}> {
+  render() {
+    let value = this.props.correct ? 'success' : 'danger';
+    let ButtonClass = this.props.show
+      ? 'btn btn-' + value + ' btn-lg btn-block'
+      : 'btn btn-outline-primary btn-lg btn-block';
+    return (
+      <button
+        type="button"
+        style={this.props.style}
+        onClick={this.props.onClick}
+        class={ButtonClass}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
 
 /**
  * Renders a blue block-button using Bootstrap styles.
  */
-
-class ButtonAnswer extends Component<{
+class ButtonCustom extends Component<{
   width?: number,
-  onClick?:() => Mixed,
-  small?:Boolean,
-  children?:React.Node,
-  correct?:Boolean,
-  show?:boolean,
-  style: {border: string},
+  onClick?: () => Mixed,
+  children?: React.Node,
+  buttonclass?: string,
   onClick: () => mixed,
 }> {
-render() {
-  let value = this.props.correct ? "success" : "danger"
-  let ButtonClass = this.props.show ? "btn btn-" + value + " btn-lg btn-block" : "btn btn-outline-primary btn-lg btn-block"
+  render() {
     return (
-      <button type="button" style={this.props.style} onClick={this.props.onClick} class={ButtonClass}>{this.props.children}</button>
+      <button
+        type="button"
+        onClick={this.props.onClick}
+        class={buttonclass}
+      >
+        {this.props.children}
+      </button>
     );
   }
 }
@@ -388,13 +465,19 @@ class ButtonStart extends Component<{
 }> {
   render() {
     return (
-    
-    <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
-    <button 
-    type="button" class="btn btn-success btn-lg btn-block"
-    onClick={this.props.onClick}>
-     {this.props.children} </button>
-    </div>
+      <div
+        style={{
+          width: '100vh',
+          marginLeft: '25%',
+          marginRight: '25%',
+          flex: '1',
+          flexDirection: 'column',
+        }}
+      >
+        <button type="button" class="btn btn-success btn-lg btn-block" onClick={this.props.onClick}>
+          {this.props.children}{' '}
+        </button>
+      </div>
     );
   }
 }
@@ -403,7 +486,7 @@ class ButtonStart extends Component<{
  * Renders a danger button using Bootstrap styles.
  */
 
- class ButtonDanger extends Component<{
+class ButtonDanger extends Component<{
   width?: number,
   onClick?: () => mixed,
   small?: boolean,
@@ -502,6 +585,7 @@ export class Button {
   static Save = ButtonSave;
   static Back = ButtonBack;
   static Submit = ButtonSubmit;
+  static Custom = ButtonCustom;
 }
 
 /**
@@ -549,7 +633,7 @@ class FormLabel extends Component<{ children?: React.Node }> {
 /**
  * Renders a form input using Bootstrap styles.
  */
- class FormInput extends Component<{
+class FormInput extends Component<{
   type?: string,
   value?: React.Node,
   onChange?: (SyntheticEvent<HTMLInputElement>) => mixed,

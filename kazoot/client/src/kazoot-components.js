@@ -105,11 +105,11 @@ export class QuizEditor extends Component {
     this.questionsCreated = true;
 
     // Retrieve quiz from database
-    quizService.getQuiz(this.id).then((q) => {
-      this.quiz = q;
-      this.title = q.title;
-      this.description = q.description;
-      this.categoryId = q.categoryId;
+    quizService.getQuiz(this.id).then((quiz) => {
+      this.quiz = quiz;
+      this.title = quiz.title;
+      this.description = quiz.description;
+      this.categoryId = quiz.categoryId;
 
       // Retrieve all questions for quiz from database
       questionService.getQuizQuestion(this.id).then((qs) => {
