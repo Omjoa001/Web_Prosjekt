@@ -27,17 +27,13 @@ export class BrowseQuizzes extends Component<{}> {
   quizzesAreLoaded: boolean = false; // Program waits until true
 
   mounted() {
-    categoryService
-      .getAllCategories()
-      .then((c: CategoryType[]) => {
-        this.categories = c;
-        this.categoriesAreLoaded = true;
-      })
-      .then(() => {
-        this.categories.map((cat) => {
-          cat.checked = false;
-        });
+    categoryService.getAllCategories().then((c: CategoryType[]) => {
+      this.categories = c;
+      this.categoriesAreLoaded = true;
+      this.categories.map((cat) => {
+        cat.checked = false;
       });
+    });
 
     quizService.getAllQuizzes().then((q) => {
       this.quizzes = q;
