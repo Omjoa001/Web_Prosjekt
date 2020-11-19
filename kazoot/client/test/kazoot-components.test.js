@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Alert, Column, Button, Form, Card, CenterCard, AnswerCard, LayoutCenter, TileCard } from '../src/widgets.js';
+import { Alert, Column, Button, Form, Card, CenterCard, AnswerCard, LayoutCenter, TileCard, QuestionCard, Row, NavBar } from '../src/widgets.js';
 import { Component } from 'react-simplified';
 import {BrowseQuizzes} from '../src/browsequizzes-components'
 import { Home } from '../src/kazoot-components';
@@ -9,6 +9,7 @@ import { EditQuiz } from '../src/editquizzes-components';
 import { NewQuiz } from '../src/newquiz-components';
 import { PlayQuiz } from '../src/playquiz-components';
 import { shallow } from 'enzyme';
+import { NavLink } from 'react-router-dom';
 import { quizService, questionService, categoryService } from '../src/kazoot-service';
 import { type QuizType, type CategoryType, type QuestionType } from '../src/kazoot-service';
 
@@ -80,7 +81,6 @@ describe('Alert tests', () => {
           </>
         )
       ).toEqual(true);
-
       done();
     });
   });
@@ -109,6 +109,10 @@ describe('Alert tests', () => {
       done();
     });
   });
+
+  test('Alert.Success Draws corecctly', () => {
+    
+  })
 });
 
 describe('Column Widgets tests', () => {
@@ -293,8 +297,54 @@ describe('TileCard widget tests', () => {
 })
 
 describe('QuestionCard tests', () => {
-  test('')
+  test('QuestionCard draws correctly', () => {
+    const wrapper = shallow(<QuestionCard titel='title'>text</QuestionCard>)
+
+    expect(wrapper.containsMatchingElement(
+      <div className="card" style={{ width: '50rem' }}>
+      <div className="card-body" align="center">
+        <h5 className="card-title">titel</h5>
+        <div className="card-text">text</div>
+      </div>
+    </div>
+    ))
+  })
 })
+
+describe('Row widget tests', () => {
+  test('Row widget draws correctly', () => {
+    const wrapper = shallow(<Row>text</Row>);
+
+    expect(wrapper.containsMatchingElement(
+      <div className='col'>text</div>
+    ))
+  });
+
+  test('Row widget draws correctly with width property set', () => {
+    const wrapper = shallow(<Row width={3}>text</Row>)
+
+    expect(wrapper.containsMatchingElement(
+      <div className='col-2'>text</div>
+    ))
+  });
+
+  test('Row widget draws correctly with right property set', () => {
+    const wrapper = shallow(<Row right>text</Row>)
+
+    expect(wrapper.containsMatchingElement(
+      <div className='col text-right'>text</div>
+    ))
+  });
+
+  test('Row widget draws correctly with left property set', () => {
+    const wrapper = shallow(<Row left>text</Row>)
+
+    expect(wrapper.containsMatchingElement(
+      <div className='col text-left'>text</div>
+    ))
+  });
+});
+
 
 
 
@@ -364,7 +414,7 @@ describe('Button widget tests', () => {
     ));
   });
 
-  test('Button.Save widget draes correctly', () => {
+  test('Button.Save widget draws correctly', () => {
     const wrapper = shallow(<Button.Save>text</Button.Save>)
     
     expect(wrapper.containsMatchingElement(
@@ -373,28 +423,149 @@ describe('Button widget tests', () => {
       >text</button>
     ));
   });
+
+  test.skip('Button.Answer widget drawss correctly', () => {
+    const wrapper = shallow(<Button.Answer>text</Button.Answer>)
+  })
+
+  test('Button.start widget draws correctly', () => {
+    const wrapper = shallow(<Button.Start>text</Button.Start>)
+
+    expect(wrapper.containsMatchingElement(
+      <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
+        <button type="button" class="btn btn-success btn-lg btn-block">text</button>
+      </div>
+    ))
+  });
+
+  test('ButtonOutlinePrimary widget draws correctly', () => {
+    const wrapper  = shallow(<Button.OutlinePrimary>text</Button.OutlinePrimary>);
+
+    expect(wrapper.containsMatchingElement(
+      <button
+        type="button"
+        className='btn btn-outline-primary' 
+      >
+        text
+      </button>
+    ))
+  })
+
+  test('ButtonOutlinePrimary draws correctly with small property set ', () => {
+    const wrapper  = shallow(<Button.OutlinePrimary small>text</Button.OutlinePrimary>);
+
+    expect(wrapper.containsMatchingElement(
+      <button
+        type="button"
+        className='btn btn-outline-primary btn-sm py-0' 
+      >
+        text
+      </button>
+    ))
+  });
+
+  test('Button.Primary draws correctly', () => {
+    const wrapper = shallow(<Button.Primary>text</Button.Primary>);
+
+    expect(wrapper.containsMatchingElement(
+    <button
+      type="button"
+      className='btn btn-primary'
+    >
+      text
+    </button>   
+    ))
+  });
+
+  test('Button.Primary widget draws correctly with small property set', () => {
+    const wrapper = shallow(<Button.Primary small>text</Button.Primary>);
+
+    expect(wrapper.containsMatchingElement(
+    <button
+      type="button"
+      className='btn btn-primary btn-sm py-0'
+    >
+      text
+    </button>   
+    ))
+  });
 });
 
 
-
-
-
-describe('Form.Input widget tests', () => {
+describe('Form widget tests', () => {
   test('Form.Input draws correctly', () => {
     const wrapper = shallow(<Form.Input type='text' ></Form.Input>)
 
     expect(wrapper.containsMatchingElement(<input type='text' className='form-control'/>))
   });
 
-  test('Form.Input draws correctly after onchange', () => {
+  test('Form.Input widget draws correctly after onchange', () => {
     const wrapper = shallow(<Form.Input type='text' value='' ></Form.Input>)
 
     wrapper.simulate('change', {currentTarget: { value: 'test'} });
     expect(wrapper.containsMatchingElement(<input type='text' value='test' className='form-control'/>))
   });
+
+  test('Form.Label widget draws correctly', () => {
+    const wrapper = shallow(<Form.Label>text</Form.Label>)
+
+    expect(wrapper.containsMatchingElement(
+      <label className="col-form-label">text</label>
+    ))
+  })
+
+  test('Form.Textarea widget draws correctly', () => {
+    const wrapper = shallow(<Form.Textarea value='' onChange={() =>{}}></Form.Textarea>)
+
+    expect(wrapper.containsMatchingElement(
+      <textarea className="form-control" value={''} onChange={() => {}} />
+    ))
+  });
+
+  test('Form.CheckBox widget draws correctly', () => {
+    const wrapper = shallow(<Form.Checkbox ></Form.Checkbox>);
+
+    expect(wrapper.containsMatchingElement(
+      <input type="checkbox"  />
+    ))
+  })
+
+  test('Form.Select widget draws correctly', () => {
+    const wrapper = shallow(<Form.Select value='' onChange={() => {}}>text</Form.Select>);
+
+    expect(wrapper.containsMatchingElement(
+      <select className="custom-select" value={''} onChange={() => {}}>
+        text
+      </select>
+    ))
+  })
 });
 
+describe('Navbar widgets tests', () => {
+  test('Navbar.Link draws correctly', ()  => {
+    const wrapper = shallow(<NavBar.Link to='/BrowseQuizzes'>text</NavBar.Link>)
 
+    expect(wrapper.containsMatchingElement(
+      <NavLink className="nav-link" activeClassName="active" to='/BrowseQuizzes'>
+        text
+      </NavLink>
+    ))
+  })
+
+  test('NavBar draws correclty', () => {
+    const wrapper = shallow(<NavBar>text</NavBar>);
+
+    expect(wrapper.containsMatchingElement(
+      <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+        {
+          <NavLink className="navbar-brand" activeClassName="active" exact to="/">
+          </NavLink>
+        }
+        <ul className="navbar-nav">text</ul>
+      </nav>
+    ))
+  });
+})
 
 
 
