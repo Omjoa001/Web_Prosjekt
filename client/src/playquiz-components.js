@@ -87,6 +87,78 @@ export class PlayQuiz extends Component {
     return array;
   }
 
+  loadQuiz() {
+    quizService.getQuiz(this.id).then((q) => {
+      this.quiz = q;
+      this.title = q.title;
+      this.description = q.description;
+      //this.categoryId = q.categoryId;
+
+      questionService.getQuizQuestion(this.id).then((questions) => {
+        let tempQuestions: StateQuestionType[] = [];
+
+        questions.forEach((q) => {
+          let answerobjs: AnswerType[] = [];
+          let tempQuestion: StateQuestionType = {};
+
+          tempQuestion.id = q.id;
+          tempQuestion.quizId = q.quizId;
+          tempQuestion.questionText = q.question;
+
+          // Stores string value of all answers
+          let answers: string[] = [];
+          answers.push(q.answ0);
+          answers.push(q.answ1);
+          answers.push(q.answ2);
+          answers.push(q.answ3);
+
+          // Used to sort answer texts based on correctness
+          let correct: string[] = [];
+          let incorrect: string[] = [];
+
+          // The first 'numCorrect' answer texts are correct
+          for (let i = 0; i < q.numCorrect; i++) {
+            correct.push(answers[i]);
+          }
+
+          // The rest are incorrect
+          for (let i = q.numCorrect; i < answers.length; i++) {
+            incorrect.push(answers[i]);
+          }
+
+          // Create answer objects to be stored in state
+          correct.forEach((ans) => {
+            answerobjs.push({
+              answerText: ans,
+              correct: true,
+            });
+          });
+
+          incorrect.forEach((ans) => {
+            answerobjs.push({
+              answerText: ans,
+              correct: false,
+            });
+          });
+
+          tempQuestion.answers = answerobjs;
+          tempQuestions.push(tempQuestion);
+        });
+
+        console.log(`loadquiz tempqs: ${JSON.stringify(tempQuestions)}`);
+        this.setState({ questions: tempQuestions });
+        console.log(`loadquiz state qs: ${JSON.stringify(this.state.questions)}`);
+        this.ready = true;
+
+        categoryService.getAllCategories().then((c) => {
+          this.categories = c;
+        });
+      });
+    });
+  }
+
+
+
   render() {
     return (
       <>
@@ -101,5 +173,6 @@ export class PlayQuiz extends Component {
 
   mounted() {
     this.id = this.props.match.params.id;
+    loadQuiz();
   }
 }
