@@ -82,18 +82,11 @@ export class PlayQuiz extends Component {
             </Button.Light>
           </Column>
           <Column>
-          <Row>
             <Column>
-            <Button.Success onClick={() => window.location.reload(false)}>
-              Play again!
-            </Button.Success>
+              <Button.Success onClick={() => window.location.reload(false)}>
+                Play again!
+              </Button.Success>
             </Column>
-            <Column>
-            <Button.Success>
-              Vis fasit
-            </Button.Success>
-            </Column>
-            </Row>
           </Column>
           <Column>
             <Button.Success onClick={() => history.push('/quiz/new')}>
