@@ -55,24 +55,22 @@ export class BrowseQuizzes extends Component<{}> {
    * Handles checkbox state.
    */
   renderCategories() {
-    return (
-      this.categories.map<mixed>((category: CategoryFilterType) => {
-        return (
-          <>
-            <Column>
-              <Form.Checkbox
-                onChange={(event: SyntheticEvent<HTMLInputElement>) => {
-                  category.checked = event.target.checked;
-                  console.log(`category ${category.category} checked: ${category.checked}`);
-                }}
-              />
-              &nbsp;&nbsp;&nbsp;
-              {category.category}
-            </Column>
-          </>
-        );
-      })
-    );
+    return this.categories.map<mixed>((category: CategoryFilterType) => {
+      return (
+        <>
+          <Column>
+            <Form.Checkbox
+              onChange={(event: SyntheticEvent<HTMLInputElement>) => {
+                category.checked = event.target.checked;
+                console.log(`category ${category.category} checked: ${category.checked}`);
+              }}
+            />
+            &nbsp;&nbsp;&nbsp;
+            {category.category}
+          </Column>
+        </>
+      );
+    });
   }
 
   /**
@@ -114,10 +112,10 @@ export class BrowseQuizzes extends Component<{}> {
    */
   search() {
     const filteredQuizzes: QuizType[] = this.categoryFilter();
-    return (
-      filteredQuizzes.filter((quiz) =>
+    return filteredQuizzes.filter(
+      (quiz) =>
         quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
-        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase()))
+        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase())
     );
   }
 
@@ -159,10 +157,9 @@ export class BrowseQuizzes extends Component<{}> {
       console.log(`render quizzes: ${this.quizzes}`);
       return (
         <>
-        <CardSmaller title="Browse Quiz 🧐">S
-        </CardSmaller>
+          <CardSmaller title="Browse Quizzes 🧐">S</CardSmaller>
 
-          <Card title="Categories"> 
+          <Card title="Categories">
             <div>{this.renderCategories()}</div>
           </Card>
 
@@ -195,7 +192,6 @@ export class BrowseQuizzes extends Component<{}> {
  * TODO: Make this accept quiz objects instead.
  */
 export class Quiz extends Component<{}> {
-
   render() {
     return (
       <>
@@ -216,6 +212,6 @@ export class Quiz extends Component<{}> {
           </Row>
         </TileCard>
       </>
-    )
+    );
   }
 }
