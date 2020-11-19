@@ -68,7 +68,6 @@ export class BrowseQuizzes extends Component<{}> {
   // }
 
   renderCategories() {
-<<<<<<< HEAD
     let ret: [] = [];
 
     this.categories.forEach((category) => {
@@ -87,24 +86,6 @@ export class BrowseQuizzes extends Component<{}> {
     });
 
     return ret;
-=======
-    return this.categories.map<mixed>((category: CategoryFilterType) => {
-      return (
-        <>
-          <Column>
-            <Form.Checkbox
-              onChange={(event: SyntheticEvent<HTMLInputElement>) => {
-                category.checked = event.target.checked;
-                console.log(`category ${category.category} checked: ${category.checked}`);
-              }}
-            />
-            &nbsp;&nbsp;&nbsp;
-            {category.category}
-          </Column>
-        </>
-      );
-    });
->>>>>>> 6426d468976fc751eb2504aeb717be1d06321780
   }
 
   /**
@@ -190,11 +171,7 @@ export class BrowseQuizzes extends Component<{}> {
     if (this.quizzesAreLoaded && this.categoriesAreLoaded) {
       return (
         <>
-<<<<<<< HEAD
-          <CardSmaller title="Browse Quiz 🧐">S</CardSmaller>
-=======
           <CardSmaller title="Browse Quizzes 🧐">S</CardSmaller>
->>>>>>> 6426d468976fc751eb2504aeb717be1d06321780
 
           <Card title="Categories">
             <div>{this.renderCategories()}</div>
