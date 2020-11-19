@@ -318,12 +318,16 @@ export class QuizEditor extends Component {
         if (this.mode == 'edit') {
           quizService
             .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
-            .then(() => {this.safeToSave = true;})
+            .then(() => {
+              this.safeToSave = true;
+            })
             .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
         } else if (this.mode == 'new') {
           quizService
             .updateQuiz(this.id, this.title, this.description, this.categoryId)
-            .then(() => {this.safeToSave = true;})
+            .then(() => {
+              this.safeToSave = true;
+            })
             .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
         }
       }
@@ -414,7 +418,7 @@ export class QuizEditor extends Component {
               onChange={(event) => {
                 this.title = event.currentTarget.value;
                 this.forceUpdate();
-              }
+              }}
             ></Form.Input>
           </Column>
         </Row>
@@ -426,7 +430,10 @@ export class QuizEditor extends Component {
             <select
               name="Category"
               value={this.categoryId}
-              onChange={(event) => (this.categoryId = event.currentTarget.value)}
+              onChange={(event) => {
+                this.categoryId = parseInt(event.currentTarget.value);
+                this.forceUpdate();
+              }}
             >
               <option value="0">Choose a category</option>
               {this.categories.map((cat) => {
