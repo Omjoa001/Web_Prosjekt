@@ -31,7 +31,7 @@ router.get('/quizzes/:id', (request, response) => {
 });
 
 router.post('/quizzes', (request, response) => {
-  const data = request.body;
+  const data: QuizType = request.body;
   if (data && data.title.length != 0 && data.categoryId != 0) {
     quizService
       .createQuiz(data.title, data.description, data.categoryId)
@@ -43,7 +43,7 @@ router.post('/quizzes', (request, response) => {
 });
 
 router.post('/questions', (request, response) => {
-  const data = request.body;
+  const data: QuestionType = request.body;
   if (
     data &&
     //typeof data.question == 'string' &&

@@ -29,8 +29,6 @@ import {
 const history = createHashHistory();
 
 export class Home extends Component {
-  Question: QuizType[] = [];
-  id: number = 0;
 
   render() {
     return (
@@ -58,9 +56,6 @@ export class Home extends Component {
     );
   }
 
-  mounted() {
-    questionService.getAllQuestions().then((c) => (this.Question = c));
-  }
 }
 
 /**
