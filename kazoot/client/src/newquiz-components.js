@@ -52,18 +52,17 @@ export class QuizEditor extends Component {
     };
   }
 
-  title: string = ''; // Title of quiz
   cardtitle: string = ''; // Title displayed in render
-  description: string = '';
+  title: string = ''; // Title of quiz
+  id: number = 0; // Quiz id
+  description: string = ''; // Quiz description
   categoryId: number = 0;
-  // nextId: number = 0; // new quiz
-  id: number = 0;
   nextQuestionId: number = 1; // "local" ID used for indexing
-  categories: CategoryType[] = [];
+  categories: CategoryType[] = []; // Categories in combobox
   mode: string = ''; // 'new' quiz mode or 'edit' quiz mode (mandatory!)
-  quiz: QuizType = {}; // Quiz to edit in 'edit' mode
-  quizCreated: boolean = false;
-  questionsCreated: boolean = false;
+  quiz: QuizType = {}; // Quiz object to edit in 'edit' mode
+  quizCreated: boolean = false; // Determines which database calls to run
+  questionsCreated: boolean = false; // Determines which database calls to run
 
   mounted() {
     this.cardtitle = this.props.cardtitle;
@@ -82,19 +81,21 @@ export class QuizEditor extends Component {
 
   /**
    * Loads an existing quiz into state.
+   * Only runs in 'edit' mode.
    */
   loadQuiz() {
     this.id = this.props.id;
     this.quizCreated = true;
     this.questionsCreated = true;
+
+    // Retrieve quiz from database
     quizService.getQuiz(this.id).then((q) => {
       this.quiz = q;
-      console.log(JSON.stringify(this.quiz));
-
       this.title = q.title;
       this.description = q.description;
       this.categoryId = q.categoryId;
 
+      // Retrieve all questions for quiz from database
       questionService.getQuizQuestion(this.id).then((qs) => {
         let tempQuestions: StateQuestionType[] = [];
 
@@ -107,28 +108,27 @@ export class QuizEditor extends Component {
           tempQuestion.questionText = q.question;
 
           // Stores string value of all answers
-          // TODO: Add support for more answers
           let answers: string[] = [];
           answers.push(q.answ0);
           answers.push(q.answ1);
           answers.push(q.answ2);
           answers.push(q.answ3);
 
+          // Used to sort answer texts based on correctness
           let correct: string[] = [];
           let incorrect: string[] = [];
 
+          // The first 'numCorrect' answer texts are correct
           for (let i = 0; i < q.numCorrect; i++) {
-            console.log(i);
             correct.push(answers[i]);
-            console.log(answers[i]);
           }
 
+          // The rest are incorrect
           for (let i = q.numCorrect; i < answers.length; i++) {
-            console.log(i);
             incorrect.push(answers[i]);
-            console.log(answers[i]);
           }
 
+          // Create answer objects to be stored in state
           correct.forEach((ans) => {
             answerobjs.push({
               answerText: ans,
@@ -153,10 +153,24 @@ export class QuizEditor extends Component {
   }
 
   /**
-   * Returns a new, unique question ID.
+   * Returns a new, locally unique question ID.
+   * This is used for getting indexes etc, not for database calls.
    */
   getNewId() {
     return this.nextQuestionId++;
+  }
+
+  /**
+   * Finds the index of a question with a given ID
+   */
+  findIndexOfQuestion(id: number) {
+    for (let i = 0; i < this.state.questions.length; i++) {
+      if (this.state.questions[i].id == id) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 
   /**
@@ -180,10 +194,9 @@ export class QuizEditor extends Component {
   }
 
   /**
-   * Removes a question from the questions array.
+   * Removes a question with a given ID from the questions array.
    * This is passed as a callback function to each question component, so that
    * the remove question button can be rendered by the question component.
-   * @param id - ID of question to remove
    */
   removeQuestion(id: number) {
     let index = this.findIndexOfQuestion(id);
@@ -257,19 +270,6 @@ export class QuizEditor extends Component {
     let newArray = this.state.questions;
     newArray.push(newQuestion);
     this.setState({ questions: newArray });
-  }
-
-  /**
-   * Finds the index of a question with a given ID
-   */
-  findIndexOfQuestion(id: number) {
-    for (let i = 0; i < this.state.questions.length; i++) {
-      if (this.state.questions[i].id == id) {
-        return i;
-      }
-    }
-
-    return -1;
   }
 
   /**
@@ -480,11 +480,8 @@ export class QuizEditor extends Component {
             <Card title={this.cardtitle}>{this.renderQuizInfo()}</Card>
           </Column>
         </center>
-
         <center>{this.renderQuestions()}</center>
-
         <br></br>
-
         <Row>
           <Button.Submit
             onClick={() => {
