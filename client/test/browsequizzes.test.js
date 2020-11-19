@@ -83,38 +83,13 @@ jest.mock('../src/kazoot-service', () => {
 
 
 describe('Browsequizzes-Component tests', () => {
-  test('BrowseQuiz-Component draws correctly', () => {
+  test('BrowseQuiz-Component draws correctly', (done) => {
     const wrapper = shallow(<BrowseQuizzes />);
 
-    console.log(wrapper.debug());
 
     setTimeout(() => {
-      expect(
-        wrapper.containsMatchingElement(
-          <>
-            <CardSmaller title="Browse Quiz 🧐"></CardSmaller>
-
-            <Card title="Categories">
-              <div>{this.renderCategories()}</div>
-            </Card>
-
-            <Card title="Search">
-              <Row>
-                <div style={{ width: '50%' }}>
-                  <Form.Input
-                    type="text"
-                    placeholder="🔎 Search for the title or description of a quiz"
-                    value={this.searchterm}
-                    onChange={this.editSearchTerm}
-                  ></Form.Input>
-                </div>
-              </Row>
-            </Card>
-
-            <Card title="Quizzes">{this.quizTileGrid()}</Card>
-          </>
-        )
-      );
+      expect(wrapper).toMatchSnapshot();
+      done()
     });
   });
 });
