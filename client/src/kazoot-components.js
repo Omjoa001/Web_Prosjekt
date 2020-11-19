@@ -463,7 +463,10 @@ export class QuizEditor extends Component {
               placeholder="Quiz description"
               type="text"
               value={this.description}
-              onChange={(event) => (this.description = event.currentTarget.value)}
+              onChange={(event) => {
+                this.description = event.currentTarget.value;
+                this.forceUpdate();
+              }}
               row={10}
             ></Form.Textarea>
           </Column>
