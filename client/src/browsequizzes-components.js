@@ -23,15 +23,14 @@ export class BrowseQuizzes extends Component<{}> {
   categories: CategoryFilterType[] = [
     { id: 1, category: 'Failed to get categories', checked: false },
   ];
-  categoriesAreLoaded: boolean = false;
-  quizzesAreLoaded: boolean = false;
+  categoriesAreLoaded: boolean = false; // Program waits until true
+  quizzesAreLoaded: boolean = false; // Program waits until true
 
   mounted() {
     categoryService
       .getAllCategories()
       .then((c: CategoryType[]) => {
         this.categories = c;
-        console.log(this.categories);
         this.categoriesAreLoaded = true;
       })
       .then(() => {
@@ -42,37 +41,51 @@ export class BrowseQuizzes extends Component<{}> {
 
     quizService.getAllQuizzes().then((q) => {
       this.quizzes = q;
-      console.log(`mounted: ${this.quizzes.toString()}`);
       this.quizzesAreLoaded = true;
     });
   }
 
-  updated() {
-    console.log('faen');
-  }
   /**
    * Renders category names with checkboxes.
    * Handles checkbox state.
    */
+  // renderCategories() {
+  //   return this.categories.map<mixed>((category: CategoryFilterType) => {
+  //     return (
+  //       <>
+  //         <Column>
+  //           <Form.Checkbox
+  //             onChange={(event: SyntheticEvent<HTMLInputElement>) => {
+  //               category.checked = event.target.checked;
+  //             }}
+  //           />
+  //           &nbsp;&nbsp;&nbsp;
+  //           {category.category}
+  //         </Column>
+  //       </>
+  //     );
+  //   });
+  // }
+
   renderCategories() {
-    return (
-      this.categories.map<mixed>((category: CategoryFilterType) => {
-        return (
-          <>
-            <Column>
-              <Form.Checkbox
-                onChange={(event: SyntheticEvent<HTMLInputElement>) => {
-                  category.checked = event.target.checked;
-                  console.log(`category ${category.category} checked: ${category.checked}`);
-                }}
-              />
-              &nbsp;&nbsp;&nbsp;
-              {category.category}
-            </Column>
-          </>
-        );
-      })
-    );
+    let ret: [] = [];
+
+    this.categories.forEach((category) => {
+      ret.push(
+        <Column>
+          <Form.Checkbox
+            onChange={(event) => {
+              category.checked = event.target.checked;
+              this.forceUpdate();
+            }}
+          />
+          &nbsp;&nbsp;&nbsp;
+          {category.category}
+        </Column>
+      );
+    });
+
+    return ret;
   }
 
   /**
@@ -114,10 +127,10 @@ export class BrowseQuizzes extends Component<{}> {
    */
   search() {
     const filteredQuizzes: QuizType[] = this.categoryFilter();
-    return (
-      filteredQuizzes.filter((quiz) =>
+    return filteredQuizzes.filter(
+      (quiz) =>
         quiz.title.toLowerCase().includes(this.searchterm.toLowerCase()) ||
-        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase()))
+        quiz.description.toLowerCase().includes(this.searchterm.toLowerCase())
     );
   }
 
@@ -156,13 +169,11 @@ export class BrowseQuizzes extends Component<{}> {
 
   render() {
     if (this.quizzesAreLoaded && this.categoriesAreLoaded) {
-      console.log(`render quizzes: ${this.quizzes}`);
       return (
         <>
-        <CardSmaller title="Browse Quiz 🧐">S
-        </CardSmaller>
+          <CardSmaller title="Browse Quiz 🧐">S</CardSmaller>
 
-          <Card title="Categories"> 
+          <Card title="Categories">
             <div>{this.renderCategories()}</div>
           </Card>
 
@@ -195,7 +206,6 @@ export class BrowseQuizzes extends Component<{}> {
  * TODO: Make this accept quiz objects instead.
  */
 export class Quiz extends Component<{}> {
-
   render() {
     return (
       <>
@@ -216,6 +226,6 @@ export class Quiz extends Component<{}> {
           </Row>
         </TileCard>
       </>
-    )
+    );
   }
 }
