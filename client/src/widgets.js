@@ -108,17 +108,17 @@ export class CenterCard extends Component<{ title?: React.Node, children?: React
 export class AnswerCard extends Component<{
   title?: string,
   children?: React.Node,
-  answ0?: Array<mixed>,
-  answ1?: Array<mixed>,
-  answ2?: Array<mixed>,
-  answ3?: Array<mixed>,
+  answ0?:  Array<[string, number]>,
+  answ1?:  Array<[string, number]>,
+  answ2?:  Array<[string, number]>,
+  answ3?:  Array<[string, number]>,
   numCorrect?: number,
   show?: boolean,
   parentCallback: any,
 }> {
   points: number = 0;
 
-  selectStyle = [{}, {}, {}, {}]
+  selectStyle = [{}, {}, {}, {}];
 
   stil(num: number, corr: boolean) {
     if (corr) {
@@ -129,7 +129,7 @@ export class AnswerCard extends Component<{
     }
     for (let i = 1; i <= this.selectStyle.length; i++) {
       if (num == i) {
-        this.selectStyle[i - 1] = { border: '3px solid navy' }
+        this.selectStyle[i - 1] = { border: '3px solid navy' };
       }
     }
   }
