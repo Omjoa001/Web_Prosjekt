@@ -140,9 +140,7 @@ export class BrowseQuizzes extends Component<{}> {
         <>
           <CardSmaller title="Browse Quizzes 🧐">S</CardSmaller>
 
-          <Card title="Categories">
-            {this.renderCategories()}
-          </Card>
+          <Card title="Categories">{this.renderCategories()}</Card>
 
           <Card title="Search">
             <Row>

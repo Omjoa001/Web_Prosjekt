@@ -118,7 +118,6 @@ class QuizService {
     });
   }
 
-
   getAllQuestions() {
     return new Promise<QuestionType[]>((resolve, reject) => {
       pool.query('SELECT * FROM Questions', (error, results) => {
@@ -162,7 +161,6 @@ class QuizService {
     });
   }
 
-
   deleteQuiz(id: number) {
     return new Promise<void>((resolve, reject) => {
       pool.query('DELETE FROM Quizzes WHERE id = ?', [id], (error, results) => {
@@ -171,7 +169,7 @@ class QuizService {
 
         resolve();
       });
-    })
+    });
   }
 }
 
