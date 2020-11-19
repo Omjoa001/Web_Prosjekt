@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
  * Renders alert messages using Bootstrap classes.
  */
 export class Alert extends Component {
+  
   alerts: { id: number, text: React.Node, type: string }[] = [];
   nextId = 0;
 
@@ -359,13 +360,12 @@ class ButtonSubmit extends Component<{
 
 class ButtonAnswer extends Component<{
   width?: number,
-  onClick?:() => Mixed,
+  onClick?:() => mixed,
   small?:Boolean,
   children?:React.Node,
   correct?:Boolean,
   show?:boolean,
   style: {border: string},
-  onClick: () => mixed,
 }> {
 render() {
   let value = this.props.correct ? "success" : "danger"
