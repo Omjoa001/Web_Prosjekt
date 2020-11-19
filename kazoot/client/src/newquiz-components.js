@@ -34,7 +34,7 @@ export class NewQuiz extends Component {
 
 /**
  * "Generic" interface for creating or editing quizzes
- * It's functionality is determined based on props and callback functions passed to it.
+ * It's functionality is determined based on props.
  * The 'mode' prop _must_ be set to 'edit' or 'new'.
  */
 export class QuizEditor extends Component {
