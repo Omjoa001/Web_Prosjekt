@@ -38,6 +38,7 @@ export class PlayQuiz extends Component {
   totalPoints: number = 0;
   resultText: string = '';
 
+  //sendPoints is used so childcomponents have a parentCallback for addign points
   sendPoints(pnt) {
     this.points += pnt;
   }
