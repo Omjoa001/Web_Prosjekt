@@ -108,8 +108,6 @@ export class QuizEditor extends Component {
    */
   loadQuiz() {
     this.id = this.props.id;
-    this.quizCreated = true;
-    this.questionsCreated = true;
 
     // Retrieve quiz from database
     console.log(`this.id before getquiz: ${this.id}`);
@@ -173,6 +171,8 @@ export class QuizEditor extends Component {
           });
 
           this.setState({ questions: tempQuestions });
+          this.quizCreated = true;
+          this.questionsCreated = true;
         });
       });
     }
@@ -303,6 +303,10 @@ export class QuizEditor extends Component {
    * Displayed if mode is set to 'new'
    */
   saveQuiz() {
+    console.log(`savequiz this.title: ${this.title}`);
+    console.log(`savequiz this.description: ${this.description}`);
+    console.log(`savequiz this.categoryId: ${this.categoryId}`);
+
     if (this.state.questions.length > 0) {
       if (!this.quizCreated) {
         quizService
@@ -315,21 +319,18 @@ export class QuizEditor extends Component {
             Alert.danger('Error: ' + error.message);
           });
       } else {
-        if (this.mode == 'edit') {
-          quizService
-            .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
-            .then(() => {
-              this.safeToSave = true;
-            })
-            .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
-        } else if (this.mode == 'new') {
-          quizService
-            .updateQuiz(this.id, this.title, this.description, this.categoryId)
-            .then(() => {
-              this.safeToSave = true;
-            })
-            .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
-        }
+        console.log(`savequiz edit this.categoryId: ${this.categoryId}`);
+        quizService
+        // change quiz id
+          .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.quiz.categoryId)
+          .then(() => {
+            this.safeToSave = true;
+          })
+          .catch((error: Error) =>
+            Alert.danger(
+              'Error ' + (mode == 'edit') ? 'editing' : 'creating' + ' Quiz: ' + error.message
+            )
+          );
       }
     } else {
       Alert.danger('Quiz contains no questions');
