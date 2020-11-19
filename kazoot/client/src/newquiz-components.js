@@ -456,44 +456,6 @@ export class QuizEditor extends Component {
   }
 
   /**
-   * Render troubleshooting information about quiz and question state by setting debug variable
-   */
-  renderStateInfo() {
-    let debug = false;
-    if (debug)
-      return (
-        <Card title="QuizEditor's state">
-          <div>
-            <div>quiz title: {this.title}</div>
-            <div>category: {this.categoryId}</div>
-            <div>quiz id: {this.id}</div>
-            <div>quiz desc: {this.description}</div>
-          </div>
-          {this.state.questions.map((question) => {
-            return (
-              <>
-                <div>
-                  <div>id: {question.id}</div>
-                  <div>quizId: {question.quizId}</div>
-                  <div>questionText: {question.questionText}</div>
-                  <div>
-                    {question.answers.map((ans) => {
-                      return (
-                        <div>
-                          answertext: {ans.answerText} | correct: {ans.correct ? 'true' : 'false'}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            );
-          })}
-        </Card>
-      );
-  }
-
-  /**
    * Generate buttons based on mode
    */
   theButton() {
@@ -548,8 +510,6 @@ export class QuizEditor extends Component {
             <Card title={this.cardtitle}>{this.renderQuizInfo()}</Card>
           </Column>
         </center>
-
-        {this.renderStateInfo()}
 
         <center>{this.renderQuestions()}</center>
 
