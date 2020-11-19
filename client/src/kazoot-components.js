@@ -92,8 +92,6 @@ export class QuizEditor extends Component {
     this.cardtitle = this.props.cardtitle;
     this.mode = this.props.mode;
 
-    console.log(`${this.mode} mode`);
-
     if (this.mode == 'edit') {
       this.loadQuiz();
     } else if (this.mode == 'new') {
@@ -596,7 +594,6 @@ export class Question extends Component {
               onChange={(event) => {
                 answer.correct = event.target.checked;
                 this.updateParentState();
-                console.log(`answer.correct set to ${answer.correct}`);
               }}
             ></Form.Checkbox>
           </Column>
