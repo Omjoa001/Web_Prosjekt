@@ -312,7 +312,7 @@ class ButtonBack extends Component<{
     return (
 
       <button 
-      type="button" class="btn btn-outline-danger btn-large btn-block"
+      type="button" className="btn btn-outline-danger btn-large btn-block"
       onClick={this.props.onClick}>
        {this.props.children} </button>
      
@@ -334,7 +334,7 @@ class ButtonSubmit extends Component<{
 
       <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
       <button 
-      type="button" class="btn btn-outline-primary btn-large btn-block"
+      type="button" className="btn btn-outline-primary btn-large btn-block"
       onClick={this.props.onClick}>
        {this.props.children} </button>
        </div>
@@ -363,7 +363,7 @@ render() {
   let value = this.props.correct ? "success" : "danger"
   let ButtonClass = this.props.show ? "btn btn-" + value + " btn-lg btn-block" : "btn btn-outline-primary btn-lg btn-block"
     return (
-      <button type="button" style={this.props.style} onClick={this.props.onClick} class={ButtonClass}>{this.props.children}</button>
+      <button type="button" style={this.props.style} onClick={this.props.onClick} className={ButtonClass}>{this.props.children}</button>
     );
   }
 }
@@ -383,7 +383,7 @@ class ButtonStart extends Component<{
     
     <div style={ { width: '100vh', marginLeft: '25%', marginRight: '25%', flex: '1', flexDirection: 'column'} }>
     <button 
-    type="button" class="btn btn-success btn-lg btn-block"
+    type="button" className="btn btn-success btn-lg btn-block"
     onClick={this.props.onClick}>
      {this.props.children} </button>
     </div>
