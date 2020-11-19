@@ -29,12 +29,11 @@ import {
 const history = createHashHistory();
 
 export class Home extends Component {
-
   render() {
     return (
       <>
         <LayoutCenter title="Welcome">
-          <div class="font-italic">To Kazoot - our Quiz App </div> <br></br>
+          <div class="font-italic">To Kazoot - our Quiz App 🔥 </div> <br></br>
           <h4>
             <small class="font-italic, text-muted">
               Browse through playable quizzes <br></br>
@@ -47,15 +46,14 @@ export class Home extends Component {
         <Card>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button.Start onClick={() => history.push('/BrowseQuizzes')}>
-            Browse Quizzes{' '}
+            🔍 Browse Quizzes{' '}
           </Button.Start>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button.Start onClick={() => history.push('/quiz/new')}>New Quiz</Button.Start>
+          <Button.Start onClick={() => history.push('/quiz/new')}> ➕ New Quiz</Button.Start>
         </Card>
       </>
     );
   }
-
 }
 
 /**
