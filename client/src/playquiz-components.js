@@ -71,6 +71,41 @@ export class PlayQuiz extends Component {
       return array
   }
 
+  submit() {
+  if (this.show) {
+      return (
+        <>
+          <Row>
+          <Column>
+            <Button.Light onClick={() => history.push('/BrowseQuizzes')}>
+              Back
+            </Button.Light>
+          </Column>
+          <Column>
+          <Row>
+            <Column>
+            <Button.Success onClick={() => window.location.reload(false)}>
+              Play again!
+            </Button.Success>
+            </Column>
+            <Column>
+            <Button.Success>
+              Vis fasit
+            </Button.Success>
+            </Column>
+            </Row>
+          </Column>
+          <Column>
+            <Button.Success onClick={() => history.push('/quiz/new')}>
+              Create your own Quiz!!
+            </Button.Success>
+          </Column>
+        </Row>
+        </>
+      )
+    }
+  }
+
   render() {
     return (
       <>
@@ -109,12 +144,15 @@ export class PlayQuiz extends Component {
             onClick={() => {
               this.show = true;
               this.resultText = `You got ${this.points}/${this.totalPoints} correct answers`
+              
             }}
           >
             SUBMIT ANSWERS 🎉 
           </Button.Submit>
           <br></br>  
-          <Card title={this.resultText}></Card>
+          <Card title={this.resultText}>
+            {this.submit()}
+          </Card>
         </center>
         <br></br>
         <br></br>
