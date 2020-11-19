@@ -24,7 +24,7 @@ export class Home extends Component {
     return (
       <>
         <LayoutCenter title="Welcome">
-          <div class= 'font-italic'>To Kazoot - our Quiz App </div> <br></br>
+          <div class= 'font-italic'>To Kazoot - our Quiz App 🔥 </div> <br></br>
         <h4><small class='font-italic, text-muted'>Browse through playable quizzes <br></br>
         by clicking on "Browse Quiz", <br></br>  
         or create a brand new quiz by clicking on "New Quiz"!  
@@ -34,10 +34,10 @@ export class Home extends Component {
         <Card> 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button.Start onClick={() => history.push('/BrowseQuizzes') }>
-            Browse Quizzes{' '}
+          🔍 Browse Quizzes{' '}
           </Button.Start>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button.Start onClick={() => history.push('/quiz/new')}>New Quiz</Button.Start>
+          <Button.Start onClick={() => history.push('/quiz/new')}> ➕ New Quiz</Button.Start>
         </Card>
       </>
     );

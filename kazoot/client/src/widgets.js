@@ -203,6 +203,19 @@ export class LayoutCenter extends Component<{ title?: React.Node, children?: Rea
   }
 }
 
+export class CardSmaller extends Component<{ title?: React.Node, children?: React.Node }> {
+  render() {
+    return (
+      <div className="card">
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '5vh', marginBottom: '5vh'}}>
+          <h1 className="card-title">{this.props.title}</h1>
+          </div>
+      </div>
+    );
+  }
+}
+
+
 /**
  * Renders a card with a smaller width than normal
  * TODO: Add variable width
