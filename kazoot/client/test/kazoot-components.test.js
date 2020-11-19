@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Alert, Column, Button, Form, Card, CenterCard, AnswerCard } from '../src/widgets.js';
+import { Alert, Column, Button, Form, Card, CenterCard, AnswerCard, LayoutCenter, TileCard } from '../src/widgets.js';
 import { Component } from 'react-simplified';
 import {BrowseQuizzes} from '../src/browsequizzes-components'
 import { Home } from '../src/kazoot-components';
@@ -204,7 +204,7 @@ describe('CenterCard widget tests', () => {
 })
 
 describe('AnswerCard widget tests', () => {
-  test('AnswerCard widget draws correctly', () => {
+  test.skip('AnswerCard widget draws correctly', () => {
     const wrapper = shallow(<AnswerCard parentCallBack={1}>text</AnswerCard>);
 
     expect(wrapper.containsMatchingElement(
@@ -258,6 +258,42 @@ describe('AnswerCard widget tests', () => {
       </center>
     ))
   })
+})
+
+describe('LayoutCenter widget tests', () => {
+  test('LayoutCenter widget draws correctly', ()=>{
+    const wrapper = shallow(<LayoutCenter title='title'>text</LayoutCenter>);
+
+    expect(wrapper.containsMatchingElement(
+      <div className="card-body">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10vh', marginBottom: '1vh'}}>
+          <h1 className="card-title">title</h1>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1vh', marginBottom: '10vh'}}>
+            <h3 className="card-text">text</h3>
+        </div>
+      </div>
+    ));
+  })
+})
+
+describe('TileCard widget tests', () => {
+  test('TileCard widget draws correctly', () =>{
+    const wrapper = shallow(<TileCard title='title'>text</TileCard>);
+
+    expect(wrapper.containsMatchingElement(
+      <div className="card" style={{ width: '12rem' }}>
+        <div className="card-body" align="center">
+          <h5 className="card-title">title</h5>
+          <div className="card-text">text</div>
+        </div>
+      </div>
+    ))
+  })
+})
+
+describe('QuestionCard tests', () => {
+  test('')
 })
 
 
