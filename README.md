@@ -1,4 +1,4 @@
-This QuizApp is running on localhost:3000. In order to reach this app on localhost:3000, it is
+The Quiz app "Kazoot" runs on localhost:3000. In order to reach this app on localhost:3000, it is
 necessary to complete the steps described below.
 
 Check that you are in the correct folder/path while using the terminal. The right folder is where
