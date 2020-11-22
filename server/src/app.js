@@ -4,7 +4,7 @@ import express from 'express';
 import router from './kazoot-router';
 
 /**
- * 
+ *
  * Express application.
  */
 const app: express$Application<> = express();

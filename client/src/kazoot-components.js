@@ -33,9 +33,9 @@ export class Home extends Component {
     return (
       <>
         <LayoutCenter title="Welcome">
-          <div class="font-italic">To Kazoot - our Quiz App 🔥 </div> <br></br>
+          <div className="font-italic">To Kazoot - our Quiz App 🔥 </div> <br></br>
           <h4>
-            <small class="font-italic, text-muted">
+            <small className="font-italic, text-muted">
               Browse through playable quizzes <br></br>
               by clicking on "Browse Quiz", <br></br>
               or create a brand new quiz by clicking on "New Quiz"!
@@ -62,6 +62,19 @@ export class Home extends Component {
  * The 'mode' prop _must_ be set to 'edit' or 'new'.
  */
 export class QuizEditor extends Component {
+  cardtitle: string = ''; // Title displayed in render
+  title: string = ''; // Title of quiz
+  id: number = 0; // Quiz id
+  description: string = ''; // Quiz description
+  categoryId: number = 0;
+  nextQuestionId: number = 1; // "local" ID used for indexing
+  categories: CategoryType[] = []; // Categories in combobox
+  mode: string = ''; // 'new' quiz mode or 'edit' quiz mode (mandatory!)
+  quiz: QuizType = {}; // Quiz object to edit in 'edit' mode
+  quizCreated: boolean = false; // Determines which database calls to run
+  questionsCreated: boolean = false; // Determines which database calls to run
+  safeToSave: boolean = false; // Prevents the user from saving if necessary information is missing
+
   // This should make flow happy
   state: {
     questions: StateQuestionType[],
@@ -75,18 +88,6 @@ export class QuizEditor extends Component {
       questions: [],
     };
   }
-
-  cardtitle: string = ''; // Title displayed in render
-  title: string = ''; // Title of quiz
-  id: number = 0; // Quiz id
-  description: string = ''; // Quiz description
-  categoryId: number = 0;
-  nextQuestionId: number = 1; // "local" ID used for indexing
-  categories: CategoryType[] = []; // Categories in combobox
-  mode: string = ''; // 'new' quiz mode or 'edit' quiz mode (mandatory!)
-  quiz: QuizType = {}; // Quiz object to edit in 'edit' mode
-  quizCreated: boolean = false; // Determines which database calls to run
-  questionsCreated: boolean = false; // Determines which database calls to run
 
   mounted() {
     this.cardtitle = this.props.cardtitle;
@@ -107,71 +108,74 @@ export class QuizEditor extends Component {
    */
   loadQuiz() {
     this.id = this.props.id;
-    this.quizCreated = true;
-    this.questionsCreated = true;
 
     // Retrieve quiz from database
-    quizService.getQuiz(this.id).then((quiz) => {
-      this.quiz = quiz;
-      this.title = quiz.title;
-      this.description = quiz.description;
-      this.categoryId = quiz.categoryId;
+    console.log(`this.id before getquiz: ${this.id}`);
+    if (this.id != 0) {
+      quizService.getQuiz(this.id).then((quiz) => {
+        this.quiz = quiz;
+        this.title = quiz.title;
+        this.description = quiz.description;
+        this.categoryId = quiz.categoryId;
 
-      // Retrieve all questions for quiz from database
-      questionService.getQuizQuestion(this.id).then((qs) => {
-        let tempQuestions: StateQuestionType[] = [];
+        // Retrieve all questions for quiz from database
+        questionService.getQuizQuestion(this.id).then((qs) => {
+          let tempQuestions: StateQuestionType[] = [];
 
-        qs.forEach((q) => {
-          let answerobjs: AnswerType[] = [];
-          let tempQuestion: StateQuestionType = {};
+          qs.forEach((q) => {
+            let answerobjs: AnswerType[] = [];
+            let tempQuestion: StateQuestionType = {};
 
-          tempQuestion.id = q.id;
-          tempQuestion.quizId = q.quizId;
-          tempQuestion.questionText = q.question;
+            tempQuestion.id = q.id;
+            tempQuestion.quizId = q.quizId;
+            tempQuestion.questionText = q.question;
 
-          // Stores string value of all answers
-          let answers: string[] = [];
-          answers.push(q.answ0);
-          answers.push(q.answ1);
-          answers.push(q.answ2);
-          answers.push(q.answ3);
+            // Stores string value of all answers
+            let answers: string[] = [];
+            answers.push(q.answ0);
+            answers.push(q.answ1);
+            answers.push(q.answ2);
+            answers.push(q.answ3);
 
-          // Used to sort answer texts based on correctness
-          let correct: string[] = [];
-          let incorrect: string[] = [];
+            // Used to sort answer texts based on correctness
+            let correct: string[] = [];
+            let incorrect: string[] = [];
 
-          // The first 'numCorrect' answer texts are correct
-          for (let i = 0; i < q.numCorrect; i++) {
-            correct.push(answers[i]);
-          }
+            // The first 'numCorrect' answer texts are correct
+            for (let i = 0; i < q.numCorrect; i++) {
+              correct.push(answers[i]);
+            }
 
-          // The rest are incorrect
-          for (let i = q.numCorrect; i < answers.length; i++) {
-            incorrect.push(answers[i]);
-          }
+            // The rest are incorrect
+            for (let i = q.numCorrect; i < answers.length; i++) {
+              incorrect.push(answers[i]);
+            }
 
-          // Create answer objects to be stored in state
-          correct.forEach((ans) => {
-            answerobjs.push({
-              answerText: ans,
-              correct: true,
+            // Create answer objects to be stored in state
+            correct.forEach((ans) => {
+              answerobjs.push({
+                answerText: ans,
+                correct: true,
+              });
             });
+
+            incorrect.forEach((ans) => {
+              answerobjs.push({
+                answerText: ans,
+                correct: false,
+              });
+            });
+
+            tempQuestion.answers = answerobjs;
+            tempQuestions.push(tempQuestion);
           });
 
-          incorrect.forEach((ans) => {
-            answerobjs.push({
-              answerText: ans,
-              correct: false,
-            });
-          });
-
-          tempQuestion.answers = answerobjs;
-          tempQuestions.push(tempQuestion);
+          this.setState({ questions: tempQuestions });
+          this.quizCreated = true;
+          this.questionsCreated = true;
         });
-
-        this.setState({ questions: tempQuestions });
       });
-    });
+    }
   }
 
   /**
@@ -201,8 +205,8 @@ export class QuizEditor extends Component {
    * back to the NewQuiz comp and changes NewQuiz' state.
    * NewQuiz needs this information to make database calls to create a new quiz.
    */
-  sendData(id, quizId, questionText, answers) {
-    let newarray = this.state.questions;
+  sendData(id: number, quizId: number, questionText: string, answers: AnswerType[]) {
+    let newarray: StateQuestionType[] = this.state.questions;
     let index = this.findIndexOfQuestion(id);
     if (index != -1) {
       newarray[index].questionText = questionText;
@@ -291,33 +295,47 @@ export class QuizEditor extends Component {
   }
 
   /**
-   * Create a new quiz.
-   * Displayed if mode is set to 'new'
+   * Create a new quiz or save an existing one.
+   * Behavior is determined by mode and other factors.
    */
   saveQuiz() {
-    if (this.state.questions.length > 0) {
-      if (!this.quizCreated) {
-        quizService
-          .createQuiz(this.title, this.description, this.categoryId)
-          .then((res) => {
-            this.quizCreated = true;
-          })
-          .catch((error) => {
-            Alert.danger('Error: ' + error.message);
-          });
-      } else {
-        if (this.mode == 'edit') {
+    console.log(`savequiz this.title: ${this.title}`);
+    console.log(`savequiz this.description: ${this.description}`);
+    console.log(`savequiz this.categoryId: ${this.categoryId}`);
+
+    if (this.title != '' && this.categoryId != 0) {
+      if (this.state.questions.length > 0) {
+        if (!this.quizCreated) {
           quizService
+<<<<<<< HEAD
             .updateQuiz(this.quiz.id, this.quiz.title, this.quiz.description, this.categoryId)
             .catch((error: Error) => Alert.danger('Error Editing Quiz: ' + error.message));
         } else if (this.mode == 'new') {
+=======
+            .createQuiz(this.title, this.description, this.categoryId)
+            .then((res) => {
+              this.quizCreated = true;
+              this.safeToSave = true;
+            })
+            .catch((error) => {
+              Alert.danger('Error: ' + error.message);
+            });
+        } else {
+>>>>>>> 04866f7941cbe028d29343f75bff993d39b21566
           quizService
             .updateQuiz(this.id, this.title, this.description, this.categoryId)
-            .catch((error: Error) => Alert.danger('Error creating Quiz: ' + error.message));
+            .then(() => (this.safeToSave = true))
+            .catch((error: Error) =>
+              Alert.danger(
+                'Error ' + (mode == 'edit') ? 'editing' : 'creating' + ' Quiz: ' + error.message
+              )
+            );
         }
+      } else {
+        Alert.danger('Quiz contains no questions');
       }
     } else {
-      Alert.danger('Quiz contains no questions');
+      Alert.danger('Quiz is missing title or category');
     }
 
     this.state.questions.forEach((question) => {
@@ -344,7 +362,8 @@ export class QuizEditor extends Component {
       let quizId: number = question.quizId;
       if (this.mode == 'edit') quizId = this.quiz.id;
 
-      let myPromise = new Promise((resolve, reject) => {
+      // Kind of ugly, but it forces the program to wait for the questions to be deleted
+      let waitForDeletion = new Promise((resolve, reject) => {
         if (this.questionsCreated) {
           questionService.deleteQuestions(this.id).then(resolve());
         } else {
@@ -352,17 +371,31 @@ export class QuizEditor extends Component {
         }
       });
 
-      myPromise.then(() => {
+      waitForDeletion.then(() => {
         if (numCorrect > 0) {
-          questionService
-            .createQuestion(quizId, question.questionText, answ0, answ1, answ2, answ3, numCorrect)
-            .then(() => {
-              Alert.success('Quiz saved successfully');
-              history.push('/BrowseQuizzes');
-            })
-            .catch((error) => {
-              Alert.danger('Error: ' + error.message);
-            });
+          if (question.questionText != '') {
+            if (this.quizCreated && this.safeToSave) {
+              questionService
+                .createQuestion(
+                  quizId,
+                  question.questionText,
+                  answ0,
+                  answ1,
+                  answ2,
+                  answ3,
+                  numCorrect
+                )
+                .then(() => {
+                  Alert.success('Quiz saved successfully');
+                  history.push('/BrowseQuizzes');
+                })
+                .catch((error) => {
+                  Alert.danger('Error: ' + error.message);
+                });
+            }
+          } else {
+            Alert.danger('A question is missing its text');
+          }
         } else {
           Alert.danger('Please add at least one correct answer for each question');
         }
@@ -397,7 +430,10 @@ export class QuizEditor extends Component {
               placeholder="Quiz title"
               type="text"
               value={this.title}
-              onChange={(event) => (this.title = event.currentTarget.value)}
+              onChange={(event) => {
+                this.title = event.currentTarget.value;
+                this.forceUpdate();
+              }}
             ></Form.Input>
           </Column>
         </Row>
@@ -423,21 +459,16 @@ export class QuizEditor extends Component {
         </Row>
         <br></br>
         <Row>
-          {/* TODO: Remove this?  */}
-          <Column width={3}>Quiz-Id:</Column>
-          <Column>
-            <Form.Input value={this.id} disabled></Form.Input>
-          </Column>
-        </Row>
-        <br></br>
-        <Row>
           <Column width={3}>Quiz-description:</Column>
           <Column>
             <Form.Textarea
               placeholder="Quiz description"
               type="text"
               value={this.description}
-              onChange={(event) => (this.description = event.currentTarget.value)}
+              onChange={(event) => {
+                this.description = event.currentTarget.value;
+                this.forceUpdate();
+              }}
               row={10}
             ></Form.Textarea>
           </Column>

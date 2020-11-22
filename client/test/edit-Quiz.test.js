@@ -17,7 +17,8 @@ import {
   NavBar,
 } from '../src/widgets.js';
 import { Component } from 'react-simplified';
-import { Home, Question, QuizEditor } from '../src/kazoot-components';
+import { QuizEditor } from '../src/kazoot-components';
+import { EditQuiz } from '../src/editquizzes-components';
 import { shallow } from 'enzyme';
 import { NavLink } from 'react-router-dom';
 import { quizService, questionService, categoryService} from '../src/kazoot-service';
@@ -80,96 +81,14 @@ jest.mock('../src/kazoot-service', () => {
 });
 
 
-/**
- *
- *
- *
- * QUIZ COMPONENTS
- *
- *
- */
 
-describe('Home tests', () => {
-  test('Home buttons draws correctly', (done) => {
-    const wrapper = shallow(<Home />);
-
-    expect(
-      wrapper.containsMatchingElement(
-        <div
-          style={{
-            width: '100vh',
-            marginLeft: '25%',
-            marginRight: '25%',
-            flex: '1',
-            flexDirection: 'column',
-          }}
-        >
-          <button
-            type="button"
-            class="btn btn-success btn-lg btn-block"
-            onClick={() => history.push('/BrowseQuizzes')}
-          >
-            Browse Quizzes{' '}
-          </button>
-        </div>
-      )
-    );
-
-    expect(
-      wrapper.containsMatchingElement(
-        <div
-          style={{
-            width: '100vh',
-            marginLeft: '25%',
-            marginRight: '25%',
-            flex: '1',
-            flexDirection: 'column',
-          }}
-        >
-          <button
-            type="button"
-            class="btn btn-success btn-lg btn-block"
-            onClick={() => {
-              history.push('/quiz/new');
-            }}
-          >
-            New Quiz
-          </button>
-        </div>
-      )
-    );
-
-    done();
-  });
-
-  test('Home button 1 work', (done) => {
-    const wrapper = shallow(<Home />);
-
-    wrapper.find(Button.Start).at(0).simulate('click');
+describe('EditQuiz-Component tests', () => {
+  test('Edit Quiz draws correctly', (done ) => {
+    const wrapper = shallow(<EditQuiz match={{ params: { id: 2 } }} />);
 
     setTimeout(() => {
-      expect(location.hash).toEqual('#/BrowseQuizzes');
+      expect(wrapper).toMatchSnapshot();
       done();
-    });
-  });
-
-  test('Home button 2 work', (done) => {
-    const wrapper = shallow(<Home />);
-
-    wrapper.find(Button.Start).at(1).simulate('click');
-
-    setTimeout(() => {
-      expect(location.hash).toEqual('#/quiz/new');
-      done();
-    });
-  });
-});
-
-describe('QuizEditor tests', () => {
-  test('QuizEditor draws correctly', (done) => {
-    const wrapper = shallow(<QuizEditor />);
-
-    console.log(wrapper.debug());
-    expect(wrapper.containsMatchingElement(<Card></Card>));
+    })
   });
 });
