@@ -12,13 +12,13 @@ server up and running two files named "config.js" must be created in the followi
 
 # Insert this database in './server/src/config.js'
 
-process.env.MYSQL_HOST = 'mysql.stud.ntnu.no'; process.env.MYSQL_USER = 'stud_gruppefire';
-process.env.MYSQL_PASSWORD = 'Kazoot'; process.env.MYSQL_DATABASE = 'stud_gruppefire_db';
+process.env.MYSQL_HOST = 'YOURHOST'; process.env.MYSQL_USER = 'USER';
+process.env.MYSQL_PASSWORD = 'PASSWORD'; process.env.MYSQL_DATABASE = 'YOURDATABASE';
 
 # Insert this database './server/test/config.js'
 
-process.env.MYSQL_HOST = 'mysql.stud.ntnu.no'; process.env.MYSQL_USER = 'stud_gruppefire';
-process.env.MYSQL_PASSWORD = 'Kazoot'; process.env.MYSQL_DATABASE = 'stud_gruppefire_test';
+process.env.MYSQL_HOST = 'YOURHOST'; process.env.MYSQL_USER = 'USER';
+process.env.MYSQL_PASSWORD = 'PASSWORD'; process.env.MYSQL_DATABASE = 'YOURTESTDATABASE';
 
 First, start the server by installing the dependecies through a terminal.
 
